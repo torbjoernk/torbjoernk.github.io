@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    {% include header.html %}
+
+    <div class="container">
+      <main>
+        <div class="row">
+          <div class="col-md-8">
+            {{ content }}
+          </div>
+          <div class="col-md-4">
+            {% include asides/resent_posts.html %}
+            {% include asides/github.html %}
+            {% include asides/legal.html %}
+          </div>
+        </div><!-- /.row -->
+      </main>
+    </div><!-- /.container -->
+
+    {% include footer.html %}
+    {% include after_footer.html %}
+  </body>
+</html>

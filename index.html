@@ -1,0 +1,14 @@
+---
+layout: page
+navbar: Posts
+footer: false
+---
+
+<div class="blog-index">
+  {% assign index = true %}
+  {% for post in site.posts limit: site.recent_posts %}
+    <article class="post on-index{% if forloop.last %} last{% endif %}">
+      {% include article.html %}
+    </article>
+  {% endfor %}
+</div>

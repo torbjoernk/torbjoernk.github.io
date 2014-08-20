@@ -1,0 +1,25 @@
+# Site settings
+title: "Torbjörn Klatt"
+email: kontakt@torbjoern-klatt.de
+author: "Torbjörn Klatt"
+description: "Just me"
+baseurl: ""
+url: "http://torbjoern-klatt.de"
+subscribe_rss: 'feed.xml'
+
+root: /
+permalink: /article/:year/:month/:day/:title/
+category_dir: categories
+markdown: kramdown
+
+timezone: Europe/Berlin
+encoding: utf-8
+
+excerpt_separator: '<!--more-->'
+recent_posts: 5
+
+sass:
+  sass_dir: _sass
+  style: :compressed
+
+category_title_prefix: ""
