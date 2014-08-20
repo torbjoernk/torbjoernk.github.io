@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Torbjörn Klatt">
+  
+  <title>Boost unter Linux selbst installieren</title>
+  
+  <meta name="description" content="Just me">
+  <link rel="canonical" href="http://torbjoern-klatt.de/article/2012/11/06/boost-unter-linux-selbst-installieren/">
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/octicons/octicons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/js/jquery.githubRepoWidget.min.js"></script>
+
+  <script type="text/javascript" src="/js/custom.js"></script>
+</head>
+
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Torbjörn Klatt</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/otago/">Going to Otago</a></li>
+            <li><a href="/london/">Bachelor in London</a></li>
+          </ul>
+        </li>
+        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/about/">Über / About</a></li>
+        <li><a href="/archive/">Archiv / Archive</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+    <div class="container">
+      <main>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="post">
+  <header class="post-header">
+    <h1>Boost unter Linux selbst installieren</h1>
+  </header>
+  <article class="post-content">
+    <p>Dies soll eine kleine Anleitung sein, wie man die aktuellste (und stabile) Boost
+Version unabhängig von den Distributionspaketen installiert.
+Zum Zeitpunkt dieses Artikels war das Boost 1.52.0.
+Installiert auf einem 64bit openSUSE 12.2 (funktioniert ebenso mit 12.1).</p>
+
+<!-- more -->
+<p>## Voraussetzungen und Abhängigkeiten
+### Compiler
+Natürlich ist ein aktueller <strong>C/C++-Compiler</strong> notwendig.
+Für diese Anleitung habe ich sowohl den <em>GNU GCC in Version 4.7.2</em> als auch den
+LLVM Clang in Version 3.1 genutzt, die ich über die offiziellen openSUSE 
+Repositories (genaue gesagt: <code>gcc47</code> und <code>llvm-clang</code>) installiert habe.</p>
+
+<h3 id="unicode-untersttzung">Unicode-Unterstützung</h3>
+<p>Um <strong>vollständige Unicode-Unterstützung</strong> zu haben, sind zudem die <em>International
+Components for Unicode</em> (kurz: <em>ICU</em>) notwendig.
+Hier nutze ich <em>libicu</em> in Version 49.1.
+Im Falle von openSUSE heißt das Entwicklungs-Paket <code>libicu-devel</code> (die 
+eigentliche Bibliothek, <code>libicu49</code>, wird automatisch ebenfalls installiert).
+Nicht notwendig aber durchaus nicht schädlich sind noch die Pakete <code>icu</code> sowie
+<code>icu-data</code>.</p>
+
+<h3 id="openmpi">OpenMPI</h3>
+<p>Einige Boost-Bibliotheken haben die Möglichkeit <strong>OpenMPI</strong> zu nutzen, um eine
+bessere Parallelisierung zu ermöglichen.
+Dafür sind jedoch die Header-Dateien für <em>OpenMPI</em> nötig, die sich
+<code>openmpi_devel</code> nennen.
+Ich nutze hier Version 1.5.4.</p>
+
+<h2 id="boost-sourcen-vorbereiten">Boost-Sourcen vorbereiten</h2>
+<p>### Downloaden
+Jetzt fehlen nur noch die Boost-Sourcen.
+Diese sind auf <em>Sourceforge</em>:
+<a href="http://sourceforge.net/projects/boost/files/boost/1.52.0/">http://sourceforge.net/projects/boost/files/boost/1.52.0/</a>.
+Ich bevorzuge die Bzip2 komprimierte Variante – aber das sei jedem selbst
+überlassen.</p>
+
+<h3 id="entpacken">Entpacken</h3>
+<p>Ich persönlich habe diese nach <code>$HOME/src/boost_1_52_0</code> entpackt, da ich die
+Quellen von selbstkompilierten Programmen und Bibliotheken in <code>$HOME/src</code>
+sammel, um sie dann nach <code>$HOME</code> zu installieren.
+Wer mag kann es aber auch systemweit nach <code>/opt</code> (dann aber wohl als root
+installieren) oder sonstwohin entpacken.</p>
+
+<h2 id="boost-kompilieren">Boost kompilieren</h2>
+<p>Bevor Boost kompiliert werden kann, muss zunächst das Boost.Build-System 
+vorbereitet werden.
+Boost kommt mit einem eigenen Build-Programm (früher <code>bjam</code>, heute <code>b2</code> genannt), 
+so dass man kein <code>./configure &amp;&amp; make &amp;&amp; make install</code> machen kann.
+<em>CMake</em> ist zwar möglich aber nur experimentell unterstützt.
+Ich bevorzuge hier <em><a href="http://www.boost.org/boost-build2/">Boost.Build</a></em>.</p>
+
+<p>Von nun gehe ich davon aus, dass alle Befehle in <code>$HOME/src/boost_1_52_0</code> (bzw.
+entsprechend) ausgeführt werden.</p>
+
+<h3 id="konfigurieren-bootstrappen">Konfigurieren (‘Bootstrappen’)</h3>
+<p>Der erste Schritt ist die Vorbereitung von <em>Boost.Build</em>, das mit den
+Boost-Sourcen mitgeliefert wird.
+Ein <code>./boostrap --help</code> liefert ein paar Hinweise, wie man es installieren kann.
+Ich will alle Boost-Bibliotheken, mit vollständiger Unicode-Unterstützung, in
+mein Benutzerverzeichnis (also nach <code>$HOME/lib</code> und <code>$HOME/include</code>) 
+installieren:</p>
+
+<pre><code>./bootstrap --with-icu --prefix=$HOME
+</code></pre>
+
+<p>Der Output sollte folgende Zeilen enthalten:</p>
+
+<pre><code>Building Boost.Build engine with toolset gcc... tools/build/v2/engine/bin/linux86_64/b2
+Unicode/ICU support for Boost.Regex?... /usr
+Generating Boost.Build configuration in project-config.jam...
+</code></pre>
+
+<p>Vermutlich wird noch ein Hinweis auf ein (nicht) vorhandenes Python auftauchen.
+Diesen ignoriere ich jetzt hier.
+Wer Boost auch für Python verfügbar haben möchte, sollte sicher stellen, dass
+sowohl die von einem selbst bevorzugte Python Version sowie dessen
+Installationspfad richtig erkannt wird.</p>
+
+<p>Da <em>OpenMPI</em> genutzt werden soll, das aber scheinbar nicht automatisch erkannt
+wird, muss es manuell der Konfiguration hinzugefügt werden.
+Dazu muss in der Datei <code>tools/build/v2/user-config.jam</code> die Zeile</p>
+
+<pre><code>using mpi ;
+</code></pre>
+
+<p>hinzugefügt werden (wo ist egal, am einfachsten ans Ende: <code>echo "using mpi ;" &gt;&gt;
+tools/build/v2/user-config.jam</code>).<br />
+<strong>WICHTIG</strong>: Unbedingt auf das Leerzeichen vor dem Semikolon achten!</p>
+
+<h3 id="kompilieren----the-long-run">Kompilieren – The long run…</h3>
+<p>Ein <code>./b2 --help</code> gibt eine ganze Menge an Optionen aus, wie die Art der
+Boost-Installation kontrolliert werden kann.
+Die vollständige Liste an Optionen findet sich in der
+<a href="http://www.boost.org/boost-build2/doc/html/bbv2/overview/builtins/features.html">Dokumentation von Boost.Build2</a>.</p>
+
+<p>Also setze ich mal die einzelnen Parameter zusammen, denn ich möchte,</p>
+
+<ul>
+  <li>dass der GCC genutzt wird: <code>toolset=gcc</code></li>
+  <li>dass die Namen der Bibliotheken den verwendeten Compiler, Version und Typ 
+enthalten: <code>--layout=versioned</code></li>
+  <li>dass nur die dynamisch linkbaren Bibliotheken verfügbar werden: <code>link=shared</code></li>
+  <li>dass alle Compiler-Optimierungen genutzt werden sollen: <code>variant=release</code></li>
+  <li>dass ich dennoch Debug-Symbole nutzen kann: <code>debug-symbols=on</code></li>
+  <li>dass sowohl multi- als auch single-Threading möglich ist:
+<code>threading=multi,single</code></li>
+  <li>dass immer gegen dynamische C/C++-Systembibliotheken gelinkt wird:
+<code>runtime-link=shared</code></li>
+  <li>dass evtl. frühere Builds verworfen werden: <code>-a</code></li>
+  <li>dass drei Compiler-Instanzen parallel laufen sollen (ich habe nicht so viel
+Zeit aber leider nur zwei CPU-Cores): <code>-j3</code></li>
+  <li>dass beim ersten Fehler abgebrochen wird, damit ich sicher gehen kann, dass
+alles in Ordnung ist: <code>-q</code></li>
+  <li>dass erst einmal alles kompiliert wird (installieren später): <code>stage</code></li>
+</ul>
+
+<p>Das macht dann also:</p>
+
+<pre><code>./b2 link=shared runtime-link=shared threading=multi,single variant=release debug-symbols=on toolset=gcc -a -q -j3 --layout=versioned stage
+</code></pre>
+
+<p>Die Installation nach <code>$HOME</code> wird dann mit dem gleichen Befehl angestoßen,
+allerdings statt <code>stage</code> wählt man <code>install</code> als Kommando.
+Und man sollte <code>-a</code> entfernen.</p>
+
+<p>Um das gleiche mit dem <em>Clang</em> Compiler zu machen, ersetzt man <code>toolset=gcc</code> durch
+<code>toolset=clang</code>.</p>
+
+<h2 id="endnotiz">Endnotiz</h2>
+<p>Möchte man nun das frische Boost in einem <em>CMake</em>-basierten Projekt verwenden,
+sollte man beim Aufruf von <em>CMake</em> noch den Parameter <code>-DBOOST_ROOT=$HOME</code>
+hinzufügen.
+Kompiliert man das <em>CMake</em>-Projekt mit <em>Clang</em>, so ist auf Grund eines Bugs
+(oder fehlendem Feature, wie man’s nimmt) im <em>CMake</em>-Module <code>FindBoost</code> unter
+Linux, zusätzlich noch der Paramter <code>-DBoost_COMPILER="-clang31"</code> notwendig.</p>
+
+<p><em>Happy Boosting!</em></p>
+
+  </article>
+  <footer>
+  
+  
+
+<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
+
+  &#8226;
+  
+  
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2012-11-06T10:00:00+01:00">06 Nov 2012</time>
+
+
+
+  
+
+
+  
+</footer>
+
+</div>
+
+          </div>
+          <div class="col-md-4">
+            <section id="recent-posts-aside" class="aside panel panel-default">
+  <div class="panel-heading">
+    <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
+      <i class="fa fa-rss"></i>
+      <!--<span class="hidden-xs">RSS</span>-->
+    </a>
+    <h3 class="panel-title">
+      Neue Artikel / Recent Posts
+    </h3>
+  </div>
+  
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">03 Apr 2013</span>
+      <a href="/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/">Struggling with Git Submodules and Mercurial Subrepositories</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">06 Nov 2012</span>
+      <a href="/article/2012/11/06/boost-unter-linux-selbst-installieren/">Boost unter Linux selbst installieren</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">17 Jun 2012</span>
+      <a href="/article/2012/06/17/es-war-der-kernel-und-ipv6/">Es war der Kernel und IPv6</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">08 Apr 2012</span>
+      <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Mar 2012</span>
+      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
+    </li>
+    
+  </ul>
+</section>
+
+            <section id="gh-repos-aside" class="aside gh-repos panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-github fa-fw"></i>GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="panel-body gh-profile-link text-muted">
+      <div class="pull-right">
+        <a href="https://github.com/torbjoernk">@torbjoernk</a> on <i class="fa fa-github fa-fw"></i>GitHub
+      </div>
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/js/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'torbjoernk',
+            count: '5',
+            skip_forks: 'true',
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/js/github.js" type="text/javascript"></script>
+</section>
+
+            <section class="legal">
+  <div class="btn-group btn-group-xs btn-group-justified">
+    <a href="/imprint/" class="btn" role="button">
+      &copy;<span class="hidden-xs">&ensp;Imprint</span>
+    </a>
+    <a href="" class="btn" role="button">
+      <i class="fa fa-code"></i><span class="hidden-xs">&ensp;Source</span>
+    </a>
+  </div>
+</section>
+          </div>
+        </div><!-- /.row -->
+      </main>
+    </div><!-- /.container -->
+
+    <footer id="site-footer">
+  <div class="blog-footer">
+    <a href="#">Back to top</a>
+  </div>
+</footer>
+
+    
+  </body>
+</html>
