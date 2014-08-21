@@ -76,7 +76,8 @@ task :copyto do |args|
     puts "## Remove all files"
     ok_failed system("rm -rf #{document_root}*")
   else
-    puts "## Leaving remote files untouched. Just updating."
+    puts "## Leaving remote files untouched.
+Just updating."
   end
   puts "## Deploying website via plain copy"
   puts "##!! This will ignore all files marked as 'exclude'"

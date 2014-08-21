@@ -57,7 +57,8 @@ Einmal eingerichtet bleiben sie im Hintergrund und tauchen nur unter „*Konten 
 Synchronisation*“ auf.
 Dabei erstellen sie für jeden synchronisierten Kalender oder Adressbuch ein
 entsprechendes Pondon auf dem Gerät, die sich dann in einer beliebigen 
-Kalenderanwendung bzw. Kontaktverwaltung auswählen lassen.
+Kalenderanwendung bzw.
+Kontaktverwaltung auswählen lassen.
 
 *Kleines Manko*: Man benötigt nur ein *CalDAV*-Konto für alle Kalender, aber pro
 Adressbuch ein *CardDAV*-Konto.
@@ -148,7 +149,8 @@ Hier musste ich in der Weboberfläche von *ownCloud* nachbessern.
 **Update 19.04.2012**  
 Vor ein paar Tagen habe ich gemerkt, dass ich meine Kontakte auf dem Android
 nicht mehr wirklich bearbeiten kann.
-Das liegt insbesondere an Android bzw. Google selbst, die die entsprechende API
+Das liegt insbesondere an Android bzw.
+Google selbst, die die entsprechende API
 nicht richtig freigegeben haben.
 So können Sync-Tools wie das hier erwähnte *CardDAV-Sync* nicht richtig auf das
 interne Format der Kontakte zugreifen.

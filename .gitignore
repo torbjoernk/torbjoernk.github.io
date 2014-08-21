@@ -167,3 +167,4 @@ build/
 .rvmrc
 
 /.pygments-cache/
+/.deploy/

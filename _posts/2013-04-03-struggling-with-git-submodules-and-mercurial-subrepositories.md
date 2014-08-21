@@ -383,8 +383,9 @@ committed directly to the SVN server via `git svn dcommit`.
 This way, we still comply with the tight access rights on the code base and 
 must-have comfort functions while having partial support of the agile workflows 
 provided by Git's features.
-Everybody seems happy. Except the guys, who stand this adventure. They called in 
-sick recovering from the pain endured that no usable version control system out 
+Everybody seems happy.
+Except the guys, who stand this adventure.
+They called in sick recovering from the pain endured that no usable version control system out 
 there is capable of handling this use case in a maintainable manner.
 
 Thanks to my colleagues and companions in this adventure, [Martin Scherer](https://github.com/marscher) 

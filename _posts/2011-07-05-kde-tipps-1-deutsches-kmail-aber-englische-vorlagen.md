@@ -8,7 +8,10 @@ published: true
 comments: false
 ---
 {% img left http://kde.org/images/icons/kmail_48.png 48 48 "Das KDE-KMail Logo" %}
-Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten). Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „*Am Donnerstag, 21. April 2011, 21:42:12 schrieben Sie:*“ voran. Das sieht nicht gut aus und geht deutlich besser!
+Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten).
+Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „*Am Donnerstag, 21.
+April 2011, 21:42:12 schrieben Sie:*“ voran.
+Das sieht nicht gut aus und geht deutlich besser!
 
 <!-- more -->
 
@@ -18,9 +21,11 @@ Hier beschreibe ich eine mögliche Vorgehensweise, wie man dieses Problem in [KM
 Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Version 2.0.95 unter KDE 4.6.90 (4.7 RC1)) gemacht, es lässt sich aber auf alle anderen beliebigen Oberflächen ebenfalls anwenden.
 
 ###Der Standard
-Die Standard-Vorlagen sind Bestandteil der Lokalisierung von KMail, weshalb sie bei einer deutschsprachigen Benutzeroberfläche ebenfalls übersetzt sind. Die hier beschriebene Lösung besteht aus einer Rückübersetzung dieser Standard-Vorlagen.
+Die Standard-Vorlagen sind Bestandteil der Lokalisierung von KMail, weshalb sie bei einer deutschsprachigen Benutzeroberfläche ebenfalls übersetzt sind.
+Die hier beschriebene Lösung besteht aus einer Rückübersetzung dieser Standard-Vorlagen.
 
-Unter „*Einstellungen*“ -&gt; „*KMail einrichten ...*“ wählt man den „*E-Mail-Editor*“ aus und begibt sich in den Reiter „*Standard-Vorlagen*“. Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiterleiten einer E-Mail automatisch verwendet werden.
+Unter „*Einstellungen*“ -&gt; „*KMail einrichten ...*“ wählt man den „*E-Mail-Editor*“ aus und begibt sich in den Reiter „*Standard-Vorlagen*“.
+Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiterleiten einer E-Mail automatisch verwendet werden.
 
 Bei deutscher Lokalisierung steht hier für „*Antwort an Absender*":
 
@@ -32,7 +37,9 @@ Am %ODATE, %OTIMELONG schrieben Sie:
 %QUOTE
 {% endcodeblock %}
 
-Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen ("*On %ODATE %OTIMELONG you wrote:*"), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen. Andernfalls würde das obige Beispiel als „*On Donnerstag, 21. April 2011 21:42 you wrote:*“ erscheinen.
+Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen ("*On %ODATE %OTIMELONG you wrote:*"), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen.
+Andernfalls würde das obige Beispiel als „*On Donnerstag, 21.
+April 2011 21:42 you wrote:*“ erscheinen.
 
 Die nicht-lokalisierten Platzhalter lassen sich einerseits durch das unten stehende Menü „*Platzhalter einfügen*“ -&gt; „*Ursprüngliche Nachricht*“ wählen (es sind die mit dem Zusatz „*in C-Lokalisierung*“)  oder durch Anhängen von "<code>EN</code>" an die bisherigen.
 
@@ -49,7 +56,8 @@ On %ODATEEN %OTIMELONGEN you wrote:
 Mit den anderen Standard-Vorlagen für „*Allen antworten / der Liste antworten*“ und „*Nachricht weiterleiten*“ verfährt man ebenso.
 
 ###Die Erweiterung
-Um individuell nur bei Antworten auf (oder beim Weiterleiten) bestimmte E-Mails die englischsprachige Vorlage zu verwenden, empfiehlt es sich, „*Eigene Vorlagen*“ einzurichten. Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man über den gewählten Name im „*Antworten*“-Menü (lange auf das Werkzeugleisten-Symbol „*Antworten*“ klicken) aufrufen kann.
+Um individuell nur bei Antworten auf (oder beim Weiterleiten) bestimmte E-Mails die englischsprachige Vorlage zu verwenden, empfiehlt es sich, „*Eigene Vorlagen*“ einzurichten.
+Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man über den gewählten Name im „*Antworten*“-Menü (lange auf das Werkzeugleisten-Symbol „*Antworten*“ klicken) aufrufen kann.
 
 Ich habe hier eine neue Vorlage „*deutsche Antwort*“ erstellt und in das große Textfeld
 
@@ -91,9 +99,13 @@ Von: %OFROMADDR
 ------------------------------------------------------------
 {% endcodeblock %}
 
-Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail. Derzeit scheint es noch nicht dort erläutert zu werden.
+Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail.
+Derzeit scheint es noch nicht dort erläutert zu werden.
 
 ###Fazit
-Das Rückübersetzen der Standard-Vorlagen ist sicherlich die einfachste und benutzerfreundlichste Lösung. Wem es nichts aus macht, dass auch die deutschsprachigen Korrespondenzen englischen Text lesen müssen, sollte bei dieser Lösung bleiben.
+Das Rückübersetzen der Standard-Vorlagen ist sicherlich die einfachste und benutzerfreundlichste Lösung.
+Wem es nichts aus macht, dass auch die deutschsprachigen Korrespondenzen englischen Text lesen müssen, sollte bei dieser Lösung bleiben.
 
-Wer jedoch eine exakte und konsistente Lösung bevorzugt, dem sei die Erweiterung empfohlen. Sie erfordert allerdings ein wenig Handarbeit bei jeder Antwort oder Weiterleitung. Auf Dauer kann das durchaus nervend werden.
+Wer jedoch eine exakte und konsistente Lösung bevorzugt, dem sei die Erweiterung empfohlen.
+Sie erfordert allerdings ein wenig Handarbeit bei jeder Antwort oder Weiterleitung.
+Auf Dauer kann das durchaus nervend werden.
