@@ -40,6 +40,14 @@ h6, .h6 {
   }
 }
 
+.post {
+  article.post-content {
+    p {
+      text-align: justify;
+    }
+  }
+}
+
 
 .blog-footer {
   padding: 20px 0;

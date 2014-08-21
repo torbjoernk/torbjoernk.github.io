@@ -18,6 +18,19 @@
 
 .post pre.terminal code { background-color: #333; }
 
+figure.code {
+  > figcaption {
+    padding: (($line-height-computed - 1) / 2);
+    background-color: $code-bg;
+  }
+  .highlight {
+    padding: 0;
+    table {
+      width: 100%;
+    }
+  }
+}
+
 /* Syntax highlighting styles */
 /* ----------------------------------------------------------*/
 
