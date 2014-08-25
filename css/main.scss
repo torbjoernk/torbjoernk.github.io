@@ -48,6 +48,30 @@ h6, .h6 {
   }
 }
 
+.asides {
+  .panel-heading {
+    .panel-title {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+footer.article {
+  text-align: center;
+  font-size: $font-size-small !important;
+  background-color: $footer-bg;
+  padding: 0.5em;
+  margin: 1em 0 1em 0;
+  
+  .legal-notice {
+    clear: both;
+    display: block;
+    text-align: center;
+    .licensed-work-title, .licensed-work-author {
+      font-style: italic;
+    }
+  }
+}
 
 .blog-footer {
   padding: 20px 0;

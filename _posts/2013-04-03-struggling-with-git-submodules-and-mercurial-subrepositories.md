@@ -52,7 +52,7 @@ added by certain plugins.
 For better usability and portability required third-party libraries are included 
 as SVN Externals.
 
-``` sh Directory structure of current repository
+{% codeblock Directory structure of current repository %}
 /
   apps/
     app1/
@@ -84,7 +84,7 @@ as SVN Externals.
   README
   LICENSE
   ...
-```
+{% endcodeblock %}
 
 Access rights are managed through a simple plaintext file setting branch and 
 directory based read and write access on a per-user basis.

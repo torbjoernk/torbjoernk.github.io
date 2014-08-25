@@ -1,9 +1,20 @@
-<footer>
+<footer class="article">
   {% include post/author.html %}
   &#8226;
   {% include post/date.html %}
-  {% if post.categories %}
+  {% capture categories %}
+    {% if post %}
+      {{ post.categories | category_links | size }}
+    {% else %}
+      {{ page.categories | category_links | size }}
+    {% endif %}
+  {% endcapture %}
+  {% if categories != '0' %}
     &#8226;
     {% include post/categories.html %}
+  {% else %}
+    No Categories
+    <!--Post: {{ post }}-->
   {% endif %}
+  {% include post/license.html %}
 </footer>

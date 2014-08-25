@@ -1,10 +1,22 @@
-.post article section.gh-repos {
+section.gh-repos {
   #gh_repos {
-    p {
-      font-size: 13px;
+    h4 {
+      font-size: $font-size-base !important;
+      .badge {
+        font-size: ($font-size-small - 1) !important;
+      }
+    }
+    .list-group-item {
+      padding-bottom: 5px;
+      padding-top: 5px;
+      p {
+        font-style: italic;
+        font-size: $font-size-small !important;
+        margin: 0;
+      }
     }
   }
-  
+
   .gh-profile-link {
     margin: 0;
     padding-top: 0.25em;
