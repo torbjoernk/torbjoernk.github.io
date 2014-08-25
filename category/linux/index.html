@@ -1,0 +1,16 @@
+---
+layout: page
+title: "Category: Linux"
+footer: false
+---
+
+<div id="blog-archives" class="category list-group">
+  {% assign index = true %}
+  {% for post in site.posts %}
+    {% if post.categories contains "linux" %}
+      <div class="list-group-item">
+        {% include archive_post.html %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
