@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Sci-log | Torbjörn Klatt]]></title>
+  <link href="http://torbjoern-klatt.de/category/sci-log/atom.xml" rel="self"/>
+  <link href="http://torbjoern-klatt.de/"/>
+  <updated>2014-08-25T13:52:29+02:00</updated>
+  <id>http://torbjoern-klatt.de/</id>
+  <author>
+    <name><![CDATA[Torbjörn Klatt]]></name>
+    <email><![CDATA[kontakt@torbjoern-klatt.de]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Arsen, Phosphor und ein Presse-Hype]]></title>
+    <link href="http://torbjoern-klatt.de/article/2010/12/03/arsen-phosphor-und-ein-presse-hype/"/>
+    <updated>2010-12-03T00:00:00+01:00</updated>
+    <id>http://torbjoern-klatt.de/article/2010/12/03/arsen-phosphor-und-ein-presse-hype</id>
+    <content type="html"><![CDATA[<p>Am gestrigen Donnerstag wurde eine von der NASA stark gehypte wissenschaftliche Veröffentlichung gemacht.
+Den ersten Ankündigungen zufolge, sollte man den Beweis für extraterristisches Leben gezeigt bekommen.
+Wenn man sich es aber mal in Ruhe durchliest, bleibt von der Begeisterung nicht mehr sehr viel übrig - auch wenn es eine mittelgroße biologische Sensation ist.</p>
+
+<!-- more -->
+
+<p>Konkret geht es um ein vierseitiges Science-Paper von Felisa Wolfe-Simon et al. mit dem Titel “A Bacterium That Can Grow by Using Arsenic Instead of Phosphorus” - zu Deutsch “Ein Bakterium, das mit Hilfe von Arsenat statt Phosphat wächst”. [1]</p>
+
+<p>Um die Tragweite dieser Aussage begreifen zu können, muss man wissen, dass jede bekannte Lebensform aus den sechs Elementen Kohlenstoff (C), Wasserstoff (H), Sauerstoff (O), Stickstoff (N), Schwefel (S) und Phosphor (P) aufgebaut ist.
+Fehlt eines dieser Elemente, so ist Leben nicht möglich - das war bislang Gesetz.</p>
+
+<p>Phosphor wird von Zellen insbesondere in Form der Verbindung <a href="http://wikimedia.org/wikipedia/de/wiki/Phosphate">Phosphat (PO<sub>4</sub><sup>3-</sup>)</a> in der DNA, RNA und ATP verbaut. [2] Ebenfalls ist es essentiell in der (De-)Aktivierung von Proteinen/Enzymen.
+Arsen (As) hat die tolle Eigenschaft, dass es sich chemisch sehr ähnlich dem Phosphat gegenüber verhält - aber nur fast. [3] Und das ist der Haken.
+Arsen kann von Zellen ebenfalls als <a href="https://secure.wikimedia.org/wikipedia/de/wiki/Arsenat">Arsenat (AsO<sub>4</sub><sup>3-</sup>)</a> aufgenommen werden und wird dann auf Grund seiner chemischen Ähnlichkeit zu Phosphat an genau den Stellen verbaut, wo eigentlich Phosphat stehen muss.
+Nun ist Arsenat aber etwas instabiler als Phosphat und somit wird das Gleichgewicht aus Zerfall und Aufbau in der Zelle empfindlich gestört.
+Die Zelle stirbt. [4]</p>
+
+<p>Gute Zusammenfassungen dieser Veröffentlichung und einige Kommentare findet man im (generell lesenswerten) <a href="http://www.wissenslogs.de/wblogs/blog/fischblog/biologie/2010-12-02/hat-die-nasa-aliens-gefunden-nat-rlich-nicht">Fischblog von Lars Fischer</a> oder bei der <a href="http://www.zeit.de/wissen/2010-12/bakterium-arsen-leben">Zeit</a>.
+Aus diesem Grund möchte ich das Rad nicht neu erfinden und auf die dortigen Texte verweisen.</p>
+
+<p>Was ich aber hier bemerken will ist, dass man nun nicht - wie von den Exobiologen [5] und der NASA geschrien - von dem Beweis von außerirdischem Leben reden darf.
+Ja, es ist eine biologisch sehr wertvolle Entdeckung, doch hat sie recht einleuchtende Erklärungen.</p>
+
+<p>Der Bakterienstamm, um den sich hier alles dreht, ist kein sogenannter Wildtyp, sondern eine Züchtung unter Laborbedingungen.
+Es wurden natürliche Bakterien des kalifornischen Sees im Labor einem starken Selektionsdruck ausgesetzt, indem die Arsenatkonzentration des Mediums schrittweise erhöht und die Phosphatkonzentration verringert wurde.
+Gemäß dem darwin’schen Evolutionsprinzip (“<em>Survival of the fittest</em>”) überlebte der Bakterienstamm, der sich am besten an die Umgebung anpassen konnte.</p>
+
+<p>Was jedoch beeindruckend ist - und das muss man herausstellen -, das ist die Tatsache, dass sogar in der DNA Arsenat an Stelle von Phosphat verbaut wurde und auch ATP zu “ATAs” mutiert ist.
+Das ist die eigentliche Entdeckung!</p>
+
+<p>Abschließend muss man aber auch wiederum sagen, dass die Bakterien zwar in arsenatreicher-phosphatarmer Umgebung wachsen, sich aber deutlich wohler in einer arsenatarmen aber phosphatreichen Medium fühlen.</p>
+
+<p>Also, einmal tief durchatmen.
+Die kleinen grünen Männchen, von denen die NASA da geredet hat, sind nach wie vor nicht gefunden worden.
+In meinen Augen wurde lediglich mal wieder gezeigt, wie die darwin’sche Evolution funktioniert.</p>
+
+<hr />
+
+<p>[1] Wolfe-Simon F, Blum JS, Kulp TR, Gordon GW, Hoeft SE, Pett-Ridge J, et  al. <em>A Bacterium That Can Grow by Using Arsenic Instead of Phosphorus</em>.  Science [Internet]. 2010 Dec 2;Available from: <a href="http://www.sciencemag.org/cgi/doi/10.1126/science.1197258">http://www.sciencemag.org/cgi/doi/10.1126/science.1197258</a></p>
+
+<p>[2] ATP (= Adenosintriphosphat) wird im Citratzyklus der Mitochondrien der Zellen aus den reduzierten Formen AMP und ADP (-mono-, -di-) bei der Verbrennung von Zucker gebildet.
+Fehlt ATP, so können sich die Muskeln nicht mehr entspannen (Krämpfe sind toll!) und die Nerven können keine Signale mehr gescheit transportieren.</p>
+
+<p>[3] Arsen steht im <a href="https://secure.wikimedia.org/wikipedia/de/wiki/Periodensystem">Periodensystem der Elemente</a> direkt unter Phosphor</p>
+
+<p>[4] Einige vergangene Monarchen haben diesen Effekt am eigenen Leib zu spüren bekommen.
+Arsenvergiftung war sehr beliebt bei Feinden.</p>
+
+<p>[5] Ich sehe die Exobiologie nicht als Wissenschaft an, da sie sich lediglich damit beschäftigt das zu finden, worüber sie eigentlich forschen will.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Über die Probleme des Wissenschafts-Journalismus]]></title>
+    <link href="http://torbjoern-klatt.de/article/2010/10/09/ueber-die-probleme-des-wissenschafts-journalismus/"/>
+    <updated>2010-10-09T00:00:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2010/10/09/ueber-die-probleme-des-wissenschafts-journalismus</id>
+    <content type="html"><![CDATA[<p>Ende September hat Martin Robbins in seinem bei der britischen Tageszeitung <a href="http://www.guardian.co.uk">The Guardian</a> gehosteten Blog einen weltweit stark diskutierten Artikel über das <a href="http://www.guardian.co.uk/science/the-lay-scientist/2010/sep/24/1">Schema des englischen Wissenschafts-Journalismus</a>, wie er in der <a href="http://www.bbc.co.uk/">BBC</a> zu finden ist, veröffentlicht.
+Ich rate jedem, auch denen mit einem eher moderatem Englisch, diesen leicht zu verstehenden Artikel zu lesen.
+Er ist genial!</p>
+
+<!-- more -->
+
+<p>Letzte Woche schrieb Martin Robbins dann einen <a href="http://www.guardian.co.uk/science/the-lay-scientist/2010/sep/28/science-journalism-spoof">Kommentar zu den Reaktionen</a>, in dem er Antworten und Erkenntnisse zu den Problemen des Wissenschafts-Journalismus suchte.
+Es sind interessante Details, denn warum haben allein online veröffentlichte Artikel noch immer ein maximales Wort-Limit? Platzgründe, wie bei Printmedien das Hauptargument, sind es wohl nicht.
+Warum sind online-Artikel noch immer auf Teletext und -prompter optimiert? Warum werden Links und Querverweise so selten genutzt und in den noch seltenerer Fällen auf die eigentlichen Quellen verwiesen? Fragen über Fragen, deren Antworten sehr vage bis non-existent sind.</p>
+
+<p>Heute morgen las ich dann einen Artikel in der <a href="http://www.faz.net/-01inng">F.A.Z. über neue Erkenntnisse in der Quantenphysik</a>.
+Ich bin nun alles andere als ein Experte auf diesem Gebiet, doch halte ich den Artikel für durchaus lesenswert und gut verständlich.
+Aber - und das ist ein fett gedrucktes <strong>aber</strong> - bietet sich dieser Artikel auch an, um an ihm einige der gravierenden Probleme des online-Journalismus im Generellen und des Wissenschafts-Journalismus im Speziellen zu zeigen.</p>
+
+<p>Als erstes fällt auf, dass im gesamten Artikel kein einziger Link zu finden ist - außer zu mehr oder weniger verwandte Artikel im F.A.Z.-Archiv.
+Wo ist der Link zu der Konferenz, von der die Rede ist? Wo sind die Links zu den indirekt angesprochenen Papern, die vom Autor des Artikels hoffentlich gelesen wurden?</p>
+
+<p>Warum muss erst eine sehr interessierte Leserin einen Kommentar verfassen und um die Zusendung der genauen Quellen per eMail bitten? Ich hoffe, dass der Autor Herr R.
+Scharf diese eMail schickt und seine Quellen nennt.
+Vielleicht merkt er dabei dann auch, dass er durch das Weglassen der Links nicht nur sich selbst mehr Arbeit gemacht hat.
+Arbeit die kostbare Zeit kostet und eine Vergeudung von Zeit ist.
+Das setzen der Links ist eine einmalige Sache von wenigen Klicks.
+Das Suchen der Quellen ein langwieriger Prozess, den jeder interessierte Leser selbst durchführen muss.
+Gegengerechnet gegen das Folgen eines gesetzten Link, was einem einizigen Maus-Klick entspricht: Eine immense Vergeudung von kostbarer Zeit!</p>
+
+<p>Das Setzen von Links setzt die natürliche Hemmschwelle des interessierten Lesers, selbst weiter zu recherchieren, deutlich herab.
+Ist der Autor des Artikels besorgt, interessierte und selbstständig denkende Leser könnten Fehler in seinem Artikel finden? Hat er Angst über mögliche fachliche Diskussionen mit seinen Lesern?
+Ich möchte das dem guten Herrn nicht unterstellen! Ebenso wenig, dass er seine Quellen geheim halten möchte.
+Beides würde ihm jegliche Qualifikation als Wissenschafts-Journalisten entziehen, denn die Wissenschaft selbst ist eine immer währende Diskussion über sich selbst, die zu neuem Erkenntnisgewinn führt.</p>
+
+<p>Liebe online-Journalisten und Wissenschafts-Journalisten, warum ist es für euch so schwer direkte Links auf eure Quellen zu setzen? Ihr nutzt das Internet und verfolgt täglich zahllose Links per Maus-Klick.
+Als Wissenschafts-Journalist liest man täglich wissenschaftliche Publikationen (genannte ‘Paper’) in Journalen wie der <a href="http://www.nature.com/">Nature</a> oder <a href="http://www.sciencemag.org/">Science</a>.
+Dort findet man haufenweise Verweise und Referenzen auf die Arbeiten anderer Wissenschaftler, seien es Kollegen oder Konkurrenten.</p>
+
+<p>Als Wissenschafts-Journalist versucht man die oftmals sehr schwer verständliche Fachliteratur einer breiteren Leserschaft zugänglich zu machen.
+Dabei ist man Mittler zwischen Forschern und Laien, muss aber der Wissenschaft gerecht bleiben.
+Das beinhaltet aber auch, dass man seine Arbeit kontrollierbar macht.
+Und dazu gehört es primär, seine Quellen anzugeben! (Nebenbei bemerkt: Jedes Schulkind lernt, Quellen zur Stützung eigener Thesen und Aussagen anzugeben.)</p>
+
+<p>Noch ein kleines Gedankenspiel zum Schluss: Angenommen, ich habe in diesem Artikel keinen einzigen Link gesetzt.
+Wie viele Leser würden sich die Mühe machen, die Artikel von Martin Robbins zu suchen? Oder den F.A.Z.-Artikel? Eine verschwindend geringe Anzahl mit einer starken Konvergenz gegen Null, also niemand.</p>
+]]></content>
+  </entry>
+  
+</feed>

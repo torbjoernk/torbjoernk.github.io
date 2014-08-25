@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,21 +64,22 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1>Es war der Kernel und IPv6</h1>
   </header>
   <article class="post-content">
-    <p>Vor einigen Wochen fing es an, dass ich in unregelmäßigen Abständen aber immer 
+    <div class="lead">
+      <p>Vor einigen Wochen fing es an, dass ich in unregelmäßigen Abständen aber immer 
 häufiger beängstigende und größtenteils unverständliche Warnmeldungen des
 Kernels bekam.
 Ursache schien von den verschiedensten Programmen herzurühren und ich vermutet
 bis zuletzt Hardwareprobleme.
 Heute weiß ich, dass es an einem IPv6-Bug in dem von mir verwendeten Kernel
 lag.</p>
-
-<!-- more -->
+    </div>
+    
 <p>##Die Symptome
 Wann genau es anfing kann ich nicht mehr sagen, doch kann ich folgende Symptome 
 und Regelmäßigkeiten feststellen:</p>
@@ -144,13 +145,7 @@ Netzwerkeinstellungen von openSUSE (in <em>YaST</em>) IPv6 deaktiviert habe.</p>
 
 
   </article>
-  <footer>
-  
-  
-
-<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
-
-  &#8226;
+  <footer class="article">
   
   
   
@@ -171,12 +166,42 @@ Netzwerkeinstellungen von openSUSE (in <em>YaST</em>) IPv6 deaktiviert habe.</p>
 
 
   
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    Es war der Kernel und IPv6
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
 </footer>
 
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -189,6 +214,11 @@ Netzwerkeinstellungen von openSUSE (in <em>YaST</em>) IPv6 deaktiviert habe.</p>
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -208,11 +238,6 @@ Netzwerkeinstellungen von openSUSE (in <em>YaST</em>) IPv6 deaktiviert habe.</p>
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>

@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,16 +64,20 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1>KDE Tipps #2: Akonadi mit eigenem lokalen MySQL-Server beschleunigen</h1>
   </header>
   <article class="post-content">
-    <p>Vor einiger Zeit war ich dazu übergegangen, meinen eigenen, lokalen MySQL-Server sowohl für Akonadi als auch für Amarok zu nutzen. Auf die Vorteile gegenüber des standardmäßigen, internen SQlite-Servers möchte ich hier nicht eingehen. Vielmehr will ich hier ein paar Tipss zur Optimierung des MySQL-Servers geben und wie man damit insbesondere Akonadi extrem beschleunigen kann.
+    <div class="lead">
+      <p>Vor einiger Zeit war ich dazu übergegangen, meinen eigenen, lokalen MySQL-Server sowohl für Akonadi als auch für Amarok zu nutzen.
+Auf die Vorteile gegenüber des standardmäßigen, internen SQlite-Servers möchte ich hier nicht eingehen.
+Vielmehr will ich hier ein paar Tipss zur Optimierung des MySQL-Servers geben und wie man damit insbesondere Akonadi extrem beschleunigen kann.
 Die Auswirkungen sind gerade bei KMail2 zu spüren, das nun deutlich flüssiger geworden ist.</p>
 
-<p>Kurz gesagt: Die Standardwerte der <code>my.cnf</code> sind für Akonadi suboptimal. Doch die folgenden Schritte sollten schnelle und einfache Abhilfe schaffen:</p>
+<p>Kurz gesagt: Die Standardwerte der <code>my.cnf</code> sind für Akonadi suboptimal.
+Doch die folgenden Schritte sollten schnelle und einfache Abhilfe schaffen:</p>
 
 <!--more-->
 
@@ -85,11 +89,14 @@ Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es
 </pre></td><td class="code"><pre><code class=""><span class="line">wget http://mysqltuner.pl
 </span><span class="line">perl mysqltuner.pl</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Man wird aufgefordert den <strong>MySQL</strong>-<code>root</code>-Usernamen sowie dessen Passwort anzugeben. I.d.R. ist dies <code>root</code> und ein hoffentlich selbst gewähltes Passwort, das nicht zwangsläufig dem des Linux-root-Passworts entsprechen muss.</p>
+<p>Man wird aufgefordert den <strong>MySQL</strong>-<code>root</code>-Usernamen sowie dessen Passwort anzugeben.
+I.d.R. ist dies <code>root</code> und ein hoffentlich selbst gewähltes Passwort, das nicht zwangsläufig dem des Linux-root-Passworts entsprechen muss.</p>
 
 <p>Das wichtigste steht ganz am Ende der Ausgabe unter <strong>Recommendations</strong> und bevor man sich der allgemeinen Vorschläge annimmt sollte man die vorgeschlagenen Variablen in der <code>/etc/my.cnf</code> wirklich ändern.</p>
 
-<p>Ein gelegentliches Optimieren der Tabellen (<code>OPTIMIZE TABLE</code> auf alle Tabellen der Datenbank <code>akonadi</code> anwenden) kann sicherlich auch nicht schaden. Aber dabei bitte Vorsicht, denn ein laufender Akonadi-Server kann durch das Tabellenoptimieren während seiner Laufzeit durcheinander geraten. Also am besten beim Hochfahren des Rechners die Tabellen durch ein Script optimieren.</p>
+<p>Ein gelegentliches Optimieren der Tabellen (<code>OPTIMIZE TABLE</code> auf alle Tabellen der Datenbank <code>akonadi</code> anwenden) kann sicherlich auch nicht schaden.
+Aber dabei bitte Vorsicht, denn ein laufender Akonadi-Server kann durch das Tabellenoptimieren während seiner Laufzeit durcheinander geraten.
+Also am besten beim Hochfahren des Rechners die Tabellen durch ein Script optimieren.</p>
 
 <p>Hier nun ein paar wichtige Variablen und deren Werte meiner <code>my.cnf</code> auf einem Laptop mit 4GB RAM und einem Duo-Core-Prozessor:</p>
 
@@ -108,21 +115,21 @@ Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es
 </span><span class="line">query_cache_type = 1
 </span><span class="line">join_buffer_size = 256K</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Der Wert des <code>thread_cache_size</code> ist vermutlich noch nicht 100%-ig stimmig. Bekomme da bei jedem Lauf des Tuningscripts einen anderen Wert vorgeschlagen.
-<code>wait_timeout</code> hatte ich auf diesen Wert, der 8 Stunden entspricht, erhöht, um damit einen Bug des <em>Mail Dispatcher Agent</em> zu umgehen. Dieser schaltete sich nach einiger Zeit, in der ich keine E-Mails versendet hatte, ab und musste in der <code>akonadiconsole</code> wieder reaktiviert werden (oder durch ein Ab-/Anmelden).</p>
+<p>Der Wert des <code>thread_cache_size</code> ist vermutlich noch nicht 100%-ig stimmig.
+Bekomme da bei jedem Lauf des Tuningscripts einen anderen Wert vorgeschlagen.
+<code>wait_timeout</code> hatte ich auf diesen Wert, der 8 Stunden entspricht, erhöht, um damit einen Bug des <em>Mail Dispatcher Agent</em> zu umgehen.
+Dieser schaltete sich nach einiger Zeit, in der ich keine E-Mails versendet hatte, ab und musste in der <code>akonadiconsole</code> wieder reaktiviert werden (oder durch ein Ab-/Anmelden).</p>
 
-<p>In meinem Fall wirklich Bemerkenswert war das Aktivieren des <em>Query Caches</em>, der standardmäßig deaktiviert ist. Insbesondere das Öffnen und Anzeigen von E-Mails in einem großen lokalen E-Mail-Ordner ist seit dem sehr flüssig.</p>
+<p>In meinem Fall wirklich Bemerkenswert war das Aktivieren des <em>Query Caches</em>, der standardmäßig deaktiviert ist.
+Insbesondere das Öffnen und Anzeigen von E-Mails in einem großen lokalen E-Mail-Ordner ist seit dem sehr flüssig.</p>
 
-<p>Abschließend noch eine kleiner Hinweis: Das Tuningscript ist kein Allheilmittel und dessen Vorschläge machen erst bei einer längeren kontinuierlichen Laufzeit und Nutzung des MySQL-Servers wirklich Sinn. Also am besten nach einem langen Arbeitstag ausführen, wenn man insbesondere KMail2 etc. über mehrere Stunden intensiv genutzt hat.</p>
+<p>Abschließend noch eine kleiner Hinweis: Das Tuningscript ist kein Allheilmittel und dessen Vorschläge machen erst bei einer längeren kontinuierlichen Laufzeit und Nutzung des MySQL-Servers wirklich Sinn.
+Also am besten nach einem langen Arbeitstag ausführen, wenn man insbesondere KMail2 etc. über mehrere Stunden intensiv genutzt hat.</p>
 
+    </div>
+    
   </article>
-  <footer>
-  
-  
-
-<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
-
-  &#8226;
+  <footer class="article">
   
   
   
@@ -143,12 +150,42 @@ Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es
 
 
   
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    KDE Tipps #2: Akonadi mit eigenem lokalen MySQL-Server beschleunigen
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
 </footer>
 
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -161,6 +198,11 @@ Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -180,11 +222,6 @@ Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>

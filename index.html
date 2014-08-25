@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,7 +64,7 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1></h1>
@@ -73,6 +73,60 @@
   <article class="post-content">
     <div class="blog-index">
   
+  
+    <article class="post on-index">
+      
+  <header class="page-header">
+    
+    <p class="meta text-muted text-uppercase">
+      
+  
+    
+    
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2014-08-21T21:30:00+02:00">21 Aug 2014</time>
+
+
+
+  
+
+
+      <!---->
+    </p>
+    
+    
+      <h1 class="entry-title"><a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a></h1>
+    
+  </header>
+
+
+  <div class="entry-content clearfix"><p>Having a working test suite for your library or program is common knowledge.
+Using a continuous integration workflow like <a href="">git-flow</a> backed by <a href="">Travis CI</a> or a <a href="">Jenkins</a>
+instance is already a success story and widely used.
+To ease up the build process of a C++ library/program on different platforms, many projects decide
+to use <a href="">CMake</a>.</p>
+
+<p>So far, so good.
+But how good is your test suite?
+Does it cover all the functionality and code in your library?
+Does it catch all the different branches and edge-cases?</p>
+
+<p>This little article describes a way of using <a href="">lcov</a> to generate a test coverage report for a
+<em>CMake</em>-based C++ project.</p></div>
+  
+  
+
+
+    </article>
   
     <article class="post on-index">
       
@@ -224,7 +278,7 @@ lag.</p></div>
 
     </article>
   
-    <article class="post on-index">
+    <article class="post on-index last">
       
   <header class="page-header">
     
@@ -273,50 +327,6 @@ Und das <strong>ohne</strong> einer Datenkrake wie <em>Google</em> dazwischen.</
 
     </article>
   
-    <article class="post on-index last">
-      
-  <header class="page-header">
-    
-    <p class="meta text-muted text-uppercase">
-      
-  
-    
-    
-  
-
-
-
-  
-    
-  
-
-
-
-  <i class="fa fa-calendar"></i> Created on <time datetime="2012-03-21T19:29:00+01:00">21 Mar 2012</time>
-
-
-
-  
-
-
-      <!---->
-    </p>
-    
-    
-      <h1 class="entry-title"><a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a></h1>
-    
-  </header>
-
-
-  <div class="entry-content clearfix"><p>Auch wenn noch nicht einmal ein Jahr vergangen ist, seit ich von 
-<a href="/article/2011/04/18/erstrahlen-im-neuen-glanze/">Joomla auf Wordpress umgestiegen bin</a>, 
-habe ich die Software — oder besser Framework — meines Blogs erneut gewechselt.</p></div>
-  
-  
-
-
-    </article>
-  
 </div>
 
   </article>
@@ -324,7 +334,7 @@ habe ich die Software — oder besser Framework — meines Blogs erneut gewechse
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -337,6 +347,11 @@ habe ich die Software — oder besser Framework — meines Blogs erneut gewechse
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -356,11 +371,6 @@ habe ich die Software — oder besser Framework — meines Blogs erneut gewechse
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>

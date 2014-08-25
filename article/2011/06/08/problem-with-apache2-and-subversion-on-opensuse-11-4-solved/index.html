@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,31 +64,40 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1>Problem with Apache2 and Subversion on openSUSE 11.4 solved</h1>
   </header>
   <article class="post-content">
-    <h3 id="preface">Preface</h3>
+    <div class="lead">
+      <h3 id="preface">Preface</h3>
 <p>This should not be a complete tutorial on how to set up a <em>Subversion</em> repository and <em>Apache2</em> on <em>openSUSE</em>, but should tackle a specific problem I had during configuration.</p>
 
-<p>Here I describe my setup and configuration I’m running for having <code>httpd</code> and <code>svnserve</code> working in such a way, that I can browse the <em>Subversion</em> repositories via <code>http://</code> in a random webbrowser (either directly or in a more user-friendly way with <em>WebSVN</em>). For security and privacy reasons only a small list of defined users can access (read and/or write) the webserver and repositories.</p>
-
-<!-- more -->
+<p>Here I describe my setup and configuration I’m running for having <code>httpd</code> and <code>svnserve</code> working in such a way, that I can browse the <em>Subversion</em> repositories via <code>http://</code> in a random webbrowser (either directly or in a more user-friendly way with <em>WebSVN</em>).
+For security and privacy reasons only a small list of defined users can access (read and/or write) the webserver and repositories.</p>
+    </div>
+    
 
 <h3 id="background">Background</h3>
-<p>After migrating my local workstation from <em>Ubuntu 10.04</em> to <em>openSUSE 11.4</em> I had to set up <em>Apache2</em> with <em>Subversion</em> (<code>svnserve</code>) again for my private repository. Numerous tutorials are available on-line. Some are specific for <em>openSUSE</em> as <a href="http://queens.db.toronto.edu/~nilesh/linux/subversion-howto/">this one</a>. Some time ago I used <a href="http://alephzarro.com/blog/2007/01/07/installation-of-subversion-on-ubuntu-with-apache-ssl-and-basicauth">this one</a> for setting up everything under <em>Ubuntu</em>, which worked like charm.</p>
+<p>After migrating my local workstation from <em>Ubuntu 10.04</em> to <em>openSUSE 11.4</em> I had to set up <em>Apache2</em> with <em>Subversion</em> (<code>svnserve</code>) again for my private repository.
+Numerous tutorials are available on-line.
+Some are specific for <em>openSUSE</em> as <a href="http://queens.db.toronto.edu/~nilesh/linux/subversion-howto/">this one</a>.
+Some time ago I used <a href="http://alephzarro.com/blog/2007/01/07/installation-of-subversion-on-ubuntu-with-apache-ssl-and-basicauth">this one</a> for setting up everything under <em>Ubuntu</em>, which worked like charm.</p>
 
 <p>However, following the above tutorial for <em>openSUSE</em> did not quite worked out for me and it took me quite a while to figure out the exact problem.</p>
 
 <h3 id="sidemark">Sidemark</h3>
-<p>I doubt the way I did it is the way everyone should do it. For example, using the same user for <code>httpd</code> and <code>svnserve</code> is probably not the best solution. However, I was not able to separate this yet and I am happy for any criticism, hints and suggestions. In addition, it might be desirable using <code>https://</code> instead of <code>http://</code>.</p>
+<p>I doubt the way I did it is the way everyone should do it.
+For example, using the same user for <code>httpd</code> and <code>svnserve</code> is probably not the best solution.
+However, I was not able to separate this yet and I am happy for any criticism, hints and suggestions.
+In addition, it might be desirable using <code>https://</code> instead of <code>http://</code>.</p>
 
 <h3 id="short">Short</h3>
 <p>Having the SVN repository root in <code>/srv/svn</code>, the vhost root in <code>/srv/www/</code> and declaring an alias <code>/svn</code> pointing to <code>/srv/svn</code> (<code>Alias /svn "/srv/svn"</code>) in <code>/etc/apache2/conf.d/subversion.conf</code> is throwing up Apache’s DAV SVN module (as described <a href="http://www.rkrishardy.com/2009/12/subversion-fix-svn-copy-causes-repository-moved-permanentl/comment-page-1/#comment-8497">here</a>).</p>
 
-<p>Browsing the repository in a random webbrowser is possible and does not throw any warnings or errors. But when using <code>svn {import|checkout|commit}</code> the following error message is displayed</p>
+<p>Browsing the repository in a random webbrowser is possible and does not throw any warnings or errors.
+But when using <code>svn {import|checkout|commit}</code> the following error message is displayed</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class=""><span class="line">svn: Repository moved permanently to 'http://svn.test.com/myproject/'; please relocate</span></code></pre></td></tr></table></div></figure></notextile></div>
@@ -97,16 +106,24 @@
 
 <h3 id="detailed-configuration">Detailed Configuration</h3>
 <p>####Subversion (svnserve)
-Define <code>/srv/www/svn</code> as the Subversion root directory by editing <code>SVNSERVE_OPTIONS</code> in <code>/etc/sysconf/svnserve</code>. In addition, <code>SVNSERVE_USERID</code> is changed to <code>wwwrun</code> and <code>SVNSERVE_GROUPID</code> to <code>www</code>.</p>
+Define <code>/srv/www/svn</code> as the Subversion root directory by editing <code>SVNSERVE_OPTIONS</code> in <code>/etc/sysconf/svnserve</code>.
+In addition, <code>SVNSERVE_USERID</code> is changed to <code>wwwrun</code> and <code>SVNSERVE_GROUPID</code> to <code>www</code>.</p>
 
-<p>Create the Subversion root directory <code>svn</code> in <code>/srv/www</code> and change the owner to <code>wwwrun:www</code>. With the usual <code>svnadmin create myproject</code> you create the repositories.</p>
+<p>Create the Subversion root directory <code>svn</code> in <code>/srv/www</code> and change the owner to <code>wwwrun:www</code>.
+With the usual <code>svnadmin create myproject</code> you create the repositories.</p>
 
-<p>Finally make sure the user <code>wwwrun</code> has read, write and execute rights for the complete <code>/srv/www/svn</code> path. If it has not for <code>/srv</code> but for <code>/srv/www</code> it will very likely not work.</p>
+<p>Finally make sure the user <code>wwwrun</code> has read, write and execute rights for the complete <code>/srv/www/svn</code> path.
+If it has not for <code>/srv</code> but for <code>/srv/www</code> it will very likely not work.</p>
 
 <h4 id="apache2-httpd">Apache2 (httpd)</h4>
-<p>After installation through <em>YAST</em>, there is a template config file in <code>/etc/apache2/conf.d</code> called <code>subversion.conf</code>. Make sure the complete <code>mod_alias.c</code> block is commented out. In my case I also left the <code>/srv/svn/html</code> block commented out.</p>
+<p>After installation through <em>YAST</em>, there is a template config file in <code>/etc/apache2/conf.d</code> called <code>subversion.conf</code>.
+Make sure the complete <code>mod_alias.c</code> block is commented out.
+In my case I also left the <code>/srv/svn/html</code> block commented out.</p>
 
-<p>For each project a separate <code>Location</code> block needs to be defined. In my case I only want the users <code>user1</code> and <code>user2</code> having access to the repository — no one else. These users are defined in <code>/etc/apache2/users.cred</code> with the standard <code>htpasswd2</code> method. Thus, the <code>Location</code> block looks like this:</p>
+<p>For each project a separate <code>Location</code> block needs to be defined.
+In my case I only want the users <code>user1</code> and <code>user2</code> having access to the repository — no one else.
+These users are defined in <code>/etc/apache2/users.cred</code> with the standard <code>htpasswd2</code> method.
+Thus, the <code>Location</code> block looks like this:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -131,23 +148,19 @@ Define <code>/srv/www/svn</code> as the Subversion root directory by editing <co
 
 <p>As usual you also can define user groups in <code>/etc/apache2/groups.cred</code> and use <code>AuthGroupFile /etc/apache2/groups.cred</code> and <code>Require group</code> — or any other authorisation method.</p>
 
-<p>Make sure, <code>mod_dav</code> and <code>mod_dav_svn</code> are loaded. One way is to append <code>dav</code> and <code>dav_svn</code> to the line <code>APACHE_MODULES</code> in <code>/etc/sysconf/apache2</code>.</p>
+<p>Make sure, <code>mod_dav</code> and <code>mod_dav_svn</code> are loaded.
+One way is to append <code>dav</code> and <code>dav_svn</code> to the line <code>APACHE_MODULES</code> in <code>/etc/sysconf/apache2</code>.</p>
 
 <h4 id="websvn">WebSVN</h4>
-<p>After installation through YAST use <code>/etc/websvn/config.php</code> for configuration. This file should be self-explaining.</p>
+<p>After installation through YAST use <code>/etc/websvn/config.php</code> for configuration.
+This file should be self-explaining.</p>
 
 <p>Finally restart <code>svnserve</code> and <code>Apache2</code> and everything should be fine.</p>
 
 <p><em>Remark: This text has been <a href="http://forums.opensuse.org/english/get-technical-help-here/how-faq-forums/unreviewed-how-faq/461165-howto-apache2-subversion-svn-access-control-opensuse-11-4-a.html">cross-posted to the openSUSE Forums</a> on June 8th, 2011</em></p>
 
   </article>
-  <footer>
-  
-  
-
-<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
-
-  &#8226;
+  <footer class="article">
   
   
   
@@ -168,12 +181,42 @@ Define <code>/srv/www/svn</code> as the Subversion root directory by editing <co
 
 
   
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/english/'>English</a>, <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    Problem with Apache2 and Subversion on openSUSE 11.4 solved
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
 </footer>
 
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -186,6 +229,11 @@ Define <code>/srv/www/svn</code> as the Subversion root directory by editing <co
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -205,11 +253,6 @@ Define <code>/srv/www/svn</code> as the Subversion root directory by editing <co
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>

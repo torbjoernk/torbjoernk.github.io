@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,13 +64,14 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1>ownCloud + Thunderbird + Android = Perfect Sync</h1>
   </header>
   <article class="post-content">
-    <p>Ich habe es endlich hinbekommen!
+    <div class="lead">
+      <p>Ich habe es endlich hinbekommen!
 Das mit der schmerzfreien Synchronisation meiner Kalender und Adressbücher 
 zwischen meinem PC und meinem Android-Phone.
 Und das <strong>ohne</strong> einer Datenkrake wie <em>Google</em> dazwischen.</p>
@@ -78,8 +79,8 @@ Und das <strong>ohne</strong> einer Datenkrake wie <em>Google</em> dazwischen.</
 <p>Hier will ich nun beschreiben, wie ich das hinbekommen habe.</p>
 
 <p><em>Es gibt ein Update (19.04.2012)</em></p>
-
-<!-- more -->
+    </div>
+    
 
 <h2 id="thunderbird">Thunderbird</h2>
 <p>Dass ich von <em>KDE PIM</em> (a la <em>KMail</em> und <em>KOrganizer</em>) auf <em>Thunderbird</em> mit 
@@ -123,7 +124,8 @@ Einmal eingerichtet bleiben sie im Hintergrund und tauchen nur unter „<em>Kont
 Synchronisation</em>“ auf.
 Dabei erstellen sie für jeden synchronisierten Kalender oder Adressbuch ein
 entsprechendes Pondon auf dem Gerät, die sich dann in einer beliebigen 
-Kalenderanwendung bzw. Kontaktverwaltung auswählen lassen.</p>
+Kalenderanwendung bzw.
+Kontaktverwaltung auswählen lassen.</p>
 
 <p><em>Kleines Manko</em>: Man benötigt nur ein <em>CalDAV</em>-Konto für alle Kalender, aber pro
 Adressbuch ein <em>CardDAV</em>-Konto.
@@ -216,7 +218,8 @@ Hier musste ich in der Weboberfläche von <em>ownCloud</em> nachbessern.</p>
 <p><strong>Update 19.04.2012</strong><br />
 Vor ein paar Tagen habe ich gemerkt, dass ich meine Kontakte auf dem Android
 nicht mehr wirklich bearbeiten kann.
-Das liegt insbesondere an Android bzw. Google selbst, die die entsprechende API
+Das liegt insbesondere an Android bzw.
+Google selbst, die die entsprechende API
 nicht richtig freigegeben haben.
 So können Sync-Tools wie das hier erwähnte <em>CardDAV-Sync</em> nicht richtig auf das
 interne Format der Kontakte zugreifen.</p>
@@ -240,13 +243,7 @@ samt Subdomain auf den neuen Ort umleiten.
 Weder in Thunderbird noch im Android muss ich dafür irgendetwas umstellen.</p>
 
   </article>
-  <footer>
-  
-  
-
-<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
-
-  &#8226;
+  <footer class="article">
   
   
   
@@ -267,12 +264,42 @@ Weder in Thunderbird noch im Android muss ich dafür irgendetwas umstellen.</p>
 
 
   
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/diverses/'>Diverses</a>, <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    ownCloud + Thunderbird + Android = Perfect Sync
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
 </footer>
 
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -285,6 +312,11 @@ Weder in Thunderbird noch im Android muss ich dafür irgendetwas umstellen.</p>
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -304,11 +336,6 @@ Weder in Thunderbird noch im Android muss ich dafür irgendetwas umstellen.</p>
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>

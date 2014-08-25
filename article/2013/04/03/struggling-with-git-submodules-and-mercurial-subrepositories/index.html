@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,13 +64,14 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1>Struggling with Git Submodules and Mercurial Subrepositories</h1>
   </header>
   <article class="post-content">
-    <p>The popular and state-of-the-art <a href="https://en.wikipedia.org/wiki/Distributed_revision_control">distributed version control systems (DVCS)</a> 
+    <div class="lead">
+      <p>The popular and state-of-the-art <a href="https://en.wikipedia.org/wiki/Distributed_revision_control">distributed version control systems (DVCS)</a> 
 tools <strong><a href="http://git-scm.com/">Git</a></strong> and <strong><a href="http://mercurial.selenic.com/">Mercurial</a></strong> 
 are very likely the best way of reliably organising software development.
 Both have numerous advantages over their predecessor <strong><a href="http://subversion.tigris.org/">Subversion (SVN)</a></strong>.</p>
@@ -86,8 +87,8 @@ special demands on the whole setup.</p>
 
 <p>If you are just interested in the final solution, scroll down to the conclusion.
 But be warned …</p>
-
-<!-- more -->
+    </div>
+    
 
 <h2 id="starting-point-and-current-setup">Starting Point and Current Setup</h2>
 
@@ -114,39 +115,69 @@ added by certain plugins.
 For better usability and portability required third-party libraries are included 
 as SVN Externals.</p>
 
-<p><code>sh Directory structure of current repository
-/
-  apps/
-    app1/
-    app2/
-    secret-app/
-    ...
-  docu/
-  core/
-    utils/
-    lib1/
-    lib2/
-    lib3/
-    some_further_folders/
-    some_files
-  plugins/
-    core/
-      core_plugin1/
-      core_plugin2/
-      ...
-    experimental/
-      test_plugin/
-      broken_plugin/
-      secret_plugin/
-      ...
-    some_files
-  unit_tests/
-    ...
-  CMakeLists.txt
-  README
-  LICENSE
-  ...
-</code></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Directory structure of current repository </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">/
+</span><span class="line">  apps/
+</span><span class="line">    app1/
+</span><span class="line">    app2/
+</span><span class="line">    secret-app/
+</span><span class="line">    ...
+</span><span class="line">  docu/
+</span><span class="line">  core/
+</span><span class="line">    utils/
+</span><span class="line">    lib1/
+</span><span class="line">    lib2/
+</span><span class="line">    lib3/
+</span><span class="line">    some_further_folders/
+</span><span class="line">    some_files
+</span><span class="line">  plugins/
+</span><span class="line">    core/
+</span><span class="line">      core_plugin1/
+</span><span class="line">      core_plugin2/
+</span><span class="line">      ...
+</span><span class="line">    experimental/
+</span><span class="line">      test_plugin/
+</span><span class="line">      broken_plugin/
+</span><span class="line">      secret_plugin/
+</span><span class="line">      ...
+</span><span class="line">    some_files
+</span><span class="line">  unit_tests/
+</span><span class="line">    ...
+</span><span class="line">  CMakeLists.txt
+</span><span class="line">  README
+</span><span class="line">  LICENSE
+</span><span class="line">  ...</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Access rights are managed through a simple plaintext file setting branch and 
 directory based read and write access on a per-user basis.
@@ -434,21 +465,16 @@ committed directly to the SVN server via <code>git svn dcommit</code>.</p>
 <p>This way, we still comply with the tight access rights on the code base and 
 must-have comfort functions while having partial support of the agile workflows 
 provided by Git’s features.
-Everybody seems happy. Except the guys, who stand this adventure. They called in 
-sick recovering from the pain endured that no usable version control system out 
+Everybody seems happy.
+Except the guys, who stand this adventure.
+They called in sick recovering from the pain endured that no usable version control system out 
 there is capable of handling this use case in a maintainable manner.</p>
 
 <p>Thanks to my colleagues and companions in this adventure, <a href="https://github.com/marscher">Martin Scherer</a> 
 and <a href="https://github.com/stephanmg">Stephan Grein</a>.</p>
 
   </article>
-  <footer>
-  
-  
-
-<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
-
-  &#8226;
+  <footer class="article">
   
   
   
@@ -469,12 +495,42 @@ and <a href="https://github.com/stephanmg">Stephan Grein</a>.</p>
 
 
   
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/english/'>English</a>, <a class='category' href='/category/programming/'>Programming</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    Struggling with Git Submodules and Mercurial Subrepositories
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
 </footer>
 
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -487,6 +543,11 @@ and <a href="https://github.com/stephanmg">Stephan Grein</a>.</p>
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -506,11 +567,6 @@ and <a href="https://github.com/stephanmg">Stephan Grein</a>.</p>
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>

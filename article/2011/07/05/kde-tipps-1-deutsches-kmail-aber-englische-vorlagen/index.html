@@ -48,11 +48,11 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="/otago/">Going to Otago</a></li>
-            <li><a href="/london/">Bachelor in London</a></li>
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
           </ul>
         </li>
-        <li><a href="/enlgish/">English Posts</a></li>
+        <li><a href="/category/english/">English Posts</a></li>
         <li><a href="/about/">Über / About</a></li>
         <li><a href="/archive/">Archiv / Archive</a></li>
       </ul>
@@ -64,16 +64,20 @@
     <div class="container">
       <main>
         <div class="row">
-          <div class="col-md-8">
+          <div class="main-content col-md-8">
             <div class="post">
   <header class="post-header">
     <h1>KDE Tipps #1: Deutsches KMail aber fremdsprachige E-Mails</h1>
   </header>
   <article class="post-content">
-    <p><img class="left" src="http://kde.org/images/icons/kmail_48.png" width="48" height="48" title="&#34;Das KDE-KMail Logo&#34;" alt="&#34;Das KDE-KMail Logo&#34;" />
-Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten). Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „<em>Am Donnerstag, 21. April 2011, 21:42:12 schrieben Sie:</em>“ voran. Das sieht nicht gut aus und geht deutlich besser!</p>
-
-<!-- more -->
+    <div class="lead">
+      <p><img class="left" src="http://kde.org/images/icons/kmail_48.png" width="48" height="48" title="&#34;Das KDE-KMail Logo&#34;" alt="&#34;Das KDE-KMail Logo&#34;" />
+Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten).
+Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „<em>Am Donnerstag, 21.
+April 2011, 21:42:12 schrieben Sie:</em>“ voran.
+Das sieht nicht gut aus und geht deutlich besser!</p>
+    </div>
+    
 
 <p>So lange man nur im deutschsprachigen Umfeld arbeitet ist dies kein Problem, kommen aber hier und da englischsprachige E-Mails hinzu, ist ein solcher deutschsprachiger Text eher unpassend.</p>
 
@@ -81,9 +85,11 @@ Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche
 Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Version 2.0.95 unter KDE 4.6.90 (4.7 RC1)) gemacht, es lässt sich aber auf alle anderen beliebigen Oberflächen ebenfalls anwenden.</p>
 
 <h3 id="der-standard">Der Standard</h3>
-<p>Die Standard-Vorlagen sind Bestandteil der Lokalisierung von KMail, weshalb sie bei einer deutschsprachigen Benutzeroberfläche ebenfalls übersetzt sind. Die hier beschriebene Lösung besteht aus einer Rückübersetzung dieser Standard-Vorlagen.</p>
+<p>Die Standard-Vorlagen sind Bestandteil der Lokalisierung von KMail, weshalb sie bei einer deutschsprachigen Benutzeroberfläche ebenfalls übersetzt sind.
+Die hier beschriebene Lösung besteht aus einer Rückübersetzung dieser Standard-Vorlagen.</p>
 
-<p>Unter „<em>Einstellungen</em>“ -&gt; „<em>KMail einrichten …</em>“ wählt man den „<em>E-Mail-Editor</em>“ aus und begibt sich in den Reiter „<em>Standard-Vorlagen</em>“. Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiterleiten einer E-Mail automatisch verwendet werden.</p>
+<p>Unter „<em>Einstellungen</em>“ -&gt; „<em>KMail einrichten …</em>“ wählt man den „<em>E-Mail-Editor</em>“ aus und begibt sich in den Reiter „<em>Standard-Vorlagen</em>“.
+Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiterleiten einer E-Mail automatisch verwendet werden.</p>
 
 <p>Bei deutscher Lokalisierung steht hier für „<em>Antwort an Absender</em>”:</p>
 
@@ -98,7 +104,9 @@ Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Versi
 </span><span class="line">Am %ODATE, %OTIMELONG schrieben Sie:
 </span><span class="line">%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen (“<em>On %ODATE %OTIMELONG you wrote:</em>”), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen. Andernfalls würde das obige Beispiel als „<em>On Donnerstag, 21. April 2011 21:42 you wrote:</em>“ erscheinen.</p>
+<p>Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen (“<em>On %ODATE %OTIMELONG you wrote:</em>”), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen.
+Andernfalls würde das obige Beispiel als „<em>On Donnerstag, 21.
+April 2011 21:42 you wrote:</em>“ erscheinen.</p>
 
 <p>Die nicht-lokalisierten Platzhalter lassen sich einerseits durch das unten stehende Menü „<em>Platzhalter einfügen</em>“ -&gt; „<em>Ursprüngliche Nachricht</em>“ wählen (es sind die mit dem Zusatz „<em>in C-Lokalisierung</em>“)  oder durch Anhängen von “<code>EN</code>” an die bisherigen.</p>
 
@@ -118,7 +126,8 @@ Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Versi
 <p>Mit den anderen Standard-Vorlagen für „<em>Allen antworten / der Liste antworten</em>“ und „<em>Nachricht weiterleiten</em>“ verfährt man ebenso.</p>
 
 <h3 id="die-erweiterung">Die Erweiterung</h3>
-<p>Um individuell nur bei Antworten auf (oder beim Weiterleiten) bestimmte E-Mails die englischsprachige Vorlage zu verwenden, empfiehlt es sich, „<em>Eigene Vorlagen</em>“ einzurichten. Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man über den gewählten Name im „<em>Antworten</em>“-Menü (lange auf das Werkzeugleisten-Symbol „<em>Antworten</em>“ klicken) aufrufen kann.</p>
+<p>Um individuell nur bei Antworten auf (oder beim Weiterleiten) bestimmte E-Mails die englischsprachige Vorlage zu verwenden, empfiehlt es sich, „<em>Eigene Vorlagen</em>“ einzurichten.
+Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man über den gewählten Name im „<em>Antworten</em>“-Menü (lange auf das Werkzeugleisten-Symbol „<em>Antworten</em>“ klicken) aufrufen kann.</p>
 
 <p>Ich habe hier eine neue Vorlage „<em>deutsche Antwort</em>“ erstellt und in das große Textfeld</p>
 
@@ -175,21 +184,19 @@ Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Versi
 </span><span class="line">%TEXT
 </span><span class="line">------------------------------------------------------------</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail. Derzeit scheint es noch nicht dort erläutert zu werden.</p>
+<p>Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail.
+Derzeit scheint es noch nicht dort erläutert zu werden.</p>
 
 <h3 id="fazit">Fazit</h3>
-<p>Das Rückübersetzen der Standard-Vorlagen ist sicherlich die einfachste und benutzerfreundlichste Lösung. Wem es nichts aus macht, dass auch die deutschsprachigen Korrespondenzen englischen Text lesen müssen, sollte bei dieser Lösung bleiben.</p>
+<p>Das Rückübersetzen der Standard-Vorlagen ist sicherlich die einfachste und benutzerfreundlichste Lösung.
+Wem es nichts aus macht, dass auch die deutschsprachigen Korrespondenzen englischen Text lesen müssen, sollte bei dieser Lösung bleiben.</p>
 
-<p>Wer jedoch eine exakte und konsistente Lösung bevorzugt, dem sei die Erweiterung empfohlen. Sie erfordert allerdings ein wenig Handarbeit bei jeder Antwort oder Weiterleitung. Auf Dauer kann das durchaus nervend werden.</p>
+<p>Wer jedoch eine exakte und konsistente Lösung bevorzugt, dem sei die Erweiterung empfohlen.
+Sie erfordert allerdings ein wenig Handarbeit bei jeder Antwort oder Weiterleitung.
+Auf Dauer kann das durchaus nervend werden.</p>
 
   </article>
-  <footer>
-  
-  
-
-<i class="fa fa-user"></i> <span class="byline author vcard">Posted by <span class="fn">Torbjörn Klatt</span></span>
-
-  &#8226;
+  <footer class="article">
   
   
   
@@ -210,12 +217,42 @@ Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Versi
 
 
   
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    KDE Tipps #1: Deutsches KMail aber fremdsprachige E-Mails
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
 </footer>
 
 </div>
 
           </div>
-          <div class="col-md-4">
+          <div class="asides col-md-4">
             <section id="recent-posts-aside" class="aside panel panel-default">
   <div class="panel-heading">
     <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
@@ -228,6 +265,11 @@ Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Versi
   </div>
   
   <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
     
     <li class="list-group-item">
       <span class="label label-default">03 Apr 2013</span>
@@ -247,11 +289,6 @@ Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Versi
     <li class="list-group-item">
       <span class="label label-default">08 Apr 2012</span>
       <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
-    </li>
-    
-    <li class="list-group-item">
-      <span class="label label-default">21 Mar 2012</span>
-      <a href="/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/">Bin zu Octopress + Git übergelaufen</a>
     </li>
     
   </ul>
