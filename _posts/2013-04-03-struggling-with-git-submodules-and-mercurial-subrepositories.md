@@ -6,6 +6,7 @@ comments: true
 published: true
 categories:
   - Programming
+  - English
 ---
 The popular and state-of-the-art [distributed version control systems (DVCS)](https://en.wikipedia.org/wiki/Distributed_revision_control) 
 tools **[Git](http://git-scm.com/)** and **[Mercurial](http://mercurial.selenic.com/)** 

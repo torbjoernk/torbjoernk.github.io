@@ -9,7 +9,7 @@ subscribe_rss: 'feed.xml'
 
 root: /
 permalink: /article/:year/:month/:day/:title/
-category_dir: categories
+category_dir: category
 markdown: kramdown
 
 timezone: Europe/Berlin

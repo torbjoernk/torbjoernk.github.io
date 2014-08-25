@@ -4,6 +4,7 @@ title: "Problem with Apache2 and Subversion on openSUSE 11.4 solved"
 date: 2011-06-08
 categories: 
 - Linux
+- English
 published: true
 comments: false
 ---

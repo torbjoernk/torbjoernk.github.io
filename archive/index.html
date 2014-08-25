@@ -4,15 +4,24 @@ title: Posts Archive
 footer: false
 ---
 
-<div id="blog-archives">
+<table id="blog-archives" class="table category">
+  {% assign year = -1 %}
   {% for post in site.posts reverse %}
     {% capture this_year %}{{ post.date | date: "%Y" }}{% endcapture %}
     {% unless year == this_year %}
+      {% if year != -1 %}
+            </div>
+          </td>
+        </tr>
+      {% endif %}
       {% assign year = this_year %}
-      <h2>{{ year }}</h2>
+      <tr>
+        <td class="year"><h2>{{ year }}</h2></td>
+        <td>
+          <div class="list-group">
     {% endunless %}
-    <article class="page-header">
+    <div class="list-group-item">
       {% include archive_post.html %}
-    </article>
+    </div>
   {% endfor %}
-</div>
+</table>

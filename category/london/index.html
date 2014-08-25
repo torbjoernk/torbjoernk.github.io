@@ -1,16 +1,16 @@
 ---
 layout: page
-navbar: Otago
+title: "Bachelor in London"
 footer: false
 ---
 
-<div class="blog-index">
+<div id="blog-archives" class="category list-group">
   {% assign index = true %}
   {% for post in site.posts %}
     {% if post.categories contains "bachelor in london" %}
-      <article class="post on-index{% if forloop.last %} last{% endif %}">
-        {% include article.html %}
-      </article>
+      <div class="list-group-item">
+        {% include archive_post.html %}
+      </div>
     {% endif %}
   {% endfor %}
 </div>

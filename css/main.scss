@@ -48,6 +48,13 @@ h6, .h6 {
   }
 }
 
+#blog-archives {
+  h3 {
+    font-size: $font-size-base !important;
+  }
+  font-size: $font-size-small !important;
+}
+
 .asides {
   .panel-heading {
     .panel-title {
