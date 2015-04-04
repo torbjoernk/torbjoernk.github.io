@@ -4,7 +4,7 @@
   <title><![CDATA[Distributed Computing | Torbjörn Klatt]]></title>
   <link href="http://torbjoern-klatt.de/category/distributed-computing/atom.xml" rel="self"/>
   <link href="http://torbjoern-klatt.de/"/>
-  <updated>2014-08-25T13:52:46+02:00</updated>
+  <updated>2015-04-04T16:06:01+02:00</updated>
   <id>http://torbjoern-klatt.de/</id>
   <author>
     <name><![CDATA[Torbjörn Klatt]]></name>
@@ -91,7 +91,9 @@ Im Vergleich dazu brachte die Publicity durch den erfolgreichen <a href="http://
 <p><em>von Jesse Kaukonen</em><br />
 <a href="http://boinc.berkeley.edu/trac/attachment/wiki/WorkShop11/BOINC%20Workshop%20Presentation.pdf">Slides</a></p>
 
-<p><blockquote><p>Hello, my name is Big Buck Bunny and you might know me from movies like The Big Buck Bunny.</p><footer><strong>The Big Buck Bunny</strong></footer></blockquote></p>
+<p>{% blockquote The Big Buck Bunny%}
+Hello, my name is Big Buck Bunny and you might know me from movies like The Big Buck Bunny.
+{% endblockquote %}</p>
 
 <p>Es war mit Abstand der multimedialste Vortrag beim diesjährigen BOINC-Workshop und Jesse Kaukonen zeigte das <a href="http://youtu.be/4VUWrZRCtI8">Video von <em>Big Buck Bunny</em></a>, wie dieser anschaulich die Motivation und Funktionsweise des verteilten Renderns von Videos erklärt.
 Jesse berichtete von den Erfolgen und Problemen des <a href="http://www.renderfarm.fi/"><em>Renderfarm.fi</em></a>-Projekts und nannte die derzeitigen Limitierungen an die Komplexität und Umfang der zu rendernden Videos.

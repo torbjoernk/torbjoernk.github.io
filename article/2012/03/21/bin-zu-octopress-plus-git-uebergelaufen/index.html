@@ -84,40 +84,40 @@ der in Ruby geschrieben ist.
 Das ganze ist zudem 100%ig HTML5 mit ein bisschen JavaScript.</p>
 
 <p>Da der gesamte Prozess des Installierens und Einrichtens darin besteht, ein GitHub-Repository zu 
-clonen …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class=""><span class="line">git clone git://github.com/imathis/octopress.git octopress</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-ein paar Ruby Gems zu installieren …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
+clonen …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git clone git://github.com/imathis/octopress.git octopress</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>ein paar Ruby Gems zu installieren …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class=""><span class="line">gem install bundler
-</span><span class="line">bundle install</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-das grundlegene Layout zu generieren …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class=""><span class="line">rake install</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-ein paar Variablen zu konfigurieren …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>Ausschnitt meiner Konfigurationsdatei - _config.yml </span>&lt;/figcaption&gt;
- &lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">gem install bundler
+</span><span class="line">bundle install</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>das grundlegene Layout zu generieren …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">rake install</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>ein paar Variablen zu konfigurieren …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Ausschnitt meiner Konfigurationsdatei - _config.yml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
 <span class="line-number">5</span>
 <span class="line-number">6</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class="yaml"><span class="line"><span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://torbjoern-klatt.de</span>
+</pre></td><td class="code"><pre><code class="yaml"><span class="line"><span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://torbjoern-klatt.de</span>
 </span><span class="line"><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Torbjörn Klatt</span>
 </span><span class="line"><span class="l-Scalar-Plain">subtitle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">It&#39;s just me.</span>
 </span><span class="line"><span class="l-Scalar-Plain">author</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Torbjörn Klatt</span>
 </span><span class="line"><span class="l-Scalar-Plain">simple_search</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://google.com/search</span>
 </span><span class="line"><span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">A blog about my life and things encountered.</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-und schließlich das ganze in ein eigenes Git-Repository zu committen …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>und schließlich das ganze in ein eigenes Git-Repository zu committen …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class=""><span class="line">git add .
+</pre></td><td class="code"><pre><code class=""><span class="line">git add .
 </span><span class="line">git commit -m "mein Blog ist eingerichtet"
-</span><span class="line">git push</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-hat man die Backup-Lösung frei Haus.</p>
+</span><span class="line">git push</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>hat man die Backup-Lösung frei Haus.</p>
 
 <p>Auf Octopress gestoßen bin ich durch den <a href="">Binärgewitter Podcast</a>, die ebenfalls seit diesem Jahr
 Octopress einsetzen.
@@ -127,13 +127,13 @@ Webseite, sondern hoste das nach wie vor auf meinem eigenen Webspace.</p>
 
 <p>Dazu binde ich mittels <a href="http://curlftpfs.sourceforge.net/"><code>curlftpfs</code></a> meinen Webspace in mein 
 lokales Dateisystem ein und nutze einen eigenen Rake-Task <code>copyto</code>, den ich als Standard für den
-<code>deploy</code>-Task definiert habe …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class=""><span class="line">rake deploy # generiert die Seite und schiebt sie auf den Webspace</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-Da <code>curlftpfs</code> und <code>rsync</code> sich irgendwie nicht so richtig mögen, habe ich auf das gute alte <code>cp</code>
-zurückgegriffen und mir den Rake-Task <code>copyto</code> definiert …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>Meine Änderungen am Rakefile </span>&lt;/figcaption&gt;
- &lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
+<code>deploy</code>-Task definiert habe …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">rake deploy # generiert die Seite und schiebt sie auf den Webspace</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>Da <code>curlftpfs</code> und <code>rsync</code> sich irgendwie nicht so richtig mögen, habe ich auf das gute alte <code>cp</code>
+zurückgegriffen und mir den Rake-Task <code>copyto</code> definiert …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Meine Änderungen am Rakefile </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -153,7 +153,7 @@ zurückgegriffen und mir den Rake-Task <code>copyto</code> definiert …
 <span class="line-number">18</span>
 <span class="line-number">19</span>
 <span class="line-number">20</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class="ruby"><span class="line"><span class="n">document_root</span>  <span class="o">=</span> <span class="s2">&quot;../ftp/blog&quot;</span>
+</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="n">document_root</span>  <span class="o">=</span> <span class="s2">&quot;../ftp/blog&quot;</span>
 </span><span class="line"><span class="n">deploy_default</span> <span class="o">=</span> <span class="s2">&quot;copyto&quot;</span>
 </span><span class="line"><span class="c1"># snipp ...</span>
 </span><span class="line"><span class="n">desc</span> <span class="s2">&quot;Deploy website via straight copy (optional argument &#39;clean&#39; for prior complete removal)&quot;</span>
@@ -173,29 +173,29 @@ zurückgegriffen und mir den Rake-Task <code>copyto</code> definiert …
 </span><span class="line">  <span class="nb">puts</span> <span class="s2">&quot;## Unmounting remote FTP storage&quot;</span>
 </span><span class="line">  <span class="n">ok_failed</span> <span class="nb">system</span><span class="p">(</span><span class="s2">&quot;../unmount_ftp.sh&quot;</span><span class="p">)</span>
 </span><span class="line"><span class="k">end</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-Die beiden Bashskripte enthalten …
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>mount_tobbe_ftp.sh </span>&lt;/figcaption&gt;
- &lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>Die beiden Bashskripte enthalten …</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mount_tobbe_ftp.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class="sh"><span class="line"><span class="c">#!/bin/bash</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="c">#!/bin/bash</span>
 </span><span class="line"><span class="nv">MY_PATH</span><span class="o">=</span><span class="s2">&quot;`dirname \&quot;$0\&quot;`&quot;</span>
 </span><span class="line"><span class="nv">MY_PATH</span><span class="o">=</span><span class="s2">&quot;`(cd \&quot;$MY_PATH\&quot; &amp;&amp; pwd)`&quot;</span>
 </span><span class="line">curlftpfs ftp://USERNAME:PASSWORD@torbjoern-klatt.de/ <span class="nv">$MY_PATH</span>/ftp/
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-und
-&lt;div class='bogus-wrapper'&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>unmount_ftp.sh </span>&lt;/figcaption&gt;
- &lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;<span class="line-number">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>und</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>unmount_ftp.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class='code'&gt;&lt;pre&gt;<code class="sh"><span class="line"><span class="c">#!/bin/bash</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="c">#!/bin/bash</span>
 </span><span class="line"><span class="nv">MY_PATH</span><span class="o">=</span><span class="s2">&quot;`dirname \&quot;$0\&quot;`&quot;</span>
 </span><span class="line"><span class="nv">MY_PATH</span><span class="o">=</span><span class="s2">&quot;`(cd \&quot;$MY_PATH\&quot; &amp;&amp; pwd)`&quot;</span>
 </span><span class="line">fusermount -u <span class="nv">$MY_PATH</span>/ftp/
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Das ist alles.</p>
 

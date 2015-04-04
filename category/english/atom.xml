@@ -4,7 +4,7 @@
   <title><![CDATA[English | Torbjörn Klatt]]></title>
   <link href="http://torbjoern-klatt.de/category/english/atom.xml" rel="self"/>
   <link href="http://torbjoern-klatt.de/"/>
-  <updated>2014-08-25T13:52:46+02:00</updated>
+  <updated>2015-04-04T16:06:01+02:00</updated>
   <id>http://torbjoern-klatt.de/</id>
   <author>
     <name><![CDATA[Torbjörn Klatt]]></name>
@@ -127,128 +127,68 @@ To capture coverage of files in other directories you need to adjust the calls t
 <p>For convenience, you might want to put your adjusted script in the root of your project and under
 revision control.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>generate_coverage.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/sh</span>
-</span><span class='line'><span class="nv">basepath</span><span class="o">=</span>&lt;code&gt;pwd&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;function print_help <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> “#######################################################################”
-</span><span class='line'>  <span class="nb">echo</span> “###               Generation of Test Coverage Report                <span class="c">###”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “# First <span class="o">(</span>and only<span class="o">)</span> parameter must be the name of the build directory  <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “# Example:                                                            <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#   ./generate_coverage.sh build_gcc                                  <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#######################################################################”
-</span><span class='line'>  <span class="k">return</span> 0
-</span><span class='line'><span class="o">}</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]]</span>
-</span><span class='line'><span class="k">then</span>
-</span><span class='line'>  print_help
-</span><span class='line'>  <span class="nb">echo</span> “ERROR: Please name the build directory as the first parameter.”
-</span><span class='line'>  <span class="nb">exit</span> -1
-</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;builddir<span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
-</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;rm -rf <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage
-</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;for testdir in &lt;code&gt;find <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span> -type d <span class="p">|</span> grep -o <span class="s1">&#39;tests/.*/.*\dir&#39;</span>&lt;/code&gt;
-</span><span class='line'><span class="k">do</span>
-</span><span class='line'>  <span class="nv">testname</span><span class="o">=</span>&lt;code&gt;expr <span class="s2">&quot;$testdir&quot;</span> : <span class="s1">&#39;.*\(test_[a-zA-Z\-_]*\)\.dir&#39;</span>&lt;/code&gt;
-</span><span class='line'>  <span class="nb">echo</span> “Gathering Coverage <span class="k">for</span> <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>”
-</span><span class='line'>  <span class="nb">cd</span> <span class="nv">$testdir</span>
-</span><span class='line'>  lcov –zerocounters  –directory .
-</span><span class='line'>  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
-</span><span class='line'>  ctest -R <span class="nv">$testname</span>
-</span><span class='line'>  <span class="nb">cd</span> <span class="nv">$testdir</span>
-</span><span class='line'>  lcov –directory . –capture –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
-</span><span class='line'>  lcov –extract <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp “&lt;em&gt;<span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include/**/&lt;/em&gt;” <span class="se">\</span>
-</span><span class='line'>    –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info
-</span><span class='line'>  rm <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
-</span><span class='line'>  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -e all_tests.info <span class="o">]]</span>
-</span><span class='line'>  <span class="k">then</span>
-</span><span class='line'>    lcov –add-tracefile all_tests.info <span class="se">\</span>
-</span><span class='line'>      –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
-</span><span class='line'>      –output-file all_tests.info
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    lcov –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
-</span><span class='line'>      –output-file all_tests.info
-</span><span class='line'>  <span class="k">fi</span>
-</span><span class='line'><span class="k">done</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;cd <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>
-</span><span class='line'>genhtml –output-directory ./coverage <span class="se">\</span>
-</span><span class='line'>  –demangle-cpp –num-spaces <span class="m">2</span> –sort <span class="se">\</span>
-</span><span class='line'>  –title “My Program Test Coverage” –prefix <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include <span class="se">\</span>
-</span><span class='line'>  –function-coverage –branch-coverage –legend <span class="se">\</span>
-</span><span class='line'>  <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>/all_tests.info
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock generate_coverage.sh %}
+#!/bin/sh
+basepath=<code>pwd</code></p>
+
+<p>function print_help {
+  echo “#######################################################################”
+  echo “###               Generation of Test Coverage Report                ###”
+  echo “#                                                                     #”
+  echo “# First (and only) parameter must be the name of the build directory  #”
+  echo “#                                                                     #”
+  echo “# Example:                                                            #”
+  echo “#   ./generate_coverage.sh build_gcc                                  #”
+  echo “#                                                                     #”
+  echo “#######################################################################”
+  return 0
+}</p>
+
+<p>if [[ $# -ne 1 ]]
+then
+  print_help
+  echo “ERROR: Please name the build directory as the first parameter.”
+  exit -1
+fi</p>
+
+<p>builddir=${1}
+cd ${builddir}</p>
+
+<p>rm -rf ${basepath}/coverage
+mkdir -p ${basepath}/coverage</p>
+
+<p>for testdir in <code>find ${basepath}/${builddir} -type d | grep -o 'tests/.*/.*\dir'</code>
+do
+  testname=<code>expr "$testdir" : '.*\(test_[a-zA-Z\-_]*\)\.dir'</code>
+  echo “Gathering Coverage for ${testname}”
+  cd $testdir
+  lcov –zerocounters  –directory .
+  cd ${basepath}/${builddir}
+  ctest -R $testname
+  cd $testdir
+  lcov –directory . –capture –output-file ${testname}.info.tmp
+  lcov –extract ${testname}.info.tmp “<em>${basepath}/include/**/</em>” \
+    –output-file ${testname}.info
+  rm ${testname}.info.tmp
+  cd ${basepath}/${builddir}
+  if [[ -e all_tests.info ]]
+  then
+    lcov –add-tracefile all_tests.info \
+      –add-tracefile ${testdir}/${testname}.info \
+      –output-file all_tests.info
+  else
+    lcov –add-tracefile ${testdir}/${testname}.info \
+      –output-file all_tests.info
+  fi
+done</p>
+
+<p>cd ${basepath}
+genhtml –output-directory ./coverage \
+  –demangle-cpp –num-spaces 2 –sort \
+  –title “My Program Test Coverage” –prefix ${basepath}/include \
+  –function-coverage –branch-coverage –legend \
+  ${basepath}/${builddir}/all_tests.info
+{% endcodeblock %}</p>
 
 <h2 id="let-jenkins-publish-the-report">Let Jenkins Publish the Report</h2>
 
@@ -314,69 +254,39 @@ added by certain plugins.
 For better usability and portability required third-party libraries are included 
 as SVN Externals.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Directory structure of current repository </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/
-</span><span class='line'>  apps/
-</span><span class='line'>    app1/
-</span><span class='line'>    app2/
-</span><span class='line'>    secret-app/
-</span><span class='line'>    …
-</span><span class='line'>  docu/
-</span><span class='line'>  core/
-</span><span class='line'>    utils/
-</span><span class='line'>    lib1/
-</span><span class='line'>    lib2/
-</span><span class='line'>    lib3/
-</span><span class='line'>    some_further_folders/
-</span><span class='line'>    some_files
-</span><span class='line'>  plugins/
-</span><span class='line'>    core/
-</span><span class='line'>      core_plugin1/
-</span><span class='line'>      core_plugin2/
-</span><span class='line'>      …
-</span><span class='line'>    experimental/
-</span><span class='line'>      test_plugin/
-</span><span class='line'>      broken_plugin/
-</span><span class='line'>      secret_plugin/
-</span><span class='line'>      …
-</span><span class='line'>    some_files
-</span><span class='line'>  unit_tests/
-</span><span class='line'>    …
-</span><span class='line'>  CMakeLists.txt
-</span><span class='line'>  README
-</span><span class='line'>  LICENSE
-</span><span class='line'>  …</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock Directory structure of current repository %}
+/
+  apps/
+    app1/
+    app2/
+    secret-app/
+    …
+  docu/
+  core/
+    utils/
+    lib1/
+    lib2/
+    lib3/
+    some_further_folders/
+    some_files
+  plugins/
+    core/
+      core_plugin1/
+      core_plugin2/
+      …
+    experimental/
+      test_plugin/
+      broken_plugin/
+      secret_plugin/
+      …
+    some_files
+  unit_tests/
+    …
+  CMakeLists.txt
+  README
+  LICENSE
+  …
+{% endcodeblock %}</p>
 
 <p>Access rights are managed through a simple plaintext file setting branch and 
 directory based read and write access on a per-user basis.
@@ -593,8 +503,13 @@ While the latter is a one-time hard cut transition.
 A no-go.</p>
 
 <p>To hold it with two guys from Mercurial’s IRC channel on freenode:
-<blockquote><p>nobody said subrepos made sense ;-)</p><footer><strong>kiilerix</strong> <cite>irc.freenode.net#mercurial on April 3rd 2013</cite></footer></blockquote>
-<blockquote><p>subrepos are a Feature of Last Resort. By their very nature, they have to break <br/>a number of things.</p><footer><strong>JordiGH</strong> <cite>irc.freenode.net#mercurial on April 3rd 2013</cite></footer></blockquote>
+{% blockquote kiilerix, irc.freenode.net#mercurial on April 3rd 2013 %}
+nobody said subrepos made sense ;-)
+{% endblockquote %}
+{% blockquote JordiGH, irc.freenode.net#mercurial on April 3rd 2013 %}
+subrepos are a Feature of Last Resort. By their very nature, they have to break 
+a number of things.
+{% endblockquote %}
 I’m adding, that this also holds true for Git Submodules.</p>
 
 <h3 id="when-they-work-1">When they work</h3>
@@ -707,8 +622,9 @@ In addition, it might be desirable using <code>https://</code> instead of <code>
 <p>Browsing the repository in a random webbrowser is possible and does not throw any warnings or errors.
 But when using <code>svn {import|checkout|commit}</code> the following error message is displayed</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn: Repository moved permanently to ‘http://svn.test.com/myproject/’; please relocate</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+svn: Repository moved permanently to ‘http://svn.test.com/myproject/’; please relocate
+{% endcodeblock %}</p>
 
 <p>The solution is moving the SVN repository root physically to <code>/srv/www/svn</code> and removing the Alias definition in <code>/etc/apache2/conf.d/subversion.conf</code>.</p>
 
@@ -733,26 +649,18 @@ In my case I only want the users <code>user1</code> and <code>user2</code> havin
 These users are defined in <code>/etc/apache2/users.cred</code> with the standard <code>htpasswd2</code> method.
 Thus, the <code>Location</code> block looks like this:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;Location /svn/myproject&gt;
-</span><span class='line'>  DAV svn
-</span><span class='line'>  SVNPath /srv/www/svn/myproject
-</span><span class='line'>  Order allow,deny
-</span><span class='line'>  Allow from all
-</span><span class='line'>  AuthType Basic
-</span><span class='line'>  AuthName “Project 1”
-</span><span class='line'>  AuthUserFile /etc/apache2/users.cred
-</span><span class='line'>  Require user user1 user2
-</span><span class='line'>&lt;/Location&gt;</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+&lt;Location /svn/myproject&gt;
+  DAV svn
+  SVNPath /srv/www/svn/myproject
+  Order allow,deny
+  Allow from all
+  AuthType Basic
+  AuthName “Project 1”
+  AuthUserFile /etc/apache2/users.cred
+  Require user user1 user2
+&lt;/Location&gt;
+{% endcodeblock %}</p>
 
 <p>As usual you also can define user groups in <code>/etc/apache2/groups.cred</code> and use <code>AuthGroupFile /etc/apache2/groups.cred</code> and <code>Require group</code> — or any other authorisation method.</p>
 
