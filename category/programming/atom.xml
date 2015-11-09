@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Programming | Torbjörn Klatt]]></title>
+  <link href="http://torbjoern-klatt.de/category/programming/atom.xml" rel="self"/>
+  <link href="http://torbjoern-klatt.de/"/>
+  <updated>2015-11-09T09:50:36+01:00</updated>
+  <id>http://torbjoern-klatt.de/</id>
+  <author>
+    <name><![CDATA[Torbjörn Klatt]]></name>
+    <email><![CDATA[kontakt@torbjoern-klatt.de]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[C++ Code Coverage Analysis with CMake and Jenkins]]></title>
+    <link href="http://torbjoern-klatt.de/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/"/>
+    <updated>2014-08-21T21:30:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins</id>
+    <content type="html"><![CDATA[<p>Having a working test suite for your library or program is common knowledge.
+Using a continuous integration workflow like <a href="">git-flow</a> backed by <a href="">Travis CI</a> or a <a href="">Jenkins</a>
+instance is already a success story and widely used.
+To ease up the build process of a C++ library/program on different platforms, many projects decide
+to use <a href="">CMake</a>.</p>
+
+<p>So far, so good.
+But how good is your test suite?
+Does it cover all the functionality and code in your library?
+Does it catch all the different branches and edge-cases?</p>
+
+<p>This little article describes a way of using <a href="">lcov</a> to generate a test coverage report for a
+<em>CMake</em>-based C++ project.</p>
+
+<!-- more -->
+
+<p>Let us assume you have your C++ project set up with <em>CMake</em> as its build system.
+As well, assume your code - including the test suite - compiles fine with <a href="">GCC</a>.
+I probably don’t have to mention, that you will always want to do out-of-source builds.</p>
+
+<h2 id="compiling-with-profiling-flags">Compiling with Profiling Flags</h2>
+
+<p>The first step to enable coverage reports is to compile your program with <em>GCC</em>’s flags <code>-gp</code>, 
+<code>-ftest-coverage</code> and <code>-fprofile-arcs</code> as well as linking them with <code>-fprofile-arcs</code>.
+For documentation on those flags, see <a href="https://gcc.gnu.org/onlinedocs/gcc-4.8.3/gcc/Debugging-Options.html#Debugging-Options">GCC’s man page “3.9 Options for Debugging Your Program or GCC”</a>.</p>
+
+<p>You can conditionally add those flags by defining a <em>CMake</em> option, e.g. <code>my_project_WITH_PROF</code>:</p>
+
+<pre><code>option(my_project_WITH_PROF "Enable profiling and coverage report analysis" OFF)
+
+...
+
+# assuming target "my_prog" exists
+if(${CMAKE_COMPILER_ID} MATCHES GNU AND $my_project_WITH_PROF)
+    set_target_properties(my_prog
+        PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -gp -fprofile-coverage -fprofile-args
+                   LINK_FLAGS "-fprofile-arcs")
+endif()
+</code></pre>
+
+<p>That is all regarding compilation.
+What is left is to run the compiled program, capture the coverage data and generate a HTML report out
+of it.</p>
+
+<h2 id="capturing-profiling-and-coverage-data">Capturing Profiling and Coverage Data</h2>
+
+<p>For these steps you will need <a href="">lcov</a>, which brings in two commands: <code>lcov</code> and <code>genhtml</code>.</p>
+
+<p>The procedure is simple as follows (in the same path as the executable):</p>
+
+<ol>
+  <li>
+    <p>zero out preexisting coverage and profiling data</p>
+
+    <pre><code>lcov --zerocounters  --directory .
+</code></pre>
+  </li>
+  <li>
+    <p>run the executable</p>
+
+    <pre><code>./my_prog
+</code></pre>
+  </li>
+  <li>
+    <p>capture the coverage and profiling data</p>
+
+    <pre><code>lcov --directory . --capture --output-file my_prog.info
+</code></pre>
+  </li>
+  <li>
+    <p>generate the HTML report</p>
+
+    <pre><code>genhtml --output-directory coverage \
+  --demangle-cpp --num-spaces 2 --sort \
+  --title "My Program's Test Coverage" \
+  --function-coverage --branch-coverage --legend \
+  my_prog.info
+</code></pre>
+  </li>
+</ol>
+
+<h2 id="automation-with-cmake-and-ctest">Automation with CMake and CTest</h2>
+
+<p>As stated in the beginning, we want coverage reports for our test suite, thus we will use <a href="">CTest</a>
+for a nice and somehow “standardized” interface to our test suite (and because <em>CMake</em> comes with it).
+We have enabled <em>CTest</em> in our <code>CMakeLists.txt</code> (call to <code>enable_testing()</code>) and added our <code>my_prog</code>
+target as a test:</p>
+
+<pre><code>add_test(NAME my_prog)
+</code></pre>
+
+<p>Now we can simply run <code>make test</code> or <code>ctest</code> in our build directory and it will not only run all
+configured test, but also generate all the profiling and coverage data we later can capture with
+<em>lcov</em> (cf. step 3 above).</p>
+
+<p>But how can we zero out preexisting counters before running the test suite and gather all the 
+different test’s data afterwards?</p>
+
+<p>For this task, I have written a little shell script to do exactly that.
+The script is meant to be run in the root folder of the project with the build directory as a child
+of it.
+As well, it assumes that the test suite is for a header-only library with the header files located
+in <code>&lt;PROJECT_ROOT&gt;/include</code>.
+To capture coverage of files in other directories you need to adjust the calls to <code>lcov --extract</code>
+(line 40-41: adjust the glob pattern) and <code>genhtml</code> (line 50-60: adjust the <code>--prefix</code> argument).</p>
+
+<p>For convenience, you might want to put your adjusted script in the root of your project and under
+revision control.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>generate_coverage.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="nv">basepath</span><span class="o">=</span>&lt;code&gt;pwd&lt;/code&gt;&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;function print_help <span class="o">{</span>
+</span><span class='line'>  <span class="nb">echo</span> “#######################################################################”
+</span><span class='line'>  <span class="nb">echo</span> “###               Generation of Test Coverage Report                <span class="c">###”</span>
+</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
+</span><span class='line'>  <span class="nb">echo</span> “# First <span class="o">(</span>and only<span class="o">)</span> parameter must be the name of the build directory  <span class="c">#”</span>
+</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
+</span><span class='line'>  <span class="nb">echo</span> “# Example:                                                            <span class="c">#”</span>
+</span><span class='line'>  <span class="nb">echo</span> “#   ./generate_coverage.sh build_gcc                                  <span class="c">#”</span>
+</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
+</span><span class='line'>  <span class="nb">echo</span> “#######################################################################”
+</span><span class='line'>  <span class="k">return</span> 0
+</span><span class='line'><span class="o">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]]</span>
+</span><span class='line'><span class="k">then</span>
+</span><span class='line'>  print_help
+</span><span class='line'>  <span class="nb">echo</span> “ERROR: Please name the build directory as the first parameter.”
+</span><span class='line'>  <span class="nb">exit</span> -1
+</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;builddir<span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;rm -rf <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage
+</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;for testdir in &lt;code&gt;find <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span> -type d <span class="p">|</span> grep -o <span class="s1">&#39;tests/.*/.*\dir&#39;</span>&lt;/code&gt;
+</span><span class='line'><span class="k">do</span>
+</span><span class='line'>  <span class="nv">testname</span><span class="o">=</span>&lt;code&gt;expr <span class="s2">&quot;$testdir&quot;</span> : <span class="s1">&#39;.*\(test_[a-zA-Z\-_]*\)\.dir&#39;</span>&lt;/code&gt;
+</span><span class='line'>  <span class="nb">echo</span> “Gathering Coverage <span class="k">for</span> <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>”
+</span><span class='line'>  <span class="nb">cd</span> <span class="nv">$testdir</span>
+</span><span class='line'>  lcov –zerocounters  –directory .
+</span><span class='line'>  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
+</span><span class='line'>  ctest -R <span class="nv">$testname</span>
+</span><span class='line'>  <span class="nb">cd</span> <span class="nv">$testdir</span>
+</span><span class='line'>  lcov –directory . –capture –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
+</span><span class='line'>  lcov –extract <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp “&lt;em&gt;<span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include/**/&lt;/em&gt;” <span class="se">\</span>
+</span><span class='line'>    –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info
+</span><span class='line'>  rm <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
+</span><span class='line'>  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -e all_tests.info <span class="o">]]</span>
+</span><span class='line'>  <span class="k">then</span>
+</span><span class='line'>    lcov –add-tracefile all_tests.info <span class="se">\</span>
+</span><span class='line'>      –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
+</span><span class='line'>      –output-file all_tests.info
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    lcov –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
+</span><span class='line'>      –output-file all_tests.info
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="k">done</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cd <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>
+</span><span class='line'>genhtml –output-directory ./coverage <span class="se">\</span>
+</span><span class='line'>  –demangle-cpp –num-spaces <span class="m">2</span> –sort <span class="se">\</span>
+</span><span class='line'>  –title “My Program Test Coverage” –prefix <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include <span class="se">\</span>
+</span><span class='line'>  –function-coverage –branch-coverage –legend <span class="se">\</span>
+</span><span class='line'>  <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>/all_tests.info
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2 id="let-jenkins-publish-the-report">Let Jenkins Publish the Report</h2>
+
+<p>For a real open source project a transparent integration process is vital, thus we want our <em>Jenkins</em>
+instance to generate and publish the coverage reports for us.</p>
+
+<p>In the - hopefully already existing - job where we run the test suite, simply add a step to execute
+the above script.
+Finally, on success, publish the result by adding a <em>Publish HTML reports</em> post-build action with
+<code>coverage</code> as the HTML directory to archive, <code>index.html</code> as the index page and a good but short
+name, e.g. <code>Test Coverage</code>.
+After the first build, you will be able to browse the final HTML report at 
+<code>&lt;your-jenkins-domain&gt;/job/&lt;MY_PROJECT_TESTS&gt;/Test_Coverage</code>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Struggling with Git Submodules and Mercurial Subrepositories]]></title>
+    <link href="http://torbjoern-klatt.de/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/"/>
+    <updated>2013-04-03T21:56:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories</id>
+    <content type="html"><![CDATA[<p>The popular and state-of-the-art <a href="https://en.wikipedia.org/wiki/Distributed_revision_control">distributed version control systems (DVCS)</a> 
+tools <strong><a href="http://git-scm.com/">Git</a></strong> and <strong><a href="http://mercurial.selenic.com/">Mercurial</a></strong> 
+are very likely the best way of reliably organising software development.
+Both have numerous advantages over their predecessor <strong><a href="http://subversion.tigris.org/">Subversion (SVN)</a></strong>.</p>
+
+<p>All three have a feature for handling nested repositories, which can but must not 
+depend on each other: <em><a href="http://git-scm.com/docs/git-submodule">Git Submodules</a></em>, 
+<em><a href="http://mercurial.selenic.com/wiki/Subrepository">Mercurial Subrepositories</a></em> 
+and <em><a href="http://svnbook.red-bean.com/en/1.7/svn.advanced.externals.html">Subversion Externals</a></em>.</p>
+
+<p>In this article I will describe an attempt of converting an existing SVN repository 
+into a hierarchy of nested Git, Mercurial or SVN repositories while satisfying 
+special demands on the whole setup.</p>
+
+<p>If you are just interested in the final solution, scroll down to the conclusion.
+But be warned …</p>
+
+<!-- more -->
+
+<h2 id="starting-point-and-current-setup">Starting Point and Current Setup</h2>
+
+<h3 id="the-application">The Application</h3>
+<p>The application called <em><a href="http://atlas.gcsc.uni-frankfurt.de/~ug/">ug4</a></em> is a 
+scientific algorithm suite for mathematical modelling and simulation of various 
+problems from basic diffusion to coupled systems in fluid dynamics.
+It is written in C++ with heavy use of templated metaprogramming and an API 
+enabling Lua-scripting and binding a Java-based GUI called <em><a href="http://vrl-studio.mihosoft.eu/">VRL-Studio</a></em>.
+It compiles fluently on Unix, OSX and Windows and runs on pretty much all 
+computers from Netbooks to super computers with thousands of cores as 
+<a href="http://www.fz-juelich.de/ias/jsc/EN/Expertise/Supercomputers/JUQUEEN/JUQUEEN_node.html">JuQueen</a> 
+or <a href="http://www.hlrs.de/?id=1546">HERMIT</a> with a remarkable performance.</p>
+
+<h3 id="the-repository">The Repository</h3>
+<p>The current SVN repository consists of a <strong>core</strong> application with three main 
+and deeply interoperating <strong>libraries</strong> and some <em>glue-code</em>.
+Beside this there are a few <em>core</em> and some <em>experimental</em> <strong>plugins</strong>.
+Finally there are numerous <strong>apps</strong> using the shared library build from the core, 
+the three libraries and selected plugins.</p>
+
+<p>Third-party libraries are included by the core and main libraries and might be 
+added by certain plugins.
+For better usability and portability required third-party libraries are included 
+as SVN Externals.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Directory structure of current repository </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/
+</span><span class='line'>  apps/
+</span><span class='line'>    app1/
+</span><span class='line'>    app2/
+</span><span class='line'>    secret-app/
+</span><span class='line'>    …
+</span><span class='line'>  docu/
+</span><span class='line'>  core/
+</span><span class='line'>    utils/
+</span><span class='line'>    lib1/
+</span><span class='line'>    lib2/
+</span><span class='line'>    lib3/
+</span><span class='line'>    some_further_folders/
+</span><span class='line'>    some_files
+</span><span class='line'>  plugins/
+</span><span class='line'>    core/
+</span><span class='line'>      core_plugin1/
+</span><span class='line'>      core_plugin2/
+</span><span class='line'>      …
+</span><span class='line'>    experimental/
+</span><span class='line'>      test_plugin/
+</span><span class='line'>      broken_plugin/
+</span><span class='line'>      secret_plugin/
+</span><span class='line'>      …
+</span><span class='line'>    some_files
+</span><span class='line'>  unit_tests/
+</span><span class='line'>    …
+</span><span class='line'>  CMakeLists.txt
+</span><span class='line'>  README
+</span><span class='line'>  LICENSE
+</span><span class='line'>  …</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Access rights are managed through a simple plaintext file setting branch and 
+directory based read and write access on a per-user basis.
+Though this is not as flexible as we wish, it is the safest way of ensuring none 
+of the code based developed in collaboration with industrial partners leaks into 
+other parts of the repository.</p>
+
+<h4 id="the-group">The Group</h4>
+
+<p>With just a very few exceptions all developers are mathematicians, physicists and 
+computer scientists.
+Only a few are trained and experienced in software development, while the rest 
+is happy if a commit succeeds.
+For most group members resolving conflicts is a nightmare and impossible task 
+and will likely be circumvented or ignored due to laziness.
+Adopting the basic SVN workflow of updating the working copy before making 
+changes and committing those back is seen as an imposition by some group members.
+One group member already asked for having an email notification through a 
+post-commit hook on the server when his project partner committed changes, so he 
+does not forget to pull in these changes.</p>
+
+<h2 id="desired-end-point">Desired End Point</h2>
+
+<h3 id="demands">Demands</h3>
+
+<p>Each and every of those listed here are <em>show-stopping</em> requirements.
+That means, if any of these is not fulfilled, the whole transition away from the
+current setup will not happen.</p>
+
+<h4 id="fine-grained-access-right-management">Fine-Grained Access Right Management</h4>
+
+<p>Number one requirement is to reliably preserve and ensure read and write access 
+for each and every group member and external collaborators.
+This means, that there are some <em>secret</em> apps or plugins, which must only be 
+readable by a few people.
+External collaborators usually have only read access to the core part and maybe 
+write access to one app or plugin (differs from person to person).
+Temporary group members as students usually have write access to the core part 
+and a few apps and plugins (differs from student to student) and read access to 
+most other apps and plugins (also differs).</p>
+
+<h4 id="global-changes-made-easy">(Global) Changes Made Easy</h4>
+
+<p>Some of the core developers occasionally have to refactor and rename certain API 
+functionality used by some apps and plugins.
+They used to change and fix all apps using these functions in one go, i.e. in 
+one commit for all apps.
+Thus, recursive commits must be easily possible.</p>
+
+<p>All commits and pushes of changes must be easily accomplished through 
+<em><a href="http://www.eclipse.org/">Eclipse</a></em>, as it is widely used in our group.</p>
+
+<h4 id="selective-checkouts">Selective Checkouts</h4>
+
+<p>In principle most of the time all developers, collaborators and students only 
+work on one app, maybe one or two plugins and rarely on the core and main libraries.
+For 90% of the collaborators, changes made in other apps and plugins are of zero 
+interest as those apps and plugins will only be used by very few people.
+Thus it would be desirable not to have all apps and plugins checked out in the 
+local working copy.</p>
+
+<h4 id="easy-and-time-saving-maintenance">Easy and Time-Saving Maintenance</h4>
+
+<p>It must be possible to manage and maintain the whole setup easily.
+Thus, having a bunch of utility scripts just for handling the repository 
+integrity is an absolute no-go.</p>
+
+<h4 id="svn-mirror">SVN Mirror</h4>
+
+<p>As some high-performance computers have extremely modified operating systems with 
+dated tools installed, having only a Mercurial or Git server might result in 
+serious trouble when working on such machines.
+Subversion is always installed, though one will be lucky if the version reads 
+1.5 or higher.</p>
+
+<p>As well, for the sake of usability and adoption inside our group, during the 
+transition phase the current SVN repository must still be writeable and two-way 
+synchronised with the new repository setup.
+A few month after the transition, the SVN server might become read-only to get 
+rid of the frequent synchronisation and to force all developers to use the new 
+repository.</p>
+
+<h4 id="easy-branching-for-mini-group-collaboration">Easy Branching For Mini-Group Collaboration</h4>
+
+<p>Due to the fact that some parts of the whole code base was developed in collaboration
+with industrial partners and is subject to restrictive licenses and access rights,
+SVN branches are deactivated for all developers.
+With branches enabled it would be possible to accidentally merge and commit those
+restricted code base into the main part, which would violate the licenses.</p>
+
+<p>With separated repositories this branching for collaboratively experimenting with 
+new features would be possible.</p>
+
+<h3 id="wishes">Wishes</h3>
+
+<p>These are <em>nice to have</em> and are <em>non-show-stopping</em>.
+They can not compensate any of the aforementioned demands.</p>
+
+<h4 id="automatic-checkouts-based-on-compile-parameters">Automatic Checkouts Based on Compile Parameters</h4>
+
+<p>As we are already using <em><a href="http://www.cmake.org/">CMake</a></em> for managing the build 
+process, with separated repositories for the different apps and plugins it would 
+be desirable and nice to automate cloning and updating of the various repositories 
+based on selected CMake parameters.
+That means, if an app or plugin requires some other additional app or plugin, CMake
+can check whether these dependencies are checked out and up to date.</p>
+
+<h4 id="separated-version-histories">Separated Version Histories</h4>
+
+<p>Up to now the revision history is a random mix of core, app and plugin changes.
+To read and visualize only the history of, say, core additional filter commands
+are required.
+With separated repositories, the history will also be separated.</p>
+
+<h2 id="git-submodules">Git Submodules</h2>
+
+<h3 id="how-they-work">How they work</h3>
+
+<p>Git Submodules are pointers on references of other Git repositories.
+These Submodules are either managed by editing, adding and commiting a 
+<code>.gitmodules</code> file in the root directory of the parent repository or via the 
+subcommand <code>git submodule</code> (which edits and adds <code>.gitmodules</code> anyway).</p>
+
+<h3 id="the-good-part">The Good Part</h3>
+
+<p>With the help of <em><a href="https://github.com/sitaramc/gitolite">Gitolite</a></em> it is 
+possible to easily manage and maintain all Git repositories and fine-grained user 
+access rights.
+As well, setting up SSH keys as the only authentication method is fast to accomplish
+with Git and Gitolite.
+This would be a lot more secure than the current setup using plaintext passwords.</p>
+
+<p>Using feature branches to collaboratively experiment with new functionality is
+one of the things Git is perfect at.</p>
+
+<p>There are three experienced Git users in our group, which are happy to teach and 
+train the rest of the group.</p>
+
+<h3 id="gotchas">Gotchas</h3>
+
+<p>At no point during committing and pushing the existence (from the point of view 
+of the server) of referenced subrepositories is checked.
+Thus, it is easily possible to commit a reference to a subrepository, which is only
+a local repository.
+When somebody else clones this repository from the server he will not be able to
+check out the referenced subrepository and will end up in a detached head.
+An absolute no-go!</p>
+
+<p>Beside this, recursive adds, commits and pushes are off by default and have to be
+enabled by a command line parameter on each execution (or by defining an alias).
+As this requires client-side modifications and careful usage by all developers it 
+is a no-go.</p>
+
+<h3 id="when-they-work">When they work</h3>
+
+<p>If all contributors are trained and experienced developers <em>and</em> advanced Git 
+users.
+If not, sooner than later all collaborators will end up with more detached heads 
+and inconsistent states than they can think of.
+And you have to fix them.</p>
+
+<h2 id="mercurial-subrepositories">Mercurial Subrepositories</h2>
+
+<h3 id="how-they-work-1">How they work</h3>
+
+<p>As with Git Submodules, Mercurial Subrepositories are pointers to certain states 
+of other Mercurial repositories.
+These pointers are, similar to Git, managed by a dotfile (in this case <code>.hgsub</code>), 
+which has to be under version control.</p>
+
+<h3 id="the-good-part-1">The Good Part</h3>
+
+<p>In contrast to Git, Mercurial always makes sure that all commits of subrepositories
+referenced by the root repository are available on the server.
+Thus, at no time it will be possible to push changes of the root repository without
+also recursively pushing all changes of the subrepositories.</p>
+
+<p>The most important Mercurial commands as <code>add</code>, <code>commit</code>, <code>update</code> and <code>status</code> 
+have a simple flag (<code>-S</code>) to recursively trigger the same command in the 
+subrepositories.
+Thus, global changes in several apps and plugins can easily be committed by a single
+command from the root repository.</p>
+
+<p>With the extensions <em><a href="http://mercurial.selenic.com/wiki/HgSubversion">hgsubversion</a></em> 
+and <em><a href="http://mercurial.selenic.com/wiki/ConvertExtension">convert</a></em> the conversion 
+from SVN to Mercurial and splitting up the whole repository into the desired 
+hierarchy of subrepositories worked smoothly.
+Following the detailed instructions given in an <a href="https://blogs.atlassian.com/2011/03/goodbye_subversion_hello_mercurial/">article by Jason Hinch at Atlassian</a>
+We could easily achieve the whole thing with a single Bash script, which is
+available in <a href="https://gist.github.com/torbjoernk/5325343">this Gist</a>.
+Be warned: depending on the size of the project it might take a couple of hours 
+to run.</p>
+
+<p>Similar to Gitolite for Git there is <em><a href="http://www.lshift.net/mercurial-server">mercurial-server</a></em> 
+for Mercurial offering almost the same functionality of managing repositories 
+and user access rights.</p>
+
+<h3 id="gotchas-1">Gotchas</h3>
+
+<p>There is no way of having Subrepositories without adding <em>and</em> committing the 
+<code>.hgsub</code> file.
+Thus, local-only subrepositories for the various apps and experimental plugins 
+are impossible without any additional client-side scripts and hooks.
+This is a no-go.</p>
+
+<p>After conversion of the current SVN to a single Mercurial repository two-way 
+synchronisation will work through post-commit hooks on both servers.
+As soon as the Mercurial repository is split up into a hierarchy of subrepositories 
+there will be no way of synchronising from SVN to Mercurial or vice-versa.
+Thus, the transition will be a two-step process where the first is the transition 
+to Mercurial leading to a complete shut-down of the SVN server and the second 
+step will be the splitting into subrepositories.
+While the latter is a one-time hard cut transition.
+A no-go.</p>
+
+<p>To hold it with two guys from Mercurial’s IRC channel on freenode:
+<blockquote><p>nobody said subrepos made sense ;-)</p><footer><strong>kiilerix</strong> <cite>irc.freenode.net#mercurial on April 3rd 2013</cite></footer></blockquote>
+<blockquote><p>subrepos are a Feature of Last Resort. By their very nature, they have to break <br/>a number of things.</p><footer><strong>JordiGH</strong> <cite>irc.freenode.net#mercurial on April 3rd 2013</cite></footer></blockquote>
+I’m adding, that this also holds true for Git Submodules.</p>
+
+<h3 id="when-they-work-1">When they work</h3>
+
+<p>Mercurial subrepositories would be perfect for the core part with the main libraries 
+and external dependencies as <em>Boost</em>.
+The core part would always have a clean and consistent state and no undefined
+references can occur.</p>
+
+<h2 id="svn-externals">SVN Externals</h2>
+
+<h3 id="how-they-work-2">How they work</h3>
+
+<p>Similar to Git Submodules and Mercurial Subrepositories, SVN Externals are 
+pointers to certain revisions of other SVN repositories.
+They either can be a <em>floating</em> reference onto the <code>HEAD</code> revision or a fixed 
+reference onto a specific revision, say <code>r42</code>.</p>
+
+<h3 id="the-good-part-2">The Good Part</h3>
+
+<p>Our current administrator does not need to learn any fancy new things.
+Nor does the others of the group.</p>
+
+<p>Access rights can still be managed not only by repository, branch and tag but also
+by path, as Subversion allows partial commits and checkouts.</p>
+
+<h3 id="gotchas-2">Gotchas</h3>
+
+<p>Recursive commits out of the root repository into all subrepositories as provided 
+by Mercurial, is partially implemented in the current development snapshot of 
+version 1.8 (see <a href="http://subversion.tigris.org/issues/show_bug.cgi?id=1167#desc30">this comment on a Bug report</a>.
+Without adding pre-commit hooks on the client side to automatically update the 
+referenced revisions of the external subrepositories, it is hardly possible to 
+achieve a clean state at all revisions of the root repository.
+Again, client-side hooks and commit scripts are a no-go.</p>
+
+<h3 id="when-they-work-2">When they work</h3>
+
+<p>They are a great way of including certain releases or snapshots of third-party 
+libraries into a project.
+As we are doing it with <em><a href="http://glaros.dtc.umn.edu/gkhome/views/metis">METIS</a></em> 
+or <em><a href="http://www.boost.org/">Boost</a></em>.
+In case your developers are randomly changing code in the base repository and 
+included ones, a lot of care has to be taken on each and every commit.
+The must-have feature of easy usage is lost straight away.
+Adding client side pre-commit hooks is far off being reliable nor easy maintainable.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>If you read that far and did not skip the previous three sections: Thank you for 
+letting us share the pain with you, that obviously none of the popular version 
+control systems are able to handle local-only subrepositories.
+You might already guess our final decision.</p>
+
+<p>Yes, we stick with the current setup and did not changed anything.</p>
+
+<p>We only created a Gitolite server mirroring SVN <code>trunk</code> and SVN branches (both 
+read-only) for those group members eager on using a full Git workflow.
+An additional Git <em>“fetch repository”</em> gets noticed of new SVN commits by a 
+post-commit hook on the SVN server which triggers a <code>git svn rebase</code> on <code>trunk</code> 
+and the SVN branches and force-pushes those SVN changes to the Git mirror.
+The Git mirror also allows all group members to easily create and mess around 
+with feature and personal branches for the occasional <em>on-the-road-hack</em>.
+Changes, which should go into the main development branch (i.e. <code>trunk</code>) must be 
+committed directly to the SVN server via <code>git svn dcommit</code>.</p>
+
+<p>This way, we still comply with the tight access rights on the code base and 
+must-have comfort functions while having partial support of the agile workflows 
+provided by Git’s features.
+Everybody seems happy.
+Except the guys, who stand this adventure.
+They called in sick recovering from the pain endured that no usable version control system out 
+there is capable of handling this use case in a maintainable manner.</p>
+
+<p>Thanks to my colleagues and companions in this adventure, <a href="https://github.com/marscher">Martin Scherer</a> 
+and <a href="https://github.com/stephanmg">Stephan Grein</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

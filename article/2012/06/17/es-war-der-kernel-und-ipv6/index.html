@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Torbjörn Klatt">
+  
+  <title>Es war der Kernel und IPv6</title>
+  
+  <meta name="description" content="Just me">
+  <link rel="canonical" href="http://torbjoern-klatt.de/article/2012/06/17/es-war-der-kernel-und-ipv6/">
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/octicons/octicons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/js/jquery.githubRepoWidget.min.js"></script>
+
+  <script type="text/javascript" src="/js/custom.js"></script>
+</head>
+
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Torbjörn Klatt</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
+          </ul>
+        </li>
+        <li><a href="/category/english/">English Posts</a></li>
+        <li><a href="/about/">Über / About</a></li>
+        <li><a href="/archive/">Archiv / Archive</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+    <div class="container">
+      <main>
+        <div class="row">
+          <div class="main-content col-md-8">
+            <div class="post">
+  <header class="post-header">
+    <h1>Es war der Kernel und IPv6</h1>
+  </header>
+  <article class="post-content">
+    <div class="lead">
+      <p>Vor einigen Wochen fing es an, dass ich in unregelmäßigen Abständen aber immer 
+häufiger beängstigende und größtenteils unverständliche Warnmeldungen des
+Kernels bekam.
+Ursache schien von den verschiedensten Programmen herzurühren und ich vermutet
+bis zuletzt Hardwareprobleme.
+Heute weiß ich, dass es an einem IPv6-Bug in dem von mir verwendeten Kernel
+lag.</p>
+    </div>
+    
+<p>##Die Symptome
+Wann genau es anfing kann ich nicht mehr sagen, doch kann ich folgende Symptome 
+und Regelmäßigkeiten feststellen:</p>
+
+<ul>
+  <li>Sobald die erste Warnung auftrat folgten weitere in regelmäßigen Abständen von
+maximal drei Minuten.</li>
+  <li>Habe ich nicht nach den ersten Warnungen einen kompletten Neustart des Systems
+gemacht, war es recht bald nicht mehr benutzbar und ein Herunterfahren u.U.
+nicht mehr möglich.</li>
+  <li>I.d.R. waren die Programme <em>swapper</em>, <em>kworker</em>, <em>thunderbird-bin</em> und <em>kwin</em>
+als Ursache des Problems in der Warnmeldung genannte.</li>
+  <li>Daheim traten die Probleme deutlich seltener auf als z.B. in der Universität.</li>
+</ul>
+
+<h2 id="die-warnmeldung">Die Warnmeldung</h2>
+<p>Hier einmal eine solche Warnmeldung, wie sie in <code>/var/log/messages</code> auftaucht:</p>
+
+<script src="https://gist.github.com/2944022.js"> </script>
+
+<h2 id="ursachenforschung">Ursachenforschung</h2>
+<p>Da diese Warnmeldungen anfangs nur sporadisch und ohne jegliche Regelmäßigkeit
+auftraten, vermutete ich einen Defekt des RAMs.
+Es würde erkären, dass unterschiedliche Programme betroffen sind, je nachdem
+welcher Bereich des RAMs defekt ist.</p>
+
+<h3 id="der-ram-war-es-nicht">Der RAM war es nicht</h3>
+<p>Nachdem ich jeden der beiden RAM-Riegel einzeln und dann auch beide zusammen mit
+wechselnden Slots mittels <code>memcheck</code> getestet habe, konnte ich ein Problem des
+RAMs ausschließen.
+Es ließen sich keine Fehler finden.</p>
+
+<h3 id="die-festplatte-war-es-nicht">Die Festplatte war es nicht</h3>
+<p>Eher weit hergeholt war meine Vermutung, dass Lesefehler der Festplatte Ursache
+sein könnten.
+Ein kurzes Auslesen der S.M.A.R.T.-Werte schockierte mich zunächst, da ich auf
+Grund falscher Interpretation der Werte ein sehr baldiges Komplettversagen der
+Festplatte diagnostizierte.</p>
+
+<script src="https://gist.github.com/2944042.js"> </script>
+
+<p>Wenn <code>VALUE</code> <em>unter</em> die Werte von <code>THRESH</code> fällt, wird es sehr kritisch.
+Obacht ist geboten, wenn <code>WORST</code> <em>unter</em> <code>THRESH</code> fällt.</p>
+
+<h3 id="der-hinweis">Der Hinweis</h3>
+<p>Da sich die Warnmeldungen auch daheim immer mehr häuften, schrieb ich
+<a href="http://lists.opensuse.org/opensuse/2012-06/msg00557.html">eine E-Mail an die Mailingliste meiner Linux-Distribution: openSUSE</a>.
+Dort schilderte ich mein Problem und die Schritte, die ich bislang angestellt
+habe, um das Problem zu beheben.
+Die Antwort war sowohl kurz als auch der direkte Hinweis auf die Lösung des
+Problems:
+Ein Bug im für IPv6 zuständigen Modul der Linux Kernels vor 3.3.1 und 3.2.14.
+Eine länglicher Bugreport und zugehörige Diskussion von Archlinux schildert die
+Bemühungen zur Lösung des Problems: <a href="https://bugs.archlinux.org/task/26847">Link</a>.
+Der Bugreport vom Kernel selbst fällt etwas kürzer aus:
+<a href="https://bugzilla.kernel.org/show_bug.cgi?id=42780">Link</a>.</p>
+
+<h2 id="die-lsung">Die Lösung</h2>
+<p>Da derzeit für openSUSE 12.1 lediglich der Kernel 3.1.10 angeboten wird, kann
+ich noch nicht so einfach von dem Bugfix profitieren.
+Derweil habe ich einfach das IPv6-Modul komplett deaktiviert, in dem ich in den
+Netzwerkeinstellungen von openSUSE (in <em>YaST</em>) IPv6 deaktiviert habe.</p>
+
+
+  </article>
+  <footer class="article">
+  
+  
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2012-06-17T10:41:00+02:00">17 Jun 2012</time>
+
+
+
+  
+
+
+  
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    Es war der Kernel und IPv6
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
+</footer>
+
+</div>
+
+          </div>
+          <div class="asides col-md-4">
+            <section id="recent-posts-aside" class="aside panel panel-default">
+  <div class="panel-heading">
+    <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
+      <i class="fa fa-rss"></i>
+      <!--<span class="hidden-xs">RSS</span>-->
+    </a>
+    <h3 class="panel-title">
+      Neue Artikel / Recent Posts
+    </h3>
+  </div>
+  
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">03 Apr 2013</span>
+      <a href="/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/">Struggling with Git Submodules and Mercurial Subrepositories</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">06 Nov 2012</span>
+      <a href="/article/2012/11/06/boost-unter-linux-selbst-installieren/">Boost unter Linux selbst installieren</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">17 Jun 2012</span>
+      <a href="/article/2012/06/17/es-war-der-kernel-und-ipv6/">Es war der Kernel und IPv6</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">08 Apr 2012</span>
+      <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
+    </li>
+    
+  </ul>
+</section>
+
+            <section id="gh-repos-aside" class="aside gh-repos panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-github fa-fw"></i>GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="panel-body gh-profile-link text-muted">
+      <div class="pull-right">
+        <a href="https://github.com/torbjoernk">@torbjoernk</a> on <i class="fa fa-github fa-fw"></i>GitHub
+      </div>
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/js/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'torbjoernk',
+            count: '5',
+            skip_forks: 'true',
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/js/github.js" type="text/javascript"></script>
+</section>
+
+            <section class="legal">
+  <div class="btn-group btn-group-xs btn-group-justified">
+    <a href="/imprint/" class="btn" role="button">
+      &copy;<span class="hidden-xs">&ensp;Imprint</span>
+    </a>
+    <a href="" class="btn" role="button">
+      <i class="fa fa-code"></i><span class="hidden-xs">&ensp;Source</span>
+    </a>
+  </div>
+</section>
+          </div>
+        </div><!-- /.row -->
+      </main>
+    </div><!-- /.container -->
+
+    <footer id="site-footer">
+  <div class="blog-footer">
+    <a href="#">Back to top</a>
+  </div>
+</footer>
+
+    
+  </body>
+</html>

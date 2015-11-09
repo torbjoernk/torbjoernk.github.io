@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Linux | Torbjörn Klatt]]></title>
+  <link href="http://torbjoern-klatt.de/category/linux/atom.xml" rel="self"/>
+  <link href="http://torbjoern-klatt.de/"/>
+  <updated>2015-11-09T09:50:36+01:00</updated>
+  <id>http://torbjoern-klatt.de/</id>
+  <author>
+    <name><![CDATA[Torbjörn Klatt]]></name>
+    <email><![CDATA[kontakt@torbjoern-klatt.de]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Boost unter Linux selbst installieren]]></title>
+    <link href="http://torbjoern-klatt.de/article/2012/11/06/boost-unter-linux-selbst-installieren/"/>
+    <updated>2012-11-06T10:00:00+01:00</updated>
+    <id>http://torbjoern-klatt.de/article/2012/11/06/boost-unter-linux-selbst-installieren</id>
+    <content type="html"><![CDATA[<p>Dies soll eine kleine Anleitung sein, wie man die aktuellste (und stabile) Boost
+Version unabhängig von den Distributionspaketen installiert.
+Zum Zeitpunkt dieses Artikels war das Boost 1.52.0.
+Installiert auf einem 64bit openSUSE 12.2 (funktioniert ebenso mit 12.1).</p>
+
+<!-- more -->
+<p>## Voraussetzungen und Abhängigkeiten
+### Compiler
+Natürlich ist ein aktueller <strong>C/C++-Compiler</strong> notwendig.
+Für diese Anleitung habe ich sowohl den <em>GNU GCC in Version 4.7.2</em> als auch den
+LLVM Clang in Version 3.1 genutzt, die ich über die offiziellen openSUSE 
+Repositories (genaue gesagt: <code>gcc47</code> und <code>llvm-clang</code>) installiert habe.</p>
+
+<h3 id="unicode-untersttzung">Unicode-Unterstützung</h3>
+<p>Um <strong>vollständige Unicode-Unterstützung</strong> zu haben, sind zudem die <em>International
+Components for Unicode</em> (kurz: <em>ICU</em>) notwendig.
+Hier nutze ich <em>libicu</em> in Version 49.1.
+Im Falle von openSUSE heißt das Entwicklungs-Paket <code>libicu-devel</code> (die 
+eigentliche Bibliothek, <code>libicu49</code>, wird automatisch ebenfalls installiert).
+Nicht notwendig aber durchaus nicht schädlich sind noch die Pakete <code>icu</code> sowie
+<code>icu-data</code>.</p>
+
+<h3 id="openmpi">OpenMPI</h3>
+<p>Einige Boost-Bibliotheken haben die Möglichkeit <strong>OpenMPI</strong> zu nutzen, um eine
+bessere Parallelisierung zu ermöglichen.
+Dafür sind jedoch die Header-Dateien für <em>OpenMPI</em> nötig, die sich
+<code>openmpi_devel</code> nennen.
+Ich nutze hier Version 1.5.4.</p>
+
+<h2 id="boost-sourcen-vorbereiten">Boost-Sourcen vorbereiten</h2>
+<p>### Downloaden
+Jetzt fehlen nur noch die Boost-Sourcen.
+Diese sind auf <em>Sourceforge</em>:
+<a href="http://sourceforge.net/projects/boost/files/boost/1.52.0/">http://sourceforge.net/projects/boost/files/boost/1.52.0/</a>.
+Ich bevorzuge die Bzip2 komprimierte Variante – aber das sei jedem selbst
+überlassen.</p>
+
+<h3 id="entpacken">Entpacken</h3>
+<p>Ich persönlich habe diese nach <code>$HOME/src/boost_1_52_0</code> entpackt, da ich die
+Quellen von selbstkompilierten Programmen und Bibliotheken in <code>$HOME/src</code>
+sammel, um sie dann nach <code>$HOME</code> zu installieren.
+Wer mag kann es aber auch systemweit nach <code>/opt</code> (dann aber wohl als root
+installieren) oder sonstwohin entpacken.</p>
+
+<h2 id="boost-kompilieren">Boost kompilieren</h2>
+<p>Bevor Boost kompiliert werden kann, muss zunächst das Boost.Build-System 
+vorbereitet werden.
+Boost kommt mit einem eigenen Build-Programm (früher <code>bjam</code>, heute <code>b2</code> genannt), 
+so dass man kein <code>./configure &amp;&amp; make &amp;&amp; make install</code> machen kann.
+<em>CMake</em> ist zwar möglich aber nur experimentell unterstützt.
+Ich bevorzuge hier <em><a href="http://www.boost.org/boost-build2/">Boost.Build</a></em>.</p>
+
+<p>Von nun gehe ich davon aus, dass alle Befehle in <code>$HOME/src/boost_1_52_0</code> (bzw.
+entsprechend) ausgeführt werden.</p>
+
+<h3 id="konfigurieren-bootstrappen">Konfigurieren (‘Bootstrappen’)</h3>
+<p>Der erste Schritt ist die Vorbereitung von <em>Boost.Build</em>, das mit den
+Boost-Sourcen mitgeliefert wird.
+Ein <code>./boostrap --help</code> liefert ein paar Hinweise, wie man es installieren kann.
+Ich will alle Boost-Bibliotheken, mit vollständiger Unicode-Unterstützung, in
+mein Benutzerverzeichnis (also nach <code>$HOME/lib</code> und <code>$HOME/include</code>) 
+installieren:</p>
+
+<pre><code>./bootstrap --with-icu --prefix=$HOME
+</code></pre>
+
+<p>Der Output sollte folgende Zeilen enthalten:</p>
+
+<pre><code>Building Boost.Build engine with toolset gcc... tools/build/v2/engine/bin/linux86_64/b2
+Unicode/ICU support for Boost.Regex?... /usr
+Generating Boost.Build configuration in project-config.jam...
+</code></pre>
+
+<p>Vermutlich wird noch ein Hinweis auf ein (nicht) vorhandenes Python auftauchen.
+Diesen ignoriere ich jetzt hier.
+Wer Boost auch für Python verfügbar haben möchte, sollte sicher stellen, dass
+sowohl die von einem selbst bevorzugte Python Version sowie dessen
+Installationspfad richtig erkannt wird.</p>
+
+<p>Da <em>OpenMPI</em> genutzt werden soll, das aber scheinbar nicht automatisch erkannt
+wird, muss es manuell der Konfiguration hinzugefügt werden.
+Dazu muss in der Datei <code>tools/build/v2/user-config.jam</code> die Zeile</p>
+
+<pre><code>using mpi ;
+</code></pre>
+
+<p>hinzugefügt werden (wo ist egal, am einfachsten ans Ende: <code>echo "using mpi ;" &gt;&gt;
+tools/build/v2/user-config.jam</code>).<br />
+<strong>WICHTIG</strong>: Unbedingt auf das Leerzeichen vor dem Semikolon achten!</p>
+
+<h3 id="kompilieren----the-long-run">Kompilieren – The long run…</h3>
+<p>Ein <code>./b2 --help</code> gibt eine ganze Menge an Optionen aus, wie die Art der
+Boost-Installation kontrolliert werden kann.
+Die vollständige Liste an Optionen findet sich in der
+<a href="http://www.boost.org/boost-build2/doc/html/bbv2/overview/builtins/features.html">Dokumentation von Boost.Build2</a>.</p>
+
+<p>Also setze ich mal die einzelnen Parameter zusammen, denn ich möchte,</p>
+
+<ul>
+  <li>dass der GCC genutzt wird: <code>toolset=gcc</code></li>
+  <li>dass die Namen der Bibliotheken den verwendeten Compiler, Version und Typ 
+enthalten: <code>--layout=versioned</code></li>
+  <li>dass nur die dynamisch linkbaren Bibliotheken verfügbar werden: <code>link=shared</code></li>
+  <li>dass alle Compiler-Optimierungen genutzt werden sollen: <code>variant=release</code></li>
+  <li>dass ich dennoch Debug-Symbole nutzen kann: <code>debug-symbols=on</code></li>
+  <li>dass sowohl multi- als auch single-Threading möglich ist:
+<code>threading=multi,single</code></li>
+  <li>dass immer gegen dynamische C/C++-Systembibliotheken gelinkt wird:
+<code>runtime-link=shared</code></li>
+  <li>dass evtl. frühere Builds verworfen werden: <code>-a</code></li>
+  <li>dass drei Compiler-Instanzen parallel laufen sollen (ich habe nicht so viel
+Zeit aber leider nur zwei CPU-Cores): <code>-j3</code></li>
+  <li>dass beim ersten Fehler abgebrochen wird, damit ich sicher gehen kann, dass
+alles in Ordnung ist: <code>-q</code></li>
+  <li>dass erst einmal alles kompiliert wird (installieren später): <code>stage</code></li>
+</ul>
+
+<p>Das macht dann also:</p>
+
+<pre><code>./b2 link=shared runtime-link=shared threading=multi,single variant=release debug-symbols=on toolset=gcc -a -q -j3 --layout=versioned stage
+</code></pre>
+
+<p>Die Installation nach <code>$HOME</code> wird dann mit dem gleichen Befehl angestoßen,
+allerdings statt <code>stage</code> wählt man <code>install</code> als Kommando.
+Und man sollte <code>-a</code> entfernen.</p>
+
+<p>Um das gleiche mit dem <em>Clang</em> Compiler zu machen, ersetzt man <code>toolset=gcc</code> durch
+<code>toolset=clang</code>.</p>
+
+<h2 id="endnotiz">Endnotiz</h2>
+<p>Möchte man nun das frische Boost in einem <em>CMake</em>-basierten Projekt verwenden,
+sollte man beim Aufruf von <em>CMake</em> noch den Parameter <code>-DBOOST_ROOT=$HOME</code>
+hinzufügen.
+Kompiliert man das <em>CMake</em>-Projekt mit <em>Clang</em>, so ist auf Grund eines Bugs
+(oder fehlendem Feature, wie man’s nimmt) im <em>CMake</em>-Module <code>FindBoost</code> unter
+Linux, zusätzlich noch der Paramter <code>-DBoost_COMPILER="-clang31"</code> notwendig.</p>
+
+<p><em>Happy Boosting!</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Es war der Kernel und IPv6]]></title>
+    <link href="http://torbjoern-klatt.de/article/2012/06/17/es-war-der-kernel-und-ipv6/"/>
+    <updated>2012-06-17T10:41:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2012/06/17/es-war-der-kernel-und-ipv6</id>
+    <content type="html"><![CDATA[<p>Vor einigen Wochen fing es an, dass ich in unregelmäßigen Abständen aber immer 
+häufiger beängstigende und größtenteils unverständliche Warnmeldungen des
+Kernels bekam.
+Ursache schien von den verschiedensten Programmen herzurühren und ich vermutet
+bis zuletzt Hardwareprobleme.
+Heute weiß ich, dass es an einem IPv6-Bug in dem von mir verwendeten Kernel
+lag.</p>
+
+<!-- more -->
+<p>##Die Symptome
+Wann genau es anfing kann ich nicht mehr sagen, doch kann ich folgende Symptome 
+und Regelmäßigkeiten feststellen:</p>
+
+<ul>
+  <li>Sobald die erste Warnung auftrat folgten weitere in regelmäßigen Abständen von
+maximal drei Minuten.</li>
+  <li>Habe ich nicht nach den ersten Warnungen einen kompletten Neustart des Systems
+gemacht, war es recht bald nicht mehr benutzbar und ein Herunterfahren u.U.
+nicht mehr möglich.</li>
+  <li>I.d.R. waren die Programme <em>swapper</em>, <em>kworker</em>, <em>thunderbird-bin</em> und <em>kwin</em>
+als Ursache des Problems in der Warnmeldung genannte.</li>
+  <li>Daheim traten die Probleme deutlich seltener auf als z.B. in der Universität.</li>
+</ul>
+
+<h2 id="die-warnmeldung">Die Warnmeldung</h2>
+<p>Hier einmal eine solche Warnmeldung, wie sie in <code>/var/log/messages</code> auftaucht:</p>
+
+<p><script src="https://gist.github.com/2944022.js"> </script></p>
+
+<h2 id="ursachenforschung">Ursachenforschung</h2>
+<p>Da diese Warnmeldungen anfangs nur sporadisch und ohne jegliche Regelmäßigkeit
+auftraten, vermutete ich einen Defekt des RAMs.
+Es würde erkären, dass unterschiedliche Programme betroffen sind, je nachdem
+welcher Bereich des RAMs defekt ist.</p>
+
+<h3 id="der-ram-war-es-nicht">Der RAM war es nicht</h3>
+<p>Nachdem ich jeden der beiden RAM-Riegel einzeln und dann auch beide zusammen mit
+wechselnden Slots mittels <code>memcheck</code> getestet habe, konnte ich ein Problem des
+RAMs ausschließen.
+Es ließen sich keine Fehler finden.</p>
+
+<h3 id="die-festplatte-war-es-nicht">Die Festplatte war es nicht</h3>
+<p>Eher weit hergeholt war meine Vermutung, dass Lesefehler der Festplatte Ursache
+sein könnten.
+Ein kurzes Auslesen der S.M.A.R.T.-Werte schockierte mich zunächst, da ich auf
+Grund falscher Interpretation der Werte ein sehr baldiges Komplettversagen der
+Festplatte diagnostizierte.</p>
+
+<p><script src="https://gist.github.com/2944042.js"> </script></p>
+
+<p>Wenn <code>VALUE</code> <em>unter</em> die Werte von <code>THRESH</code> fällt, wird es sehr kritisch.
+Obacht ist geboten, wenn <code>WORST</code> <em>unter</em> <code>THRESH</code> fällt.</p>
+
+<h3 id="der-hinweis">Der Hinweis</h3>
+<p>Da sich die Warnmeldungen auch daheim immer mehr häuften, schrieb ich
+<a href="http://lists.opensuse.org/opensuse/2012-06/msg00557.html">eine E-Mail an die Mailingliste meiner Linux-Distribution: openSUSE</a>.
+Dort schilderte ich mein Problem und die Schritte, die ich bislang angestellt
+habe, um das Problem zu beheben.
+Die Antwort war sowohl kurz als auch der direkte Hinweis auf die Lösung des
+Problems:
+Ein Bug im für IPv6 zuständigen Modul der Linux Kernels vor 3.3.1 und 3.2.14.
+Eine länglicher Bugreport und zugehörige Diskussion von Archlinux schildert die
+Bemühungen zur Lösung des Problems: <a href="https://bugs.archlinux.org/task/26847">Link</a>.
+Der Bugreport vom Kernel selbst fällt etwas kürzer aus:
+<a href="https://bugzilla.kernel.org/show_bug.cgi?id=42780">Link</a>.</p>
+
+<h2 id="die-lsung">Die Lösung</h2>
+<p>Da derzeit für openSUSE 12.1 lediglich der Kernel 3.1.10 angeboten wird, kann
+ich noch nicht so einfach von dem Bugfix profitieren.
+Derweil habe ich einfach das IPv6-Modul komplett deaktiviert, in dem ich in den
+Netzwerkeinstellungen von openSUSE (in <em>YaST</em>) IPv6 deaktiviert habe.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ownCloud + Thunderbird + Android = Perfect Sync]]></title>
+    <link href="http://torbjoern-klatt.de/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/"/>
+    <updated>2012-04-08T19:01:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync</id>
+    <content type="html"><![CDATA[<p>Ich habe es endlich hinbekommen!
+Das mit der schmerzfreien Synchronisation meiner Kalender und Adressbücher 
+zwischen meinem PC und meinem Android-Phone.
+Und das <strong>ohne</strong> einer Datenkrake wie <em>Google</em> dazwischen.</p>
+
+<p>Hier will ich nun beschreiben, wie ich das hinbekommen habe.</p>
+
+<p><em>Es gibt ein Update (19.04.2012)</em></p>
+
+<!-- more -->
+
+<h2 id="thunderbird">Thunderbird</h2>
+<p>Dass ich von <em>KDE PIM</em> (a la <em>KMail</em> und <em>KOrganizer</em>) auf <em>Thunderbird</em> mit 
+<em>Lightning</em> umgestiegen bin, will ich hier nur kurz erwähnen und nicht weiter 
+kommentieren.
+Das soll ein postivier Blogpost werden und kein Rant.</p>
+
+<p>Ich setze hier <em>Thunderbird 11.0.1</em> unter einem 64bittigen <em>openSUSE 11.4</em> ein.</p>
+
+<h3 id="kontakte">Kontakte</h3>
+<p>Um die Kontakte-Synchronisation mit <em>ownCloud</em> hinzubekommen und nicht auf die 
+scheinbar kaputten Adressbuch Im- und Exportfunktionen angewiesen zu sein, habe 
+ich die folgenden AddOns installiert:</p>
+
+<ul>
+  <li><a href="http://www.sogo.nu/files/downloads/extensions/sogo-connector-10.0.1.xpi">SOGo Connector</a></li>
+  <li><a href="https://nic-nac-project.org/~kaosmos/morecols-en.html">MoreFunctionsForAddressbook</a></li>
+</ul>
+
+<p>Den Tipp hierfür bekam ich im <a href="http://forum.owncloud.org/viewtopic.php?f=3&amp;t=2040"><em>ownCloud</em> Forum</a>.</p>
+
+<h3 id="kalender">Kalender</h3>
+<p>Das <em>Lightning</em>-Plugin bringt alle Funktionalität mit, die für eine
+Synchronisation über <em>CalDAV</em> nötig sind.
+Es sind keine zusätzlichen Plugins oder besonderen Einstellungen nötig.</p>
+
+<h2 id="android">Android</h2>
+<p>Vorweg: Hier muss man etwas Geld investieren — doch es lohnt sich.
+Im Android-Market sind die folgenden Apps zu beziehen:</p>
+
+<ul>
+  <li><a href="https://play.google.com/store/apps/details?id=org.dmfs.caldav.lib">CalDAV-Sync beta</a>,
+2,14€</li>
+  <li><a href="https://play.google.com/store/apps/details?id=org.dmfs.carddav.Sync">CardDAV-Sync beta</a>,
+1,53€</li>
+</ul>
+
+<p>Sie sorgen für die Synchronisation mit (der noch aufzusetzenden) 
+<em>ownCloud</em>-Instanz.
+Einmal eingerichtet bleiben sie im Hintergrund und tauchen nur unter „<em>Konten &amp;
+Synchronisation</em>“ auf.
+Dabei erstellen sie für jeden synchronisierten Kalender oder Adressbuch ein
+entsprechendes Pondon auf dem Gerät, die sich dann in einer beliebigen 
+Kalenderanwendung bzw.
+Kontaktverwaltung auswählen lassen.</p>
+
+<p><em>Kleines Manko</em>: Man benötigt nur ein <em>CalDAV</em>-Konto für alle Kalender, aber pro
+Adressbuch ein <em>CardDAV</em>-Konto.
+Mit viele Adressbüchern ist das etwas nervig einzurichten.</p>
+
+<h2 id="owncloud">ownCloud</h2>
+<p>Ich beziehe mich hier auf die derzeit aktuellste Version 3.0, die ich über Git
+bezogen habe.</p>
+
+<h3 id="vorbereitung">Vorbereitung</h3>
+<p>Ich habe alles (außer dem <code>.git</code>-Ordner) in ein gezipptes-Tar-Archiv gepackt
+und auf meinen Webspace bei <em>All-inkl.com</em> hochgeladen.
+Dort ist ganz wichtig, dass man standardmäßig PHP 5.3.10 aktiviert hat.
+Bei mir war das leider noch nicht der Fall, doch eine E-Mail an den Support, und
+eine Nacht später war ich auf einen neueren Server umgezogen.
+Kostenfrei versteht sich.</p>
+
+<p>Dann nohc der Anleitung auf <a href="http://owncloud.org/support/setup-and-installation/webspace/">ownCloud.org</a>
+folgen, d.h. <code>data</code>-Ordner anlegen, 0750 geben und dem <code>config</code>-Ordner 0777
+geben.
+Schließlich noch über <em>WebFTP</em> den Inhaber des gesamten <code>ownCloud</code>-Ordners auf
+<code>www-data</code> ändern (rekursiv!).</p>
+
+<h3 id="installation">Installation</h3>
+<p>Nachdem man nicht vergessen hat, eine <em>MySQL</em>-Datenbank für <em>ownCloud</em>
+einzurichten (und am besten eine Subdomain), kann man nun sein eigenes
+<em>ownCloud</em> besuchen.
+Zunächst einmal einen <em>Admin</em>-Konto anlegen und die Zugangsdaten zur
+<em>MySQL</em>-Datenbank angeben.
+Bitte nicht <em>SQlite</em> ausgewählt lassen!</p>
+
+<p>Bitte nicht von der PHP-Fehlermeldung erschrecken lassen.
+Für irgendetwas will <em>ownCloud</em> auf <code>/dev/urandom</code> bei der initialen Einrichtung
+zugreifen.
+Das ist in einem Webspace leider nicht möglich.
+Funktioniert auch so alles prima.</p>
+
+<p>Einfach noch einmal die Seite aufrufen (nicht <code>F5</code>) und man „ist drin“.
+Ich habe erst einmal alle Anwendungen deaktiviert, die ich nicht benötige:
+Also alles, was nicht „<em>Calendar</em>“ oder „<em>Contacts</em>“ heißt.</p>
+
+<p>Dann noch einen Benutzer für den eigentlichen Gebrauch anlegen, den man bitte
+nicht der <em>Admin</em>-Gruppe zuordnet.</p>
+
+<h2 id="synchronisation">Synchronisation</h2>
+<p>Im Prinzip ganz einfach.
+Aber erst die entsprechenden Kalender und Adressbücher in der
+<em>ownCloud</em>-Oberfläche anlegen.</p>
+
+<h3 id="kalender-1">Kalender</h3>
+<p>In <em>Lightning</em> einen neuen Kalender anlegen, der „<em>im Netzwerk</em>“ und vom Typ
+„<em>CalDAV</em>“ ist.
+Als <em>Adresse</em> gibt man hier die an, die einem <em>ownCloud</em> anzeigt, wenn man dort
+auf das <em>Welt</em>-Icon klickt.
+Das sieht in etwa so aus:</p>
+
+<pre><code>http://beispiel.de/apps/calendar/caldav.php/calendars/[BENUTZER]/[KALENDER]
+</code></pre>
+
+<p>In <em>Lightning</em> importiert man dann eine Kalenderadatei von der Festplatte (z.B.
+<em>ICal</em>) in den neu erstellten Kalender.<br />
+Fertig.</p>
+
+<p>Gleiches gibt man auch auf dem Android in <em>CalDAV-Sync beta</em> ein.
+Mit dem einzigen Unterschied, dass man nur die URL bis zum Kalendernamen
+eintragen muss.
+Die einzelnen Kalender findet er selber.</p>
+
+<h3 id="kontakte-1">Kontakte</h3>
+<p>Hier habe ich mich stark an das eingangs genannte Mini-HowTo im <em>ownCloud</em>-Forum
+gehalten.
+Das <em>MoreFunctions…</em>-AddOn ermöglicht es einem im Adressbuch unter
+<em>Datei</em>/<em>Neu</em> ein <em>Remote-Adressbuch</em> anzulegen.
+Die einzugebende Adresse verrät einem <em>ownCloud</em>:</p>
+
+<pre><code>http://beispiel.de/apps/contacts/carddav.php/addressbooks/[BENUTZER]/[ADRESSBUCH]/
+</code></pre>
+
+<p>Wie eingangs erwähnt, ist es etwas nervig mehrere Adressbücher auf dem Android
+mit <em>CardDAV-Sync beta</em> einzurichten.
+Aber es ist ja eine einmalige Sache.</p>
+
+<p>Leider brachte mir die initiale Synchronisation meiner Kontaktdaten von
+<em>Thunderbird</em> nach <em>ownCloud</em> die Namensfelder etwas durcheinander.
+Insbesondere die Titel, Vor- und Nachnamen passten bei all den Einträge nicht,
+die einen oder mehrere Titel (wie „<em>Dr.</em>“ oder „<em>Prof.</em>“) oder der Vor- oder
+Nachname aus jeweils mehr als einem Wort bestand.
+Hier musste ich in der Weboberfläche von <em>ownCloud</em> nachbessern.</p>
+
+<p><strong>Update 19.04.2012</strong><br />
+Vor ein paar Tagen habe ich gemerkt, dass ich meine Kontakte auf dem Android
+nicht mehr wirklich bearbeiten kann.
+Das liegt insbesondere an Android bzw.
+Google selbst, die die entsprechende API
+nicht richtig freigegeben haben.
+So können Sync-Tools wie das hier erwähnte <em>CardDAV-Sync</em> nicht richtig auf das
+interne Format der Kontakte zugreifen.</p>
+
+<p>Vom gleichen Autor, wie <em>CardDAV-Sync</em> und <em>CalDAV-Sync</em> gibt es den
+<a href="https://play.google.com/store/apps/details?id=org.dmfs.android.contacteditorpp">Contact Editor Pro</a>
+(€2,14) und dessen etwas reduzierte kostenlose Gegenstück.
+Wählt man beim Kontakteeditieren diesen an statt Androids eigenen aus,
+funktioniert alles wieder reibungslos.<br />
+Nettes Randfeature: Dieser Kontakteditor kann deutlich mehr CardDAV-Felder
+beschreiben als Androids eigener.<br />
+<strong>Update Ende</strong></p>
+
+<h2 id="fazit">Fazit</h2>
+<p>Endlich funktioniert die Synchronisation meiner Kalender und Adressbücher sauber
+und schmerzfrei und ohne, dass irgend eine Datenkrake da mithören kann.
+Zudem bin ich absolut unabhängig von irgendwelchen Online-Diensten, denn sollte
+mein Hoster dicht machen oder ich einen anderen wählen, so brauche ich lediglich
+meinen Webspace umziehen lassen (Daten- und Datenbank-Backup) und die Domain
+samt Subdomain auf den neuen Ort umleiten.
+Weder in Thunderbird noch im Android muss ich dafür irgendetwas umstellen.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KDE Tipps #2: Akonadi mit eigenem lokalen MySQL-Server beschleunigen]]></title>
+    <link href="http://torbjoern-klatt.de/article/2011/09/15/kde-tipps-2-akonadi-mit-eigenem-lokalen-mysql-server-beschleunigen/"/>
+    <updated>2011-09-15T00:00:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2011/09/15/kde-tipps-2-akonadi-mit-eigenem-lokalen-mysql-server-beschleunigen</id>
+    <content type="html"><![CDATA[<p>Vor einiger Zeit war ich dazu übergegangen, meinen eigenen, lokalen MySQL-Server sowohl für Akonadi als auch für Amarok zu nutzen.
+Auf die Vorteile gegenüber des standardmäßigen, internen SQlite-Servers möchte ich hier nicht eingehen.
+Vielmehr will ich hier ein paar Tipss zur Optimierung des MySQL-Servers geben und wie man damit insbesondere Akonadi extrem beschleunigen kann.
+Die Auswirkungen sind gerade bei KMail2 zu spüren, das nun deutlich flüssiger geworden ist.</p>
+
+<p>Kurz gesagt: Die Standardwerte der <code>my.cnf</code> sind für Akonadi suboptimal.
+Doch die folgenden Schritte sollten schnelle und einfache Abhilfe schaffen:</p>
+
+<!--more-->
+
+<p>Eine sehr große Hilfe war mir das <a href="https://github.com/rackerhacker/MySQLTuner-perl">MySQL-Tuning-Script von rackerhacker</a>, das einen laufenden MySQL-Server ein wenig auf den Zahn fühlt und dann einem Vorschläge für Verbesserungen unterbreitet.
+Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es verwenden zu können.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://mysqltuner.pl
+</span><span class='line'>perl mysqltuner.pl</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Man wird aufgefordert den <strong>MySQL</strong>-<code>root</code>-Usernamen sowie dessen Passwort anzugeben.
+I.d.R. ist dies <code>root</code> und ein hoffentlich selbst gewähltes Passwort, das nicht zwangsläufig dem des Linux-root-Passworts entsprechen muss.</p>
+
+<p>Das wichtigste steht ganz am Ende der Ausgabe unter <strong>Recommendations</strong> und bevor man sich der allgemeinen Vorschläge annimmt sollte man die vorgeschlagenen Variablen in der <code>/etc/my.cnf</code> wirklich ändern.</p>
+
+<p>Ein gelegentliches Optimieren der Tabellen (<code>OPTIMIZE TABLE</code> auf alle Tabellen der Datenbank <code>akonadi</code> anwenden) kann sicherlich auch nicht schaden.
+Aber dabei bitte Vorsicht, denn ein laufender Akonadi-Server kann durch das Tabellenoptimieren während seiner Laufzeit durcheinander geraten.
+Also am besten beim Hochfahren des Rechners die Tabellen durch ein Script optimieren.</p>
+
+<p>Hier nun ein paar wichtige Variablen und deren Werte meiner <code>my.cnf</code> auf einem Laptop mit 4GB RAM und einem Duo-Core-Prozessor:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>key_buffer_size = 128M
+</span><span class='line'>sort_buffer_size = 512K
+</span><span class='line'>thread_cache_size = 8
+</span><span class='line'>wait_timeout = 1296000
+</span><span class='line'>query_cache_size = 8M
+</span><span class='line'>query_cache_type = 1
+</span><span class='line'>join_buffer_size = 256K</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Der Wert des <code>thread_cache_size</code> ist vermutlich noch nicht 100%-ig stimmig.
+Bekomme da bei jedem Lauf des Tuningscripts einen anderen Wert vorgeschlagen.
+<code>wait_timeout</code> hatte ich auf diesen Wert, der 8 Stunden entspricht, erhöht, um damit einen Bug des <em>Mail Dispatcher Agent</em> zu umgehen.
+Dieser schaltete sich nach einiger Zeit, in der ich keine E-Mails versendet hatte, ab und musste in der <code>akonadiconsole</code> wieder reaktiviert werden (oder durch ein Ab-/Anmelden).</p>
+
+<p>In meinem Fall wirklich Bemerkenswert war das Aktivieren des <em>Query Caches</em>, der standardmäßig deaktiviert ist.
+Insbesondere das Öffnen und Anzeigen von E-Mails in einem großen lokalen E-Mail-Ordner ist seit dem sehr flüssig.</p>
+
+<p>Abschließend noch eine kleiner Hinweis: Das Tuningscript ist kein Allheilmittel und dessen Vorschläge machen erst bei einer längeren kontinuierlichen Laufzeit und Nutzung des MySQL-Servers wirklich Sinn.
+Also am besten nach einem langen Arbeitstag ausführen, wenn man insbesondere KMail2 etc. über mehrere Stunden intensiv genutzt hat.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[KDE Tipps #1: Deutsches KMail aber fremdsprachige E-Mails]]></title>
+    <link href="http://torbjoern-klatt.de/article/2011/07/05/kde-tipps-1-deutsches-kmail-aber-englische-vorlagen/"/>
+    <updated>2011-07-05T00:00:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2011/07/05/kde-tipps-1-deutsches-kmail-aber-englische-vorlagen</id>
+    <content type="html"><![CDATA[<p><img class="left" src="http://kde.org/images/icons/kmail_48.png" width="48" height="48" title="“Das KDE-KMail Logo”" >
+Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten).
+Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „<em>Am Donnerstag, 21.
+April 2011, 21:42:12 schrieben Sie:</em>“ voran.
+Das sieht nicht gut aus und geht deutlich besser!</p>
+
+<!-- more -->
+
+<p>So lange man nur im deutschsprachigen Umfeld arbeitet ist dies kein Problem, kommen aber hier und da englischsprachige E-Mails hinzu, ist ein solcher deutschsprachiger Text eher unpassend.</p>
+
+<p>Hier beschreibe ich eine mögliche Vorgehensweise, wie man dieses Problem in <a href="http://userbase.kde.org/KMail">KMail</a>, dem E-Mail-Programm von <a href="http://kde.org/">KDE</a>, einfach lösen kann ohne die Sprache der Benutzeroberfläche ändern zu müssen.
+Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Version 2.0.95 unter KDE 4.6.90 (4.7 RC1)) gemacht, es lässt sich aber auf alle anderen beliebigen Oberflächen ebenfalls anwenden.</p>
+
+<h3 id="der-standard">Der Standard</h3>
+<p>Die Standard-Vorlagen sind Bestandteil der Lokalisierung von KMail, weshalb sie bei einer deutschsprachigen Benutzeroberfläche ebenfalls übersetzt sind.
+Die hier beschriebene Lösung besteht aus einer Rückübersetzung dieser Standard-Vorlagen.</p>
+
+<p>Unter „<em>Einstellungen</em>“ -&gt; „<em>KMail einrichten …</em>“ wählt man den „<em>E-Mail-Editor</em>“ aus und begibt sich in den Reiter „<em>Standard-Vorlagen</em>“.
+Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiterleiten einer E-Mail automatisch verwendet werden.</p>
+
+<p>Bei deutscher Lokalisierung steht hier für „<em>Antwort an Absender</em>”:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%CURSOR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%REM=”Standardvorlage für Antworten”%-
+</span><span class='line'>Am %ODATE, %OTIMELONG schrieben Sie:
+</span><span class='line'>%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen (“<em>On %ODATE %OTIMELONG you wrote:</em>”), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen.
+Andernfalls würde das obige Beispiel als „<em>On Donnerstag, 21.
+April 2011 21:42 you wrote:</em>“ erscheinen.</p>
+
+<p>Die nicht-lokalisierten Platzhalter lassen sich einerseits durch das unten stehende Menü „<em>Platzhalter einfügen</em>“ -&gt; „<em>Ursprüngliche Nachricht</em>“ wählen (es sind die mit dem Zusatz „<em>in C-Lokalisierung</em>“)  oder durch Anhängen von “<code>EN</code>” an die bisherigen.</p>
+
+<p>Schließlich sieht die englischsprachige Standard-Vorlage ohne lokalisierte Platzhalter wie folgt aus:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%CURSOR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%REM=”Standardvorlage für Antworten”%-
+</span><span class='line'>On %ODATEEN %OTIMELONGEN you wrote:
+</span><span class='line'>%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Mit den anderen Standard-Vorlagen für „<em>Allen antworten / der Liste antworten</em>“ und „<em>Nachricht weiterleiten</em>“ verfährt man ebenso.</p>
+
+<h3 id="die-erweiterung">Die Erweiterung</h3>
+<p>Um individuell nur bei Antworten auf (oder beim Weiterleiten) bestimmte E-Mails die englischsprachige Vorlage zu verwenden, empfiehlt es sich, „<em>Eigene Vorlagen</em>“ einzurichten.
+Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man über den gewählten Name im „<em>Antworten</em>“-Menü (lange auf das Werkzeugleisten-Symbol „<em>Antworten</em>“ klicken) aufrufen kann.</p>
+
+<p>Ich habe hier eine neue Vorlage „<em>deutsche Antwort</em>“ erstellt und in das große Textfeld</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%CURSOR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%REM=”Vorlage für deutsche Antworten”%-
+</span><span class='line'>Am %ODATE um %OTIMELONG schrieben Sie:
+</span><span class='line'>%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>eingegeben und unten rechts noch „<em>Antwort</em>“ als Vorlagentyp gewählt.</p>
+
+<p>Außerdem habe ich noch eine Vorlage „<em>deutsche Antwort (allen)</em>“ mit</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%REM=”Deutsche Vorlage für Antworten an alle”%-
+</span><span class='line'>Am %ODATE um %OTIMELONG schrieb %OFROMNAME:
+</span><span class='line'>%QUOTE&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%CURSOR</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>und dem Vorlagentyp „Allen Antworten“ erstellt.</p>
+
+<p>Und schließlich noch, um die Standard-Aktionen vollständig zu machen, eine Vorlage für die Weiterleitung (Vorlagentyp „<em>Weiterleiten</em>“) an deutsche Empfänger:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%REM=”Deutsche Vorlage für Weiterleitungen”%-&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>—————-  Weitergeleitete Nachricht  —————-&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>Betreff: %OFULLSUBJECT
+</span><span class='line'>Datum: %ODATE, %OTIMELONG
+</span><span class='line'>Von: %OFROMADDR
+</span><span class='line'>%OADDRESSEESADDR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h2 id="text">%TEXT&lt;/h2>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail.
+Derzeit scheint es noch nicht dort erläutert zu werden.</p>
+
+<h3 id="fazit">Fazit</h3>
+<p>Das Rückübersetzen der Standard-Vorlagen ist sicherlich die einfachste und benutzerfreundlichste Lösung.
+Wem es nichts aus macht, dass auch die deutschsprachigen Korrespondenzen englischen Text lesen müssen, sollte bei dieser Lösung bleiben.</p>
+
+<p>Wer jedoch eine exakte und konsistente Lösung bevorzugt, dem sei die Erweiterung empfohlen.
+Sie erfordert allerdings ein wenig Handarbeit bei jeder Antwort oder Weiterleitung.
+Auf Dauer kann das durchaus nervend werden.</p>
+]]></content>
+  </entry>
+  
+</feed>

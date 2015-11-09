@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Diverses | Torbjörn Klatt]]></title>
+  <link href="http://torbjoern-klatt.de/category/diverses/atom.xml" rel="self"/>
+  <link href="http://torbjoern-klatt.de/"/>
+  <updated>2015-11-09T09:50:36+01:00</updated>
+  <id>http://torbjoern-klatt.de/</id>
+  <author>
+    <name><![CDATA[Torbjörn Klatt]]></name>
+    <email><![CDATA[kontakt@torbjoern-klatt.de]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ownCloud + Thunderbird + Android = Perfect Sync]]></title>
+    <link href="http://torbjoern-klatt.de/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/"/>
+    <updated>2012-04-08T19:01:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync</id>
+    <content type="html"><![CDATA[<p>Ich habe es endlich hinbekommen!
+Das mit der schmerzfreien Synchronisation meiner Kalender und Adressbücher 
+zwischen meinem PC und meinem Android-Phone.
+Und das <strong>ohne</strong> einer Datenkrake wie <em>Google</em> dazwischen.</p>
+
+<p>Hier will ich nun beschreiben, wie ich das hinbekommen habe.</p>
+
+<p><em>Es gibt ein Update (19.04.2012)</em></p>
+
+<!-- more -->
+
+<h2 id="thunderbird">Thunderbird</h2>
+<p>Dass ich von <em>KDE PIM</em> (a la <em>KMail</em> und <em>KOrganizer</em>) auf <em>Thunderbird</em> mit 
+<em>Lightning</em> umgestiegen bin, will ich hier nur kurz erwähnen und nicht weiter 
+kommentieren.
+Das soll ein postivier Blogpost werden und kein Rant.</p>
+
+<p>Ich setze hier <em>Thunderbird 11.0.1</em> unter einem 64bittigen <em>openSUSE 11.4</em> ein.</p>
+
+<h3 id="kontakte">Kontakte</h3>
+<p>Um die Kontakte-Synchronisation mit <em>ownCloud</em> hinzubekommen und nicht auf die 
+scheinbar kaputten Adressbuch Im- und Exportfunktionen angewiesen zu sein, habe 
+ich die folgenden AddOns installiert:</p>
+
+<ul>
+  <li><a href="http://www.sogo.nu/files/downloads/extensions/sogo-connector-10.0.1.xpi">SOGo Connector</a></li>
+  <li><a href="https://nic-nac-project.org/~kaosmos/morecols-en.html">MoreFunctionsForAddressbook</a></li>
+</ul>
+
+<p>Den Tipp hierfür bekam ich im <a href="http://forum.owncloud.org/viewtopic.php?f=3&amp;t=2040"><em>ownCloud</em> Forum</a>.</p>
+
+<h3 id="kalender">Kalender</h3>
+<p>Das <em>Lightning</em>-Plugin bringt alle Funktionalität mit, die für eine
+Synchronisation über <em>CalDAV</em> nötig sind.
+Es sind keine zusätzlichen Plugins oder besonderen Einstellungen nötig.</p>
+
+<h2 id="android">Android</h2>
+<p>Vorweg: Hier muss man etwas Geld investieren — doch es lohnt sich.
+Im Android-Market sind die folgenden Apps zu beziehen:</p>
+
+<ul>
+  <li><a href="https://play.google.com/store/apps/details?id=org.dmfs.caldav.lib">CalDAV-Sync beta</a>,
+2,14€</li>
+  <li><a href="https://play.google.com/store/apps/details?id=org.dmfs.carddav.Sync">CardDAV-Sync beta</a>,
+1,53€</li>
+</ul>
+
+<p>Sie sorgen für die Synchronisation mit (der noch aufzusetzenden) 
+<em>ownCloud</em>-Instanz.
+Einmal eingerichtet bleiben sie im Hintergrund und tauchen nur unter „<em>Konten &amp;
+Synchronisation</em>“ auf.
+Dabei erstellen sie für jeden synchronisierten Kalender oder Adressbuch ein
+entsprechendes Pondon auf dem Gerät, die sich dann in einer beliebigen 
+Kalenderanwendung bzw.
+Kontaktverwaltung auswählen lassen.</p>
+
+<p><em>Kleines Manko</em>: Man benötigt nur ein <em>CalDAV</em>-Konto für alle Kalender, aber pro
+Adressbuch ein <em>CardDAV</em>-Konto.
+Mit viele Adressbüchern ist das etwas nervig einzurichten.</p>
+
+<h2 id="owncloud">ownCloud</h2>
+<p>Ich beziehe mich hier auf die derzeit aktuellste Version 3.0, die ich über Git
+bezogen habe.</p>
+
+<h3 id="vorbereitung">Vorbereitung</h3>
+<p>Ich habe alles (außer dem <code>.git</code>-Ordner) in ein gezipptes-Tar-Archiv gepackt
+und auf meinen Webspace bei <em>All-inkl.com</em> hochgeladen.
+Dort ist ganz wichtig, dass man standardmäßig PHP 5.3.10 aktiviert hat.
+Bei mir war das leider noch nicht der Fall, doch eine E-Mail an den Support, und
+eine Nacht später war ich auf einen neueren Server umgezogen.
+Kostenfrei versteht sich.</p>
+
+<p>Dann nohc der Anleitung auf <a href="http://owncloud.org/support/setup-and-installation/webspace/">ownCloud.org</a>
+folgen, d.h. <code>data</code>-Ordner anlegen, 0750 geben und dem <code>config</code>-Ordner 0777
+geben.
+Schließlich noch über <em>WebFTP</em> den Inhaber des gesamten <code>ownCloud</code>-Ordners auf
+<code>www-data</code> ändern (rekursiv!).</p>
+
+<h3 id="installation">Installation</h3>
+<p>Nachdem man nicht vergessen hat, eine <em>MySQL</em>-Datenbank für <em>ownCloud</em>
+einzurichten (und am besten eine Subdomain), kann man nun sein eigenes
+<em>ownCloud</em> besuchen.
+Zunächst einmal einen <em>Admin</em>-Konto anlegen und die Zugangsdaten zur
+<em>MySQL</em>-Datenbank angeben.
+Bitte nicht <em>SQlite</em> ausgewählt lassen!</p>
+
+<p>Bitte nicht von der PHP-Fehlermeldung erschrecken lassen.
+Für irgendetwas will <em>ownCloud</em> auf <code>/dev/urandom</code> bei der initialen Einrichtung
+zugreifen.
+Das ist in einem Webspace leider nicht möglich.
+Funktioniert auch so alles prima.</p>
+
+<p>Einfach noch einmal die Seite aufrufen (nicht <code>F5</code>) und man „ist drin“.
+Ich habe erst einmal alle Anwendungen deaktiviert, die ich nicht benötige:
+Also alles, was nicht „<em>Calendar</em>“ oder „<em>Contacts</em>“ heißt.</p>
+
+<p>Dann noch einen Benutzer für den eigentlichen Gebrauch anlegen, den man bitte
+nicht der <em>Admin</em>-Gruppe zuordnet.</p>
+
+<h2 id="synchronisation">Synchronisation</h2>
+<p>Im Prinzip ganz einfach.
+Aber erst die entsprechenden Kalender und Adressbücher in der
+<em>ownCloud</em>-Oberfläche anlegen.</p>
+
+<h3 id="kalender-1">Kalender</h3>
+<p>In <em>Lightning</em> einen neuen Kalender anlegen, der „<em>im Netzwerk</em>“ und vom Typ
+„<em>CalDAV</em>“ ist.
+Als <em>Adresse</em> gibt man hier die an, die einem <em>ownCloud</em> anzeigt, wenn man dort
+auf das <em>Welt</em>-Icon klickt.
+Das sieht in etwa so aus:</p>
+
+<pre><code>http://beispiel.de/apps/calendar/caldav.php/calendars/[BENUTZER]/[KALENDER]
+</code></pre>
+
+<p>In <em>Lightning</em> importiert man dann eine Kalenderadatei von der Festplatte (z.B.
+<em>ICal</em>) in den neu erstellten Kalender.<br />
+Fertig.</p>
+
+<p>Gleiches gibt man auch auf dem Android in <em>CalDAV-Sync beta</em> ein.
+Mit dem einzigen Unterschied, dass man nur die URL bis zum Kalendernamen
+eintragen muss.
+Die einzelnen Kalender findet er selber.</p>
+
+<h3 id="kontakte-1">Kontakte</h3>
+<p>Hier habe ich mich stark an das eingangs genannte Mini-HowTo im <em>ownCloud</em>-Forum
+gehalten.
+Das <em>MoreFunctions…</em>-AddOn ermöglicht es einem im Adressbuch unter
+<em>Datei</em>/<em>Neu</em> ein <em>Remote-Adressbuch</em> anzulegen.
+Die einzugebende Adresse verrät einem <em>ownCloud</em>:</p>
+
+<pre><code>http://beispiel.de/apps/contacts/carddav.php/addressbooks/[BENUTZER]/[ADRESSBUCH]/
+</code></pre>
+
+<p>Wie eingangs erwähnt, ist es etwas nervig mehrere Adressbücher auf dem Android
+mit <em>CardDAV-Sync beta</em> einzurichten.
+Aber es ist ja eine einmalige Sache.</p>
+
+<p>Leider brachte mir die initiale Synchronisation meiner Kontaktdaten von
+<em>Thunderbird</em> nach <em>ownCloud</em> die Namensfelder etwas durcheinander.
+Insbesondere die Titel, Vor- und Nachnamen passten bei all den Einträge nicht,
+die einen oder mehrere Titel (wie „<em>Dr.</em>“ oder „<em>Prof.</em>“) oder der Vor- oder
+Nachname aus jeweils mehr als einem Wort bestand.
+Hier musste ich in der Weboberfläche von <em>ownCloud</em> nachbessern.</p>
+
+<p><strong>Update 19.04.2012</strong><br />
+Vor ein paar Tagen habe ich gemerkt, dass ich meine Kontakte auf dem Android
+nicht mehr wirklich bearbeiten kann.
+Das liegt insbesondere an Android bzw.
+Google selbst, die die entsprechende API
+nicht richtig freigegeben haben.
+So können Sync-Tools wie das hier erwähnte <em>CardDAV-Sync</em> nicht richtig auf das
+interne Format der Kontakte zugreifen.</p>
+
+<p>Vom gleichen Autor, wie <em>CardDAV-Sync</em> und <em>CalDAV-Sync</em> gibt es den
+<a href="https://play.google.com/store/apps/details?id=org.dmfs.android.contacteditorpp">Contact Editor Pro</a>
+(€2,14) und dessen etwas reduzierte kostenlose Gegenstück.
+Wählt man beim Kontakteeditieren diesen an statt Androids eigenen aus,
+funktioniert alles wieder reibungslos.<br />
+Nettes Randfeature: Dieser Kontakteditor kann deutlich mehr CardDAV-Felder
+beschreiben als Androids eigener.<br />
+<strong>Update Ende</strong></p>
+
+<h2 id="fazit">Fazit</h2>
+<p>Endlich funktioniert die Synchronisation meiner Kalender und Adressbücher sauber
+und schmerzfrei und ohne, dass irgend eine Datenkrake da mithören kann.
+Zudem bin ich absolut unabhängig von irgendwelchen Online-Diensten, denn sollte
+mein Hoster dicht machen oder ich einen anderen wählen, so brauche ich lediglich
+meinen Webspace umziehen lassen (Daten- und Datenbank-Backup) und die Domain
+samt Subdomain auf den neuen Ort umleiten.
+Weder in Thunderbird noch im Android muss ich dafür irgendetwas umstellen.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bin zu Octopress + Git übergelaufen]]></title>
+    <link href="http://torbjoern-klatt.de/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen/"/>
+    <updated>2012-03-21T19:29:00+01:00</updated>
+    <id>http://torbjoern-klatt.de/article/2012/03/21/bin-zu-octopress-plus-git-uebergelaufen</id>
+    <content type="html"><![CDATA[<p>Auch wenn noch nicht einmal ein Jahr vergangen ist, seit ich von 
+<a href="/article/2011/04/18/erstrahlen-im-neuen-glanze/">Joomla auf Wordpress umgestiegen bin</a>, 
+habe ich die Software — oder besser Framework — meines Blogs erneut gewechselt.</p>
+
+<!-- more -->
+
+<p>Das neue System nennt sich <a href="http://octopress.org">Octopress</a> und ist absolut unabhängig von PHP und 
+MySQL.
+Es basiert auf <a href="http://github.com/mojombo/jekyll">Jekyll</a>, einem Generator statischer HTML-Seiten, 
+der in Ruby geschrieben ist.
+Das ganze ist zudem 100%ig HTML5 mit ein bisschen JavaScript.</p>
+
+<p>Da der gesamte Prozess des Installierens und Einrichtens darin besteht, ein GitHub-Repository zu 
+clonen …
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress</span></code></pre></td></tr></table></div></figure></notextile></div>
+ein paar Ruby Gems zu installieren …
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gem install bundler
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure></notextile></div>
+das grundlegene Layout zu generieren …
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure></notextile></div>
+ein paar Variablen zu konfigurieren …
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Ausschnitt meiner Konfigurationsdatei - _config.yml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">url</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://torbjoern-klatt.de</span>
+</span><span class='line'><span class="l-Scalar-Plain">title</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Torbjörn Klatt</span>
+</span><span class='line'><span class="l-Scalar-Plain">subtitle</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">It’s just me.</span>
+</span><span class='line'><span class="l-Scalar-Plain">author</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Torbjörn Klatt</span>
+</span><span class='line'><span class="l-Scalar-Plain">simple_search</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://google.com/search</span>
+</span><span class='line'><span class="l-Scalar-Plain">description</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">A blog about my life and things encountered.</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+und schließlich das ganze in ein eigenes Git-Repository zu committen …
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m “mein Blog ist eingerichtet”
+</span><span class='line'>git push</span></code></pre></td></tr></table></div></figure></notextile></div>
+hat man die Backup-Lösung frei Haus.</p>
+
+<p>Auf Octopress gestoßen bin ich durch den <a href="">Binärgewitter Podcast</a>, die ebenfalls seit diesem Jahr
+Octopress einsetzen.
+Im Gegensetz zu anderen, die Octopress verwenden, nutze ich nicht 
+<a href="http://pages.github.com/">GitHub Pages</a> für die Generierung und Bereitstellung der fertigen 
+Webseite, sondern hoste das nach wie vor auf meinem eigenen Webspace.</p>
+
+<p>Dazu binde ich mittels <a href="http://curlftpfs.sourceforge.net/"><code>curlftpfs</code></a> meinen Webspace in mein 
+lokales Dateisystem ein und nutze einen eigenen Rake-Task <code>copyto</code>, den ich als Standard für den
+<code>deploy</code>-Task definiert habe …
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake deploy # generiert die Seite und schiebt sie auf den Webspace</span></code></pre></td></tr></table></div></figure></notextile></div>
+Da <code>curlftpfs</code> und <code>rsync</code> sich irgendwie nicht so richtig mögen, habe ich auf das gute alte <code>cp</code>
+zurückgegriffen und mir den Rake-Task <code>copyto</code> definiert …
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Meine Änderungen am Rakefile </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">document_root</span>  <span class="o">=</span> <span class="err">“</span><span class="o">.</span><span class="n">.</span><span class="o">/</span><span class="n">ftp</span><span class="o">/</span><span class="n">blog</span><span class="err">”</span>
+</span><span class='line'><span class="n">deploy_default</span> <span class="o">=</span> <span class="err">“</span><span class="n">copyto</span><span class="err">”</span>
+</span><span class='line'><span class="c1"># snipp …</span>
+</span><span class='line'><span class="n">desc</span> <span class="err">“</span><span class="no">Deploy</span> <span class="n">website</span> <span class="n">via</span> <span class="n">straight</span> <span class="n">copy</span> <span class="p">(</span><span class="n">optional</span> <span class="n">argument</span> <span class="err">‘</span><span class="n">clean</span><span class="err">’</span> <span class="k">for</span> <span class="n">prior</span> <span class="n">complete</span> <span class="n">removal</span><span class="p">)</span><span class="err">”</span>
+</span><span class='line'><span class="n">task</span> <span class="ss">:copyto</span> <span class="k">do</span> <span class="o">|</span><span class="n">args</span><span class="o">|</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="err">“</span><span class="c1">## Mounting remote FTP storage”</span>
+</span><span class='line'>  <span class="n">ok_failed</span> <span class="nb">system</span><span class="p">(</span><span class="err">“</span><span class="o">.</span><span class="n">.</span><span class="o">/</span><span class="n">mount_tobbe_ftp</span><span class="o">.</span><span class="n">sh</span><span class="err">”</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">to_s</span><span class="o">.</span><span class="n">casecmp</span><span class="p">(</span><span class="err">“</span><span class="n">clean</span><span class="err">”</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="err">“</span><span class="c1">## Remove all files”</span>
+</span><span class='line'>    <span class="n">ok_failed</span> <span class="nb">system</span><span class="p">(</span><span class="err">“</span><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="c1">#{document_root}&lt;em&gt;”)</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="err">“</span><span class="c1">## Leaving remote files untouched.</span>
+</span><span class='line'><span class="no">Just</span> <span class="n">updating</span><span class="o">.</span><span class="err">”</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="err">“</span><span class="c1">## Deploying website via plain copy”</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="err">“</span><span class="c1">##!! This will ignore all files marked as ‘exclude’”</span>
+</span><span class='line'>  <span class="n">ok_failed</span> <span class="nb">system</span><span class="p">(</span><span class="err">“</span><span class="n">cp</span> <span class="o">-</span><span class="n">ruv</span> <span class="c1">#{public_dir}/&lt;/em&gt; #{document_root}”)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="err">“</span><span class="c1">## Unmounting remote FTP storage”</span>
+</span><span class='line'>  <span class="n">ok_failed</span> <span class="nb">system</span><span class="p">(</span><span class="err">“</span><span class="o">.</span><span class="n">.</span><span class="o">/</span><span class="n">unmount_ftp</span><span class="o">.</span><span class="n">sh</span><span class="err">”</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+Die beiden Bashskripte enthalten …
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>mount_tobbe_ftp.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">MY_PATH</span><span class="o">=</span>”&lt;code&gt;dirname <span class="se">\&quot;</span><span class="nv">$0</span><span class="se">\&quot;</span>&lt;/code&gt;”
+</span><span class='line'><span class="nv">MY_PATH</span><span class="o">=</span>”&lt;code&gt;<span class="o">(</span><span class="nb">cd</span> <span class="se">\&quot;</span><span class="nv">$MY_PATH</span><span class="se">\&quot;</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> <span class="nb">pwd</span><span class="o">)</span>&lt;/code&gt;”
+</span><span class='line'>curlftpfs ftp://USERNAME:PASSWORD@torbjoern-klatt.de/ <span class="nv">$MY_PATH</span>/ftp/
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+und
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>unmount_ftp.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">MY_PATH</span><span class="o">=</span>”&lt;code&gt;dirname <span class="se">\&quot;</span><span class="nv">$0</span><span class="se">\&quot;</span>&lt;/code&gt;”
+</span><span class='line'><span class="nv">MY_PATH</span><span class="o">=</span>”&lt;code&gt;<span class="o">(</span><span class="nb">cd</span> <span class="se">\&quot;</span><span class="nv">$MY_PATH</span><span class="se">\&quot;</span> <span class="p">&amp;</span>amp<span class="p">;&amp;</span>amp<span class="p">;</span> <span class="nb">pwd</span><span class="o">)</span>&lt;/code&gt;”
+</span><span class='line'>fusermount -u <span class="nv">$MY_PATH</span>/ftp/
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Das ist alles.</p>
+
+<p>Die Aktualisierung von Octopress ist ebenfalls deutlich schmerzfreier als bei WordPress o.ä.
+Da alles über Git läuft, übernimmt Git und Rake einem die meiste Arbeit.
+Wie das genau geht, steht in der leider noch etwas ausbaufähigen Octopress-Dokumentation:
+<a href="http://octopress.org/docs/updating/">http://octopress.org/docs/updating/</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Nigeria Scam nun schon per Post]]></title>
+    <link href="http://torbjoern-klatt.de/article/2011/11/18/nigeria-scam-nun-schon-per-post/"/>
+    <updated>2011-11-18T00:00:00+01:00</updated>
+    <id>http://torbjoern-klatt.de/article/2011/11/18/nigeria-scam-nun-schon-per-post</id>
+    <content type="html"><![CDATA[<p>Wer kennt sie nicht, die hübschen Spam-E-Mails im Gewand eines länglichen Textes zumeist in englisch und darüber redend, wie vertraulich doch dieses Angebot über eine Beteiligung an einem neu gegründeten und viel versprechenden Unternehmen in Nigeria (oder sonst wo) ist, bei dem man nach wenigen Monaten weit mehr als 200% der eingesetzten Beteiligung heraus bekommt.
+Kurz: <a href="http://de.wikipedia.org/wiki/Vorschussbetrug#Nigeria-Scam">Nigeria-Scam</a>.</p>
+
+<!-- more -->
+
+<p>Meinen Vater erreichte vor einigen Tagen ein Brief per Post eben diesen Kalibers.
+Ja richtig, per Schneckenpost.
+Und nein, auch nicht an seine deutsche Adresse, sondern an die sehr unbekannte und weit abgelegene Adresse seiner Ferienhütte in Schweden.</p>
+
+<p>Dieser Brief stammt anscheinend aus Spanien und wurde angeblich von den spanischen Rechtsanwälten „Rodriguez Molnar &amp; Acosiados“ bzw. von „Barrister Rodriguez Molnar“ versendet.
+Es geht um das Erbe eines Nachnamen-Vetters meines Vaters.
+Dieser soll bei der Firma „Mining and Smelting Company (Asturiana de Zinc S.A.
+Spain)“ als Ingenieur gearbeitet haben und einen Reichtum von 10,5 Millionen US$ angehäuft haben.
+Nach einem tödlichen Autounfall am 15.
+März 2005 war kein Testament gefunden worden und somit würde das Erbe wohl in Kürze an den spanischen Staat gehen.
+Der Rechtsanwalt möchte, dass 10% des Vermögens an gemeinnützige Organisationen geht und die restlichen 90% zu gleichen Teilen zwischen ihm und meinem Vater aufgeteilt werden.
+Als Kontaktmöglichkeiten bietet er zwei Telefonnummern, eine Faxnummer und eine E-Mail-Adresse an.</p>
+
+<p>Ich möchte gerade nicht den gesamten Text abtippen und habe einen Scan bei <a href="http://www.flickr.com/photos/58595396@N02/6358953477/">Flickr hochgeladen</a>.
+Natürlich sind persönliche Daten meines Vaters geschwärzt.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Erstrahlen im neuen Glanze]]></title>
+    <link href="http://torbjoern-klatt.de/article/2011/04/18/erstrahlen-im-neuen-glanze/"/>
+    <updated>2011-04-18T00:00:00+02:00</updated>
+    <id>http://torbjoern-klatt.de/article/2011/04/18/erstrahlen-im-neuen-glanze</id>
+    <content type="html"><![CDATA[<p>Dem regelmäßigen Besucher wird es aufgefallen sein:</p>
+
+<spam style="text-align: center;">*Ich habe meiner Homepage ein neues Layout verpasst.*</spam>
+
+<p>Nach knapp einem Jahr ist mir klar geworden: Für meine Bedürfnisse  ist eine Joomla-basierte Seite das falsche.
+Da meine Texte hier mehr dem  Blog-Stil entsprechen und ich wenige wirklich dauerhafte Inhalte habe (also solche, die dauerhaft direkt ansurfbar sein müssen; ich lösche  keine meiner älteren Texte), bin ich wieder auf WordPress umgestiegen.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Schließung der Seite droht (nicht mehr) [Update #4]]]></title>
+    <link href="http://torbjoern-klatt.de/article/2010/11/30/schliessung-der-seite-droht/"/>
+    <updated>2010-11-30T00:00:00+01:00</updated>
+    <id>http://torbjoern-klatt.de/article/2010/11/30/schliessung-der-seite-droht</id>
+    <content type="html"><![CDATA[<p>Diesen Artikel bringe ich kontinuierlich auf einen aktuellen Stand.</p>
+
+<p>Der neue JMStV (Jugendmedienstaatsvertrag) ist <span style="text-decoration: line-through;">fast beschlossene Sache</span> vom Landtag NRW abgelehnt worden und einige renommierte Blogs und Webseiten <span style="text-decoration: line-through;">haben schon dicht gemacht</span> können wieder den Betrieb aufnehmen. <span style="text-decoration: line-through;">Ich werde mir in den nächsten Tagen auch genau überlegen, ob ich diese Seite hier schließen muss.</span> Ich kann ebenfalls wie gewohnt weiter machen.</p>
+
+<!--more-->
+
+<h3 id="warum">Warum?</h3>
+<p>Der neue JMStV (der bisherige existiert seit 2003 und jeder kennt dessen Auswirkungen beim Lesen des TV-Programms oder beim Besuch der Videothek etc.) sieht vor, dass alle deutsche Webangebote ihre Inhalt mit einem Altersfreigabesiegel markieren müssen, wie es für Filme seit Jahren üblich ist.
+Die Klassifizierung wird auch die gleiche sein.
+Diese Siegel müssen von den Jugendschutzprogrammen – die noch nicht existieren, außer in den Köpfen der Politiker – auslesbar sein.
+Inhalte, die mit FSK18 klassifiziert sind, dürfen entweder nur zu den entsprechenden Zeiten “ausgestrahlt” werden oder müssen hinter einer Alterskontrolle ähnlich einer Bezahlschranke versteckt werden.</p>
+
+<p>Inhalte die ab dem 1.1.2011 nicht diese Klassifizierung enthalten, riskieren Abmahnungen und hohe Kosten.
+Gewerbe mit einer nicht-klassifizierten Webseite riskiert zudem noch Wettbewerbsklagen.</p>
+
+<p>Am 16.
+Dezember 2010 lehnten nach einem langen Hin-und-Her und viel Verwirrung überraschend alle Fraktionen des Lantags in NRW den Entwurf ab und somit tritt der handwerklich schlechte und inhaltlich untaugliche neue JMStV bundesweit nicht in Kraft.</p>
+
+<p>Nun heißt es gemeinsam mit Politik und den internet-affinen Bürgern einen neuen und tauglichen Entwurf zu erarbeiten.
+Denn, das ist allen Beteiligten klar, der bisherige JMStV schafft es nicht die Möglichkeiten des Internet zu erfassen.</p>
+
+<h3 id="span-styletext-decoration-line-throughwie-mache-ich-weiterspan"><span style="text-decoration: line-through;">Wie mache ich weiter?</span></h3>
+<p><span style="text-decoration: line-through;">Ich möchte ungern meine Seite schließen und meine Berichte über mein Auslandssemester in Neuseeland und meiner Zeit der Bachelorarbeit in London offline nehmen (womit sie nicht mehr zugänglich wären!) Ich werde mich in den nächsten Tagen und Wochen intensiv mit Alternativen beschäftigen.
+Vorschläge, Hinweise und Tipps sind gern gesehen.</span></p>
+
+<h3 id="wo-findet-sich-mehr-information">Wo findet sich mehr Information?</h3>
+<p>Generell möchte und muss ich hier auf das in den letzten Jahren viel-gelesene und sehr gute <a href="http://www.netzpolitik.org/about-this-blog/">Blog Netzpolitik</a> verweisen, welches sich mit allen politischen und weniger politischen Geschehnissen rund um Internet und Computer beschäftigt und sich insbesondere für die Grundrechte der Meinungsfreiheit im digitalen Zeitalter einsetzt.</p>
+
+<ul>
+  <li>Die allgemeine Presse hat erschreckend wenig über den neuen JMStV berichtet.
+Bei Heise findet sich jedoch einiges dazu:
+<a href="http://www.heise.de/newsticker/meldung/Blog-macht-wegen-neuem-Jugendschutzgesetz-dicht-Updates-1144566.html">Blog macht wegen neuem Jugendschutzgesetz dicht</a></li>
+  <li>Auch der Internethumor zum gleichen Thema fasst eigentlich alles zusammen: <a href="http://blog.pantoffelpunk.de/brechmittel/wieder-neue-wahlplakate-der-gruenen-geleakt">Wieder neue Wahlplakate der GRUENEN geleakt</a></li>
+  <li>Und eine gute Zusammenfassung der Fakten und Behauptungen zum/über/gegen den JMStV findet man bei Henning Tillmann:
+<a href="http://www.henning-tillmann.de/2010/10/behauptungen-fakten-zum-entwurf-des-jugendmedienschutz-staatsvertrags-jmstv/">Behauptungen &amp; Fakten zum Entwurf des Jugendmedienschutz-Staatsvertrags (JMStV)</a></li>
+  <li>Auch t3n, eine weitere Plattform für Technologie-News, berichtet und stellt einige (praktische) Fragen zum JMStV und beantwortet sie: <a href="http://t3n.de/news/neuer-jmstv-286977/1/">Lesepflicht für alle: 17 Fragen zum neuen JMStV</a></li>
+  <li>Mittlerweile habe sich auch einige Juristen zu Wort gemeldet und die Welle der Panik etwas beruhigt:
+<a href="http://blog.beck.de/trackback/40157">Prof.
+Dr.
+Thomas Hoeren auf dem beck-blog spricht den Verantwortlichen jegliche Kompetenz ab</a>
+<a href="http://www.lawblog.de/index.php/archives/2010/12/01/warum-blogger-gelassen-bleiben-konnen/">Udo Vetter in seinem law blog</a> wurde für den Artikel <a href="http://www.netzpolitik.org/2010/jmstv-aus-juristischer-sicht-wer-will-nochmal-wer-hat-noch-nicht/">von Jörg-Olaf Schäfers auf Netzpolitik.org teils scharf kritisiert</a>.</li>
+  <li>Wirklich hilfreich ist die Arbeit der Rechtsanwaltskanzlei Schwenke &amp; Damburg in Kooperation mit Simon Möller von Telemedicus: <a href="http://spreerecht.de/jugendschutz/2010-12/flow-chart-zum-neuen-jugendmedienschutz-staatsvertrag-jmstv">ein Flowchart über die Anwendung des JMStV für Webseitenbetreiber</a>
+<em>(Anm.: Man sollte es zur Pflicht machen, Gesetze und Verordnungen derart darzustellen!)</em></li>
+  <li>Wer in sachen JMStV immer up-to-date sein will, dem empfiehlt sich der Twitter-Tag: <a href="https://twitter.com/#!/search/JMStV">Twitter-Tag #JMStV</a>&lt;/a&gt;</li>
+</ul>
+
+<p>Letzte Änderung erfolgte am:</p>
+
+<ul>
+  <li><span style="text-decoration: line-through;">1.12.2010 um 19:40GMT (Linkliste erweitert und leserlicher gemacht; einige inhaltliche Ergänzungen)</span></li>
+  <li><span style="text-decoration: line-through;">9.12.2010 um 11:37GMT (Link zum Flowchart und juristische Kritik ergänzt)</span></li>
+  <li><span style="text-decoration: line-through;">11.12.2010 um 10:10GMT (Änderung der Auflistung der Links; keine inhaltlichen Veränderungen)</span></li>
+  <li>17.12.2010 um 11:16GMT (Änderung wegen der Ablehnung des JMStV)</li>
+</ul>
+]]></content>
+  </entry>
+  
+</feed>

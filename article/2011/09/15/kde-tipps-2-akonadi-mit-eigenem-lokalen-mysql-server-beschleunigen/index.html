@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Torbjörn Klatt">
+  
+  <title>KDE Tipps #2: Akonadi mit eigenem lokalen MySQL-Server beschleunigen</title>
+  
+  <meta name="description" content="Just me">
+  <link rel="canonical" href="http://torbjoern-klatt.de/article/2011/09/15/kde-tipps-2-akonadi-mit-eigenem-lokalen-mysql-server-beschleunigen/">
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/octicons/octicons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/js/jquery.githubRepoWidget.min.js"></script>
+
+  <script type="text/javascript" src="/js/custom.js"></script>
+</head>
+
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Torbjörn Klatt</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
+          </ul>
+        </li>
+        <li><a href="/category/english/">English Posts</a></li>
+        <li><a href="/about/">Über / About</a></li>
+        <li><a href="/archive/">Archiv / Archive</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+    <div class="container">
+      <main>
+        <div class="row">
+          <div class="main-content col-md-8">
+            <div class="post">
+  <header class="post-header">
+    <h1>KDE Tipps #2: Akonadi mit eigenem lokalen MySQL-Server beschleunigen</h1>
+  </header>
+  <article class="post-content">
+    <div class="lead">
+      <p>Vor einiger Zeit war ich dazu übergegangen, meinen eigenen, lokalen MySQL-Server sowohl für Akonadi als auch für Amarok zu nutzen.
+Auf die Vorteile gegenüber des standardmäßigen, internen SQlite-Servers möchte ich hier nicht eingehen.
+Vielmehr will ich hier ein paar Tipss zur Optimierung des MySQL-Servers geben und wie man damit insbesondere Akonadi extrem beschleunigen kann.
+Die Auswirkungen sind gerade bei KMail2 zu spüren, das nun deutlich flüssiger geworden ist.</p>
+
+<p>Kurz gesagt: Die Standardwerte der <code>my.cnf</code> sind für Akonadi suboptimal.
+Doch die folgenden Schritte sollten schnelle und einfache Abhilfe schaffen:</p>
+
+<!--more-->
+
+<p>Eine sehr große Hilfe war mir das <a href="https://github.com/rackerhacker/MySQLTuner-perl">MySQL-Tuning-Script von rackerhacker</a>, das einen laufenden MySQL-Server ein wenig auf den Zahn fühlt und dann einem Vorschläge für Verbesserungen unterbreitet.
+Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es verwenden zu können.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">wget http://mysqltuner.pl
+</span><span class="line">perl mysqltuner.pl</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Man wird aufgefordert den <strong>MySQL</strong>-<code>root</code>-Usernamen sowie dessen Passwort anzugeben.
+I.d.R. ist dies <code>root</code> und ein hoffentlich selbst gewähltes Passwort, das nicht zwangsläufig dem des Linux-root-Passworts entsprechen muss.</p>
+
+<p>Das wichtigste steht ganz am Ende der Ausgabe unter <strong>Recommendations</strong> und bevor man sich der allgemeinen Vorschläge annimmt sollte man die vorgeschlagenen Variablen in der <code>/etc/my.cnf</code> wirklich ändern.</p>
+
+<p>Ein gelegentliches Optimieren der Tabellen (<code>OPTIMIZE TABLE</code> auf alle Tabellen der Datenbank <code>akonadi</code> anwenden) kann sicherlich auch nicht schaden.
+Aber dabei bitte Vorsicht, denn ein laufender Akonadi-Server kann durch das Tabellenoptimieren während seiner Laufzeit durcheinander geraten.
+Also am besten beim Hochfahren des Rechners die Tabellen durch ein Script optimieren.</p>
+
+<p>Hier nun ein paar wichtige Variablen und deren Werte meiner <code>my.cnf</code> auf einem Laptop mit 4GB RAM und einem Duo-Core-Prozessor:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">key_buffer_size = 128M
+</span><span class="line">sort_buffer_size = 512K
+</span><span class="line">thread_cache_size = 8
+</span><span class="line">wait_timeout = 1296000
+</span><span class="line">query_cache_size = 8M
+</span><span class="line">query_cache_type = 1
+</span><span class="line">join_buffer_size = 256K</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Der Wert des <code>thread_cache_size</code> ist vermutlich noch nicht 100%-ig stimmig.
+Bekomme da bei jedem Lauf des Tuningscripts einen anderen Wert vorgeschlagen.
+<code>wait_timeout</code> hatte ich auf diesen Wert, der 8 Stunden entspricht, erhöht, um damit einen Bug des <em>Mail Dispatcher Agent</em> zu umgehen.
+Dieser schaltete sich nach einiger Zeit, in der ich keine E-Mails versendet hatte, ab und musste in der <code>akonadiconsole</code> wieder reaktiviert werden (oder durch ein Ab-/Anmelden).</p>
+
+<p>In meinem Fall wirklich Bemerkenswert war das Aktivieren des <em>Query Caches</em>, der standardmäßig deaktiviert ist.
+Insbesondere das Öffnen und Anzeigen von E-Mails in einem großen lokalen E-Mail-Ordner ist seit dem sehr flüssig.</p>
+
+<p>Abschließend noch eine kleiner Hinweis: Das Tuningscript ist kein Allheilmittel und dessen Vorschläge machen erst bei einer längeren kontinuierlichen Laufzeit und Nutzung des MySQL-Servers wirklich Sinn.
+Also am besten nach einem langen Arbeitstag ausführen, wenn man insbesondere KMail2 etc. über mehrere Stunden intensiv genutzt hat.</p>
+
+    </div>
+    
+  </article>
+  <footer class="article">
+  
+  
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2011-09-15T00:00:00+02:00">15 Sep 2011</time>
+
+
+
+  
+
+
+  
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    KDE Tipps #2: Akonadi mit eigenem lokalen MySQL-Server beschleunigen
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
+</footer>
+
+</div>
+
+          </div>
+          <div class="asides col-md-4">
+            <section id="recent-posts-aside" class="aside panel panel-default">
+  <div class="panel-heading">
+    <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
+      <i class="fa fa-rss"></i>
+      <!--<span class="hidden-xs">RSS</span>-->
+    </a>
+    <h3 class="panel-title">
+      Neue Artikel / Recent Posts
+    </h3>
+  </div>
+  
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">03 Apr 2013</span>
+      <a href="/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/">Struggling with Git Submodules and Mercurial Subrepositories</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">06 Nov 2012</span>
+      <a href="/article/2012/11/06/boost-unter-linux-selbst-installieren/">Boost unter Linux selbst installieren</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">17 Jun 2012</span>
+      <a href="/article/2012/06/17/es-war-der-kernel-und-ipv6/">Es war der Kernel und IPv6</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">08 Apr 2012</span>
+      <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
+    </li>
+    
+  </ul>
+</section>
+
+            <section id="gh-repos-aside" class="aside gh-repos panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-github fa-fw"></i>GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="panel-body gh-profile-link text-muted">
+      <div class="pull-right">
+        <a href="https://github.com/torbjoernk">@torbjoernk</a> on <i class="fa fa-github fa-fw"></i>GitHub
+      </div>
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/js/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'torbjoernk',
+            count: '5',
+            skip_forks: 'true',
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/js/github.js" type="text/javascript"></script>
+</section>
+
+            <section class="legal">
+  <div class="btn-group btn-group-xs btn-group-justified">
+    <a href="/imprint/" class="btn" role="button">
+      &copy;<span class="hidden-xs">&ensp;Imprint</span>
+    </a>
+    <a href="" class="btn" role="button">
+      <i class="fa fa-code"></i><span class="hidden-xs">&ensp;Source</span>
+    </a>
+  </div>
+</section>
+          </div>
+        </div><!-- /.row -->
+      </main>
+    </div><!-- /.container -->
+
+    <footer id="site-footer">
+  <div class="blog-footer">
+    <a href="#">Back to top</a>
+  </div>
+</footer>
+
+    
+  </body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Torbjörn Klatt">
+  
+  <title>Torbjörn Klatt</title>
+  
+  <meta name="description" content="Just me">
+  <link rel="canonical" href="http://torbjoern-klatt.de/">
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/octicons/octicons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/js/jquery.githubRepoWidget.min.js"></script>
+
+  <script type="text/javascript" src="/js/custom.js"></script>
+</head>
+
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Torbjörn Klatt</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
+          </ul>
+        </li>
+        <li><a href="/category/english/">English Posts</a></li>
+        <li><a href="/about/">Über / About</a></li>
+        <li><a href="/archive/">Archiv / Archive</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+    <div class="container">
+      <main>
+        <div class="row">
+          <div class="main-content col-md-8">
+            <div class="post">
+  <header class="post-header">
+    <h1></h1>
+    
+  </header>
+  <article class="post-content">
+    <div class="blog-index">
+  
+  
+    <article class="post on-index">
+      
+  <header class="page-header">
+    
+    <p class="meta text-muted text-uppercase">
+      
+  
+    
+    
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2014-08-21T21:30:00+02:00">21 Aug 2014</time>
+
+
+
+  
+
+
+      <!---->
+    </p>
+    
+    
+      <h1 class="entry-title"><a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a></h1>
+    
+  </header>
+
+
+  <div class="entry-content clearfix"><p>Having a working test suite for your library or program is common knowledge.
+Using a continuous integration workflow like <a href="">git-flow</a> backed by <a href="">Travis CI</a> or a <a href="">Jenkins</a>
+instance is already a success story and widely used.
+To ease up the build process of a C++ library/program on different platforms, many projects decide
+to use <a href="">CMake</a>.</p>
+
+<p>So far, so good.
+But how good is your test suite?
+Does it cover all the functionality and code in your library?
+Does it catch all the different branches and edge-cases?</p>
+
+<p>This little article describes a way of using <a href="">lcov</a> to generate a test coverage report for a
+<em>CMake</em>-based C++ project.</p></div>
+  
+  
+
+
+    </article>
+  
+    <article class="post on-index">
+      
+  <header class="page-header">
+    
+    <p class="meta text-muted text-uppercase">
+      
+  
+    
+    
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2013-04-03T21:56:00+02:00">03 Apr 2013</time>
+
+
+
+  
+
+
+      <!---->
+    </p>
+    
+    
+      <h1 class="entry-title"><a href="/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/">Struggling with Git Submodules and Mercurial Subrepositories</a></h1>
+    
+  </header>
+
+
+  <div class="entry-content clearfix"><p>The popular and state-of-the-art <a href="https://en.wikipedia.org/wiki/Distributed_revision_control">distributed version control systems (DVCS)</a> 
+tools <strong><a href="http://git-scm.com/">Git</a></strong> and <strong><a href="http://mercurial.selenic.com/">Mercurial</a></strong> 
+are very likely the best way of reliably organising software development.
+Both have numerous advantages over their predecessor <strong><a href="http://subversion.tigris.org/">Subversion (SVN)</a></strong>.</p>
+
+<p>All three have a feature for handling nested repositories, which can but must not 
+depend on each other: <em><a href="http://git-scm.com/docs/git-submodule">Git Submodules</a></em>, 
+<em><a href="http://mercurial.selenic.com/wiki/Subrepository">Mercurial Subrepositories</a></em> 
+and <em><a href="http://svnbook.red-bean.com/en/1.7/svn.advanced.externals.html">Subversion Externals</a></em>.</p>
+
+<p>In this article I will describe an attempt of converting an existing SVN repository 
+into a hierarchy of nested Git, Mercurial or SVN repositories while satisfying 
+special demands on the whole setup.</p>
+
+<p>If you are just interested in the final solution, scroll down to the conclusion.
+But be warned …</p></div>
+  
+  
+
+
+    </article>
+  
+    <article class="post on-index">
+      
+  <header class="page-header">
+    
+    <p class="meta text-muted text-uppercase">
+      
+  
+    
+    
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2012-11-06T10:00:00+01:00">06 Nov 2012</time>
+
+
+
+  
+
+
+      <!---->
+    </p>
+    
+    
+      <h1 class="entry-title"><a href="/article/2012/11/06/boost-unter-linux-selbst-installieren/">Boost unter Linux selbst installieren</a></h1>
+    
+  </header>
+
+
+  <div class="entry-content clearfix"><p>Dies soll eine kleine Anleitung sein, wie man die aktuellste (und stabile) Boost
+Version unabhängig von den Distributionspaketen installiert.
+Zum Zeitpunkt dieses Artikels war das Boost 1.52.0.
+Installiert auf einem 64bit openSUSE 12.2 (funktioniert ebenso mit 12.1).</p></div>
+  
+  
+
+
+    </article>
+  
+    <article class="post on-index">
+      
+  <header class="page-header">
+    
+    <p class="meta text-muted text-uppercase">
+      
+  
+    
+    
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2012-06-17T10:41:00+02:00">17 Jun 2012</time>
+
+
+
+  
+
+
+      <!---->
+    </p>
+    
+    
+      <h1 class="entry-title"><a href="/article/2012/06/17/es-war-der-kernel-und-ipv6/">Es war der Kernel und IPv6</a></h1>
+    
+  </header>
+
+
+  <div class="entry-content clearfix"><p>Vor einigen Wochen fing es an, dass ich in unregelmäßigen Abständen aber immer 
+häufiger beängstigende und größtenteils unverständliche Warnmeldungen des
+Kernels bekam.
+Ursache schien von den verschiedensten Programmen herzurühren und ich vermutet
+bis zuletzt Hardwareprobleme.
+Heute weiß ich, dass es an einem IPv6-Bug in dem von mir verwendeten Kernel
+lag.</p></div>
+  
+  
+
+
+    </article>
+  
+    <article class="post on-index last">
+      
+  <header class="page-header">
+    
+    <p class="meta text-muted text-uppercase">
+      
+  
+    
+    
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2012-04-08T19:01:00+02:00">08 Apr 2012</time>
+
+
+
+  
+
+
+      <!---->
+    </p>
+    
+    
+      <h1 class="entry-title"><a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a></h1>
+    
+  </header>
+
+
+  <div class="entry-content clearfix"><p>Ich habe es endlich hinbekommen!
+Das mit der schmerzfreien Synchronisation meiner Kalender und Adressbücher 
+zwischen meinem PC und meinem Android-Phone.
+Und das <strong>ohne</strong> einer Datenkrake wie <em>Google</em> dazwischen.</p>
+
+<p>Hier will ich nun beschreiben, wie ich das hinbekommen habe.</p>
+
+<p><em>Es gibt ein Update (19.04.2012)</em></p></div>
+  
+  
+
+
+    </article>
+  
+</div>
+
+  </article>
+  
+</div>
+
+          </div>
+          <div class="asides col-md-4">
+            <section id="recent-posts-aside" class="aside panel panel-default">
+  <div class="panel-heading">
+    <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
+      <i class="fa fa-rss"></i>
+      <!--<span class="hidden-xs">RSS</span>-->
+    </a>
+    <h3 class="panel-title">
+      Neue Artikel / Recent Posts
+    </h3>
+  </div>
+  
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">03 Apr 2013</span>
+      <a href="/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/">Struggling with Git Submodules and Mercurial Subrepositories</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">06 Nov 2012</span>
+      <a href="/article/2012/11/06/boost-unter-linux-selbst-installieren/">Boost unter Linux selbst installieren</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">17 Jun 2012</span>
+      <a href="/article/2012/06/17/es-war-der-kernel-und-ipv6/">Es war der Kernel und IPv6</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">08 Apr 2012</span>
+      <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
+    </li>
+    
+  </ul>
+</section>
+
+            <section id="gh-repos-aside" class="aside gh-repos panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-github fa-fw"></i>GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="panel-body gh-profile-link text-muted">
+      <div class="pull-right">
+        <a href="https://github.com/torbjoernk">@torbjoernk</a> on <i class="fa fa-github fa-fw"></i>GitHub
+      </div>
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/js/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'torbjoernk',
+            count: '5',
+            skip_forks: 'true',
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/js/github.js" type="text/javascript"></script>
+</section>
+
+            <section class="legal">
+  <div class="btn-group btn-group-xs btn-group-justified">
+    <a href="/imprint/" class="btn" role="button">
+      &copy;<span class="hidden-xs">&ensp;Imprint</span>
+    </a>
+    <a href="" class="btn" role="button">
+      <i class="fa fa-code"></i><span class="hidden-xs">&ensp;Source</span>
+    </a>
+  </div>
+</section>
+          </div>
+        </div><!-- /.row -->
+      </main>
+    </div><!-- /.container -->
+
+    <footer id="site-footer">
+  <div class="blog-footer">
+    <a href="#">Back to top</a>
+  </div>
+</footer>
+
+    
+  </body>
+</html>

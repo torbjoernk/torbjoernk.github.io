@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Torbjörn Klatt">
+  
+  <title>KDE Tipps #1: Deutsches KMail aber fremdsprachige E-Mails</title>
+  
+  <meta name="description" content="Just me">
+  <link rel="canonical" href="http://torbjoern-klatt.de/article/2011/07/05/kde-tipps-1-deutsches-kmail-aber-englische-vorlagen/">
+
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/octicons/octicons.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/main.css">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/js/jquery.githubRepoWidget.min.js"></script>
+
+  <script type="text/javascript" src="/js/custom.js"></script>
+</head>
+
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Torbjörn Klatt</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Serien / Series <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/category/otago/">Going to Otago</a></li>
+            <li><a href="/category/london/">Bachelor in London</a></li>
+          </ul>
+        </li>
+        <li><a href="/category/english/">English Posts</a></li>
+        <li><a href="/about/">Über / About</a></li>
+        <li><a href="/archive/">Archiv / Archive</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+    <div class="container">
+      <main>
+        <div class="row">
+          <div class="main-content col-md-8">
+            <div class="post">
+  <header class="post-header">
+    <h1>KDE Tipps #1: Deutsches KMail aber fremdsprachige E-Mails</h1>
+  </header>
+  <article class="post-content">
+    <div class="lead">
+      <p><img class="left" src="http://kde.org/images/icons/kmail_48.png" width="48" height="48" title="&#34;Das KDE-KMail Logo&#34;" alt="&#34;Das KDE-KMail Logo&#34;" />
+Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten).
+Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „<em>Am Donnerstag, 21.
+April 2011, 21:42:12 schrieben Sie:</em>“ voran.
+Das sieht nicht gut aus und geht deutlich besser!</p>
+    </div>
+    
+
+<p>So lange man nur im deutschsprachigen Umfeld arbeitet ist dies kein Problem, kommen aber hier und da englischsprachige E-Mails hinzu, ist ein solcher deutschsprachiger Text eher unpassend.</p>
+
+<p>Hier beschreibe ich eine mögliche Vorgehensweise, wie man dieses Problem in <a href="http://userbase.kde.org/KMail">KMail</a>, dem E-Mail-Programm von <a href="http://kde.org/">KDE</a>, einfach lösen kann ohne die Sprache der Benutzeroberfläche ändern zu müssen.
+Ich habe es hier am Beispiel der deutschen Benutzeroberfläche von KMail2 (Version 2.0.95 unter KDE 4.6.90 (4.7 RC1)) gemacht, es lässt sich aber auf alle anderen beliebigen Oberflächen ebenfalls anwenden.</p>
+
+<h3 id="der-standard">Der Standard</h3>
+<p>Die Standard-Vorlagen sind Bestandteil der Lokalisierung von KMail, weshalb sie bei einer deutschsprachigen Benutzeroberfläche ebenfalls übersetzt sind.
+Die hier beschriebene Lösung besteht aus einer Rückübersetzung dieser Standard-Vorlagen.</p>
+
+<p>Unter „<em>Einstellungen</em>“ -&gt; „<em>KMail einrichten …</em>“ wählt man den „<em>E-Mail-Editor</em>“ aus und begibt sich in den Reiter „<em>Standard-Vorlagen</em>“.
+Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiterleiten einer E-Mail automatisch verwendet werden.</p>
+
+<p>Bei deutscher Lokalisierung steht hier für „<em>Antwort an Absender</em>”:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">%CURSOR
+</span><span class="line">
+</span><span class="line">%REM="Standardvorlage für Antworten"%-
+</span><span class="line">Am %ODATE, %OTIMELONG schrieben Sie:
+</span><span class="line">%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen (“<em>On %ODATE %OTIMELONG you wrote:</em>”), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen.
+Andernfalls würde das obige Beispiel als „<em>On Donnerstag, 21.
+April 2011 21:42 you wrote:</em>“ erscheinen.</p>
+
+<p>Die nicht-lokalisierten Platzhalter lassen sich einerseits durch das unten stehende Menü „<em>Platzhalter einfügen</em>“ -&gt; „<em>Ursprüngliche Nachricht</em>“ wählen (es sind die mit dem Zusatz „<em>in C-Lokalisierung</em>“)  oder durch Anhängen von “<code>EN</code>” an die bisherigen.</p>
+
+<p>Schließlich sieht die englischsprachige Standard-Vorlage ohne lokalisierte Platzhalter wie folgt aus:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">%CURSOR
+</span><span class="line">
+</span><span class="line">%REM="Standardvorlage für Antworten"%-
+</span><span class="line">On %ODATEEN %OTIMELONGEN you wrote:
+</span><span class="line">%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Mit den anderen Standard-Vorlagen für „<em>Allen antworten / der Liste antworten</em>“ und „<em>Nachricht weiterleiten</em>“ verfährt man ebenso.</p>
+
+<h3 id="die-erweiterung">Die Erweiterung</h3>
+<p>Um individuell nur bei Antworten auf (oder beim Weiterleiten) bestimmte E-Mails die englischsprachige Vorlage zu verwenden, empfiehlt es sich, „<em>Eigene Vorlagen</em>“ einzurichten.
+Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man über den gewählten Name im „<em>Antworten</em>“-Menü (lange auf das Werkzeugleisten-Symbol „<em>Antworten</em>“ klicken) aufrufen kann.</p>
+
+<p>Ich habe hier eine neue Vorlage „<em>deutsche Antwort</em>“ erstellt und in das große Textfeld</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">%CURSOR
+</span><span class="line">
+</span><span class="line">%REM="Vorlage für deutsche Antworten"%-
+</span><span class="line">Am %ODATE um %OTIMELONG schrieben Sie:
+</span><span class="line">%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>eingegeben und unten rechts noch „<em>Antwort</em>“ als Vorlagentyp gewählt.</p>
+
+<p>Außerdem habe ich noch eine Vorlage „<em>deutsche Antwort (allen)</em>“ mit</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">%REM="Deutsche Vorlage für Antworten an alle"%-
+</span><span class="line">Am %ODATE um %OTIMELONG schrieb %OFROMNAME:
+</span><span class="line">%QUOTE
+</span><span class="line">
+</span><span class="line">%CURSOR</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>und dem Vorlagentyp „Allen Antworten“ erstellt.</p>
+
+<p>Und schließlich noch, um die Standard-Aktionen vollständig zu machen, eine Vorlage für die Weiterleitung (Vorlagentyp „<em>Weiterleiten</em>“) an deutsche Empfänger:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">%REM="Deutsche Vorlage für Weiterleitungen"%-
+</span><span class="line">
+</span><span class="line">----------------  Weitergeleitete Nachricht  ----------------
+</span><span class="line">
+</span><span class="line">Betreff: %OFULLSUBJECT
+</span><span class="line">Datum: %ODATE, %OTIMELONG
+</span><span class="line">Von: %OFROMADDR
+</span><span class="line">%OADDRESSEESADDR
+</span><span class="line">
+</span><span class="line">%TEXT
+</span><span class="line">------------------------------------------------------------</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail.
+Derzeit scheint es noch nicht dort erläutert zu werden.</p>
+
+<h3 id="fazit">Fazit</h3>
+<p>Das Rückübersetzen der Standard-Vorlagen ist sicherlich die einfachste und benutzerfreundlichste Lösung.
+Wem es nichts aus macht, dass auch die deutschsprachigen Korrespondenzen englischen Text lesen müssen, sollte bei dieser Lösung bleiben.</p>
+
+<p>Wer jedoch eine exakte und konsistente Lösung bevorzugt, dem sei die Erweiterung empfohlen.
+Sie erfordert allerdings ein wenig Handarbeit bei jeder Antwort oder Weiterleitung.
+Auf Dauer kann das durchaus nervend werden.</p>
+
+  </article>
+  <footer class="article">
+  
+  
+  
+
+
+
+  
+    
+  
+
+
+
+  <i class="fa fa-calendar"></i> Created on <time datetime="2011-07-05T00:00:00+02:00">05 Jul 2011</time>
+
+
+
+  
+
+
+  
+  
+    &#8226;
+    <!---->
+<i class="fa fa-tags"></i>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/category/linux/'>Linux</a>
+  
+</span>
+<!---->
+
+  
+  <span class="legal-notice">
+  <a href="//creativecommons.org/licenses/by-nc-sa/4.0/legalcode"
+     title="This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License">
+    <img src="/images/cc_by-nc-sa_4.0.png" alt="CC BY-NC-SA 4.0">
+  </a>
+  <span class="licensed-work-title" xmlns:dct="//purl.org/dc/terms/" href="//purl.org/dc/dcmitype/Text" property="dct:title">
+    KDE Tipps #1: Deutsches KMail aber fremdsprachige E-Mails
+  </span>
+  by
+  <span class="licensed-work-author" xmlns:cc="//creativecommons.org/ns#" property="cc:attributionName">
+    Torbjörn Klatt
+  </span>
+  is licensed under a
+  <a rel="license" href="//creativecommons.org/licenses/by-nc-sa/4.0/">
+    Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+  </a>.
+</span>
+
+</footer>
+
+</div>
+
+          </div>
+          <div class="asides col-md-4">
+            <section id="recent-posts-aside" class="aside panel panel-default">
+  <div class="panel-heading">
+    <a type="button" class="btn btn-default btn-xs pull-right" href="feed.xml" role="button" title="subscribe via RSS">
+      <i class="fa fa-rss"></i>
+      <!--<span class="hidden-xs">RSS</span>-->
+    </a>
+    <h3 class="panel-title">
+      Neue Artikel / Recent Posts
+    </h3>
+  </div>
+  
+  <ul class="list-group">
+    
+    <li class="list-group-item">
+      <span class="label label-default">21 Aug 2014</span>
+      <a href="/article/2014/08/21/c++-code-coverage-analysis-with-cmake-and-jenkins/">C++ Code Coverage Analysis with CMake and Jenkins</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">03 Apr 2013</span>
+      <a href="/article/2013/04/03/struggling-with-git-submodules-and-mercurial-subrepositories/">Struggling with Git Submodules and Mercurial Subrepositories</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">06 Nov 2012</span>
+      <a href="/article/2012/11/06/boost-unter-linux-selbst-installieren/">Boost unter Linux selbst installieren</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">17 Jun 2012</span>
+      <a href="/article/2012/06/17/es-war-der-kernel-und-ipv6/">Es war der Kernel und IPv6</a>
+    </li>
+    
+    <li class="list-group-item">
+      <span class="label label-default">08 Apr 2012</span>
+      <a href="/article/2012/04/08/owncloud-plus-thunderbird-plus-android-equals-perfect-sync/">ownCloud + Thunderbird + Android = Perfect Sync</a>
+    </li>
+    
+  </ul>
+</section>
+
+            <section id="gh-repos-aside" class="aside gh-repos panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-github fa-fw"></i>GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="panel-body gh-profile-link text-muted">
+      <div class="pull-right">
+        <a href="https://github.com/torbjoernk">@torbjoernk</a> on <i class="fa fa-github fa-fw"></i>GitHub
+      </div>
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/js/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'torbjoernk',
+            count: '5',
+            skip_forks: 'true',
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/js/github.js" type="text/javascript"></script>
+</section>
+
+            <section class="legal">
+  <div class="btn-group btn-group-xs btn-group-justified">
+    <a href="/imprint/" class="btn" role="button">
+      &copy;<span class="hidden-xs">&ensp;Imprint</span>
+    </a>
+    <a href="" class="btn" role="button">
+      <i class="fa fa-code"></i><span class="hidden-xs">&ensp;Source</span>
+    </a>
+  </div>
+</section>
+          </div>
+        </div><!-- /.row -->
+      </main>
+    </div><!-- /.container -->
+
+    <footer id="site-footer">
+  <div class="blog-footer">
+    <a href="#">Back to top</a>
+  </div>
+</footer>
+
+    
+  </body>
+</html>
