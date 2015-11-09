@@ -4,7 +4,7 @@
   <title><![CDATA[Linux | Torbjörn Klatt]]></title>
   <link href="http://torbjoern-klatt.de/category/linux/atom.xml" rel="self"/>
   <link href="http://torbjoern-klatt.de/"/>
-  <updated>2015-04-04T16:06:01+02:00</updated>
+  <updated>2015-11-09T09:45:29+01:00</updated>
   <id>http://torbjoern-klatt.de/</id>
   <author>
     <name><![CDATA[Torbjörn Klatt]]></name>
@@ -191,7 +191,7 @@ als Ursache des Problems in der Warnmeldung genannte.</li>
 <h2 id="die-warnmeldung">Die Warnmeldung</h2>
 <p>Hier einmal eine solche Warnmeldung, wie sie in <code>/var/log/messages</code> auftaucht:</p>
 
-<p>{% gist 2944022 %}</p>
+<p><script src="https://gist.github.com/2944022.js"> </script></p>
 
 <h2 id="ursachenforschung">Ursachenforschung</h2>
 <p>Da diese Warnmeldungen anfangs nur sporadisch und ohne jegliche Regelmäßigkeit
@@ -212,7 +212,7 @@ Ein kurzes Auslesen der S.M.A.R.T.-Werte schockierte mich zunächst, da ich auf
 Grund falscher Interpretation der Werte ein sehr baldiges Komplettversagen der
 Festplatte diagnostizierte.</p>
 
-<p>{% gist 2944042 %}</p>
+<p><script src="https://gist.github.com/2944042.js"> </script></p>
 
 <p>Wenn <code>VALUE</code> <em>unter</em> die Werte von <code>THRESH</code> fällt, wird es sehr kritisch.
 Obacht ist geboten, wenn <code>WORST</code> <em>unter</em> <code>THRESH</code> fällt.</p>
@@ -435,10 +435,10 @@ Doch die folgenden Schritte sollten schnelle und einfache Abhilfe schaffen:</p>
 <p>Eine sehr große Hilfe war mir das <a href="https://github.com/rackerhacker/MySQLTuner-perl">MySQL-Tuning-Script von rackerhacker</a>, das einen laufenden MySQL-Server ein wenig auf den Zahn fühlt und dann einem Vorschläge für Verbesserungen unterbreitet.
 Das Script ist in Perl geschrieben, d.h. man braucht den Perl-Interpreter, um es verwenden zu können.</p>
 
-<p>{% codeblock %}
-wget http://mysqltuner.pl
-perl mysqltuner.pl
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://mysqltuner.pl
+</span><span class='line'>perl mysqltuner.pl</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Man wird aufgefordert den <strong>MySQL</strong>-<code>root</code>-Usernamen sowie dessen Passwort anzugeben.
 I.d.R. ist dies <code>root</code> und ein hoffentlich selbst gewähltes Passwort, das nicht zwangsläufig dem des Linux-root-Passworts entsprechen muss.</p>
@@ -451,15 +451,20 @@ Also am besten beim Hochfahren des Rechners die Tabellen durch ein Script optimi
 
 <p>Hier nun ein paar wichtige Variablen und deren Werte meiner <code>my.cnf</code> auf einem Laptop mit 4GB RAM und einem Duo-Core-Prozessor:</p>
 
-<p>{% codeblock %}
-key_buffer_size = 128M
-sort_buffer_size = 512K
-thread_cache_size = 8
-wait_timeout = 1296000
-query_cache_size = 8M
-query_cache_type = 1
-join_buffer_size = 256K
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>key_buffer_size = 128M
+</span><span class='line'>sort_buffer_size = 512K
+</span><span class='line'>thread_cache_size = 8
+</span><span class='line'>wait_timeout = 1296000
+</span><span class='line'>query_cache_size = 8M
+</span><span class='line'>query_cache_type = 1
+</span><span class='line'>join_buffer_size = 256K</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Der Wert des <code>thread_cache_size</code> ist vermutlich noch nicht 100%-ig stimmig.
 Bekomme da bei jedem Lauf des Tuningscripts einen anderen Wert vorgeschlagen.
@@ -479,7 +484,7 @@ Also am besten nach einem langen Arbeitstag ausführen, wenn man insbesondere KM
     <link href="http://torbjoern-klatt.de/article/2011/07/05/kde-tipps-1-deutsches-kmail-aber-englische-vorlagen/"/>
     <updated>2011-07-05T00:00:00+02:00</updated>
     <id>http://torbjoern-klatt.de/article/2011/07/05/kde-tipps-1-deutsches-kmail-aber-englische-vorlagen</id>
-    <content type="html"><![CDATA[<p>{% img left http://kde.org/images/icons/kmail_48.png 48 48 “Das KDE-KMail Logo” %}
+    <content type="html"><![CDATA[<p><img class="left" src="http://kde.org/images/icons/kmail_48.png" width="48" height="48" title="“Das KDE-KMail Logo”" >
 Wer kennt es nicht: Man arbeitet unter der deutschsprachigen Benutzeroberfläche, unterhält aber des öfteren englischsprachige Korrespondenzen (zum Beispiel in Mailinglisten).
 Antwortet man nun auf eine E-Mail, so fügt das E-Mail-Programm automatisch die alte E-Mail zitiert ein und stellt ihr so etwas wie „<em>Am Donnerstag, 21.
 April 2011, 21:42:12 schrieben Sie:</em>“ voran.
@@ -501,13 +506,16 @@ Hier werden die Texte festgelegt, die standardmäßig beim Antworten oder Weiter
 
 <p>Bei deutscher Lokalisierung steht hier für „<em>Antwort an Absender</em>”:</p>
 
-<p>{% codeblock %}
-%CURSOR</p>
-
-<p>%REM=”Standardvorlage für Antworten”%-
-Am %ODATE, %OTIMELONG schrieben Sie:
-%QUOTE
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%CURSOR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%REM=”Standardvorlage für Antworten”%-
+</span><span class='line'>Am %ODATE, %OTIMELONG schrieben Sie:
+</span><span class='line'>%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Wichtig ist nun, nicht nur den Satz ins Englische zu übersetzen (“<em>On %ODATE %OTIMELONG you wrote:</em>”), sondern ebenfalls die Platzhalter <code>%ODATE</code> und <code>%OTIMELONG</code> durch ihre nicht-lokalisierten Gegenstücke zu ersetzen.
 Andernfalls würde das obige Beispiel als „<em>On Donnerstag, 21.
@@ -517,13 +525,16 @@ April 2011 21:42 you wrote:</em>“ erscheinen.</p>
 
 <p>Schließlich sieht die englischsprachige Standard-Vorlage ohne lokalisierte Platzhalter wie folgt aus:</p>
 
-<p>{% codeblock %}
-%CURSOR</p>
-
-<p>%REM=”Standardvorlage für Antworten”%-
-On %ODATEEN %OTIMELONGEN you wrote:
-%QUOTE
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%CURSOR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%REM=”Standardvorlage für Antworten”%-
+</span><span class='line'>On %ODATEEN %OTIMELONGEN you wrote:
+</span><span class='line'>%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Mit den anderen Standard-Vorlagen für „<em>Allen antworten / der Liste antworten</em>“ und „<em>Nachricht weiterleiten</em>“ verfährt man ebenso.</p>
 
@@ -533,42 +544,58 @@ Hier lassen sich detaillierte und allgemeine E-Mail-Vorlagen erstellen, die man 
 
 <p>Ich habe hier eine neue Vorlage „<em>deutsche Antwort</em>“ erstellt und in das große Textfeld</p>
 
-<p>{% codeblock %}
-%CURSOR</p>
-
-<p>%REM=”Vorlage für deutsche Antworten”%-
-Am %ODATE um %OTIMELONG schrieben Sie:
-%QUOTE
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%CURSOR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%REM=”Vorlage für deutsche Antworten”%-
+</span><span class='line'>Am %ODATE um %OTIMELONG schrieben Sie:
+</span><span class='line'>%QUOTE</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>eingegeben und unten rechts noch „<em>Antwort</em>“ als Vorlagentyp gewählt.</p>
 
 <p>Außerdem habe ich noch eine Vorlage „<em>deutsche Antwort (allen)</em>“ mit</p>
 
-<p>{% codeblock %}
-%REM=”Deutsche Vorlage für Antworten an alle”%-
-Am %ODATE um %OTIMELONG schrieb %OFROMNAME:
-%QUOTE</p>
-
-<p>%CURSOR
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%REM=”Deutsche Vorlage für Antworten an alle”%-
+</span><span class='line'>Am %ODATE um %OTIMELONG schrieb %OFROMNAME:
+</span><span class='line'>%QUOTE&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>%CURSOR</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>und dem Vorlagentyp „Allen Antworten“ erstellt.</p>
 
 <p>Und schließlich noch, um die Standard-Aktionen vollständig zu machen, eine Vorlage für die Weiterleitung (Vorlagentyp „<em>Weiterleiten</em>“) an deutsche Empfänger:</p>
 
-<p>{% codeblock %}
-%REM=”Deutsche Vorlage für Weiterleitungen”%-</p>
-
-<p>—————-  Weitergeleitete Nachricht  —————-</p>
-
-<p>Betreff: %OFULLSUBJECT
-Datum: %ODATE, %OTIMELONG
-Von: %OFROMADDR
-%OADDRESSEESADDR</p>
-
-<h2 id="text">%TEXT</h2>
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%REM=”Deutsche Vorlage für Weiterleitungen”%-&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>—————-  Weitergeleitete Nachricht  —————-&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>Betreff: %OFULLSUBJECT
+</span><span class='line'>Datum: %ODATE, %OTIMELONG
+</span><span class='line'>Von: %OFROMADDR
+</span><span class='line'>%OADDRESSEESADDR&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h2 id="text">%TEXT&lt;/h2>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Alle Möglichkeiten dieser Funktion hier zu beschreiben, führt etwas zu weit und gehört in das Handbuch von KMail.
 Derzeit scheint es noch nicht dort erläutert zu werden.</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Bachelor In London | Torbjörn Klatt]]></title>
   <link href="http://torbjoern-klatt.de/category/bachelor-in-london/atom.xml" rel="self"/>
   <link href="http://torbjoern-klatt.de/"/>
-  <updated>2015-04-04T16:06:01+02:00</updated>
+  <updated>2015-11-09T09:45:29+01:00</updated>
   <id>http://torbjoern-klatt.de/</id>
   <author>
     <name><![CDATA[Torbjörn Klatt]]></name>
@@ -43,7 +43,7 @@ Derzeit ist dort eine sehr (!) große Fläche mit Abermillionen gefälschter Son
 Der chinesische Künstler <em>Au Weiwei</em> ist für diese Aktion <a href="http://www.tate.org.uk/modern/exhibitions/unileverseries2010/default.shtm">der Unilever Series</a> “verantwortlich”.
 Dieses, leider nur englischsprachige, Video erklärt den Hintergrund dieser Aktion: <em>Sunflower Seeds</em>.</p>
 
-<p>{% youtube PueYywpkJW8 %}</p>
+<p><iframe width="560" height="420" src="http://www.youtube.com/embed/PueYywpkJW8?color=white&theme=light"></iframe></p>
 
 <p>Auch der Rest der Tate Modern ist wirklich sehenswert.
 Ja, eigentlich schon das Gebäude an sich, was ein altes Kraftwerk ist.
@@ -66,8 +66,8 @@ Wann hatte ich das letzte mal etwas geschrieben? Ich versuche  mal ein wenig auf
 <!-- more -->
 
 <p>Also am 3.
-Dezember hatte ich über eine <a href="{{ root_url}}/blog/2010/12/03/arsen-phosphor-und-ein-presse-hype/">wissenschaftliche Entdeckung</a>&lt;/a&gt; geschrieben und zuvor — und während der ersten Dezember-Wochen — über die heißen Diskussionen um den neuen <a href="{{ root_url}}/blog/2010/11/30/schliessung-der-seite-droht/">Jugendmedienstaatsvertrag</a>, kurz JMStV.
-Aber über London? Oh ja, <a href="{{ root_url}}/blog/2010/11/27/schweinsohren-gluehwein-und-dicke-waden/">am 27.
+Dezember hatte ich über eine <a href="/blog/2010/12/03/arsen-phosphor-und-ein-presse-hype/">wissenschaftliche Entdeckung</a>&lt;/a&gt; geschrieben und zuvor — und während der ersten Dezember-Wochen — über die heißen Diskussionen um den neuen <a href="/blog/2010/11/30/schliessung-der-seite-droht/">Jugendmedienstaatsvertrag</a>, kurz JMStV.
+Aber über London? Oh ja, <a href="/blog/2010/11/27/schweinsohren-gluehwein-und-dicke-waden/">am 27.
 November</a>.
 Es ist tatsächlich knapp zwei Monate her.
 Mea Culpa!</p>
