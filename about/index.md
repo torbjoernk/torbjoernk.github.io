@@ -2,7 +2,7 @@
 layout: page
 title: "Über mich"
 date: 2012-03-16 13:25
-updated: 2015-11-26 09:00 +0100
+updated: 2018-02-14 21:00 +0100
 comments: false
 footer: true
 ---
@@ -26,14 +26,15 @@ Auch darüber habe ich wieder [gebloggt](/category/london).
 
 
 ### Arbeitsleben
-Seit November 2013 als wissenschaftlicher Mitarbeiter am *Jülich Supercomputing Centre* (JSC) der
+Von November 2013 bis April 2016 war ich als wissenschaftlicher Mitarbeiter am *Jülich Supercomputing Centre* (JSC) der
 *Forschungszentrum Jülich GmbH* (FZJ) tätig.
-In der Gruppe von *Dr. Robert Speck* beschäftige ich mich mit zeitparallelen Methoden und verbringe den
+In der Gruppe von *Dr. Robert Speck* beschäftiget ich mich mit zeitparallelen Methoden und verbrachte den
 Großteil meiner Zeit mit der Implementierung des [*PFASST* ("*Parallel Full Approximation Scheme
 in Space and Time*") Algorithmus](http://www.parallelintime.org/methods/pfasst.html) in C++ für HPC-Systeme:
-[PFASST++](https://github.com/Parallel-in-Time/PFASST).
+[PFASST++](https://github.com/Parallel-in-Time/PFASST).  
+Zudem erstellete und pflegete ich die Community-Webseite [www.parallelintime.org](http://parallelintime.org).
 
-Zudem erstelle und pflege ich die Community-Webseite [www.parallelintime.org](http://parallelintime.org).
+Seit April 2016 bin ich als Softwareentwickler bei *Miltenyi Biotec GmbH* angestellt und arbeite an der Software *MACSQuantify* für die Zellanalysegeräte der *MACSQuant* Familie.
 
 
 ### Engagement
@@ -55,11 +56,11 @@ Seltsverständlich beherrsche ich auch einige Programmiersprachen (nach meiner F
 | Python     | fortgeschritten            | hatte früher einige Vorurteile gegen Python; seit 2013 aber lieben gelernt (insbes. IPython)        |
 | Ruby       | grundlegend                | seit 2012 für das ein oder andere private Projekt; schöne Sprache und einfach zu lesen              |
 | Bash       | grundlegend                | ein paar Skripte erleichtern einem das Leben; die ZSH möchte ich nicht mehr missen                  |
-| JavaScript | grundlegend                | mit Dojo oder jQuery richtig mächtig; auch sonst sehr hilfreich im Web                              |
-| HTML       | fortgeschritten            | den Zug von HTML5 versuche ich gerade zu erreichen; hier hilft mir auch die Wartung dieses Blogs    |
+| JavaScript | grundlegend                | mit jQuery richtig mächtig; auch sonst sehr hilfreich im Web                              |
+| HTML       | fortgeschritten            | den Zug von HTML5 versuche ich noch zu erreichen; hier hilft mir auch die Wartung dieses Blogs    |
 | CSS        | grundlegend                | HTML geht nicht ohne; in Verbindung mit HTML5 und JavaScript sehr spaßig                            |
-| MATLAB     | früher mal fortgeschritten | hautptsächlich in meiner Bachelorarbeit verwendet; mag ich nicht; zum Glück gibt es den numpy-Stack |
-| Perl       | früher mal grundlegend     | vor einiger Zeit für ein paar Textparsing-Skripte; "quick and dirty", Ruby und Python sind schöner  |
+| MATLAB     | früher mal fortgeschritten | hautptsächlich in meiner Bachelorarbeit verwendet; mag ich nicht; zum Glück gibt es den numpy-Python-Stack |
+| Perl       | früher mal grundlegend     | vor längerer Zeit für ein paar Textparsing-Skripte; "quick and dirty", Ruby und Python sind schöner und angenehmer |
 
 
 ### Publikationen

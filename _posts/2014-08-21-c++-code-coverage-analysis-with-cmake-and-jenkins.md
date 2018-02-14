@@ -2,6 +2,7 @@
 layout: post
 title: "C++ Code Coverage Analysis with CMake and Jenkins"
 date: 2014-08-21 19:30:00
+updated: 2015-04-07 16:20:00
 comments: true
 published: true
 categories:
@@ -37,16 +38,18 @@ For documentation on those flags, see [GCC's man page "3.9 Options for Debugging
 
 You can conditionally add those flags by defining a *CMake* option, e.g. `my_project_WITH_PROF`:
 
-    option(my_project_WITH_PROF "Enable profiling and coverage report analysis" OFF)
-    
-    ...
+{% highlight cmake %}
+option(my_project_WITH_PROF "Enable profiling and coverage report analysis" OFF)
 
-    # assuming target "my_prog" exists
-    if(${CMAKE_COMPILER_ID} MATCHES GNU AND $my_project_WITH_PROF)
-        set_target_properties(my_prog
-            PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -gp -fprofile-coverage -fprofile-args
-                       LINK_FLAGS "-fprofile-arcs")
-    endif()
+#...
+
+# assuming target "my_prog" exists
+if(${CMAKE_COMPILER_ID} MATCHES GNU AND $my_project_WITH_PROF)
+    set_target_properties(my_prog
+        PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -gp -fprofile-coverage -fprofile-args
+                   LINK_FLAGS "-fprofile-arcs")
+endif()
+{% endhighlight %}
 
 That is all regarding compilation.
 What is left is to run the compiled program, capture the coverage data and generate a HTML report out
@@ -105,7 +108,7 @@ To capture coverage of files in other directories you need to adjust the calls t
 For convenience, you might want to put your adjusted script in the root of your project and under
 revision control.
 
-{% codeblock generate_coverage.sh %}
+{% highlight bash %}
 #!/bin/sh
 basepath=`pwd`
 
@@ -166,7 +169,7 @@ genhtml --output-directory ./coverage \
   --title "My Program Test Coverage" --prefix ${basepath}/include \
   --function-coverage --branch-coverage --legend \
   ${basepath}/${builddir}/all_tests.info
-{% endcodeblock %}
+{% endhighlight %}
 
 ## Let Jenkins Publish the Report
 
