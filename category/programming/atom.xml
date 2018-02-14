@@ -4,7 +4,7 @@
   <title><![CDATA[Programming | Torbjörn Klatt]]></title>
   <link href="http://torbjoern-klatt.de/category/programming/atom.xml" rel="self"/>
   <link href="http://torbjoern-klatt.de/"/>
-  <updated>2015-11-26T09:27:42+01:00</updated>
+  <updated>2018-02-14T21:13:03+01:00</updated>
   <id>http://torbjoern-klatt.de/</id>
   <author>
     <name><![CDATA[Torbjörn Klatt]]></name>
@@ -46,17 +46,16 @@ For documentation on those flags, see <a href="https://gcc.gnu.org/onlinedocs/gc
 
 <p>You can conditionally add those flags by defining a <em>CMake</em> option, e.g. <code>my_project_WITH_PROF</code>:</p>
 
-<pre><code>option(my_project_WITH_PROF "Enable profiling and coverage report analysis" OFF)
+<p><div class="highlight"><pre><code class="language-cmake" data-lang="cmake"><span class="nb">option</span><span class="p">(</span><span class="s">my_project_WITH_PROF</span> <span class="s">“Enable</span> <span class="s">profiling</span> <span class="s">and</span> <span class="s">coverage</span> <span class="s">report</span> <span class="s">analysis”</span> <span class="s">OFF</span><span class="p">)</span><span class="err">&lt;/p&gt;</span>
 
-...
+<span class="err">&lt;h1</span> <span class="err">id=&quot;section&quot;&gt;…&lt;/h1&gt;</span>
 
-# assuming target "my_prog" exists
-if(${CMAKE_COMPILER_ID} MATCHES GNU AND $my_project_WITH_PROF)
-    set_target_properties(my_prog
-        PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -gp -fprofile-coverage -fprofile-args
-                   LINK_FLAGS "-fprofile-arcs")
-endif()
-</code></pre>
+<span class="err">&lt;h1</span> <span class="err">id=&quot;assuming-target-myprog-exists&quot;&gt;assuming</span> <span class="err">target</span> <span class="err">“my_prog”</span> <span class="err">exists&lt;/h1&gt;</span>
+<span class="err">&lt;p&gt;</span><span class="nb">if</span><span class="p">(</span><span class="o">${</span><span class="nv">CMAKE_COMPILER_ID</span><span class="o">}</span> <span class="s">MATCHES</span> <span class="s">GNU</span> <span class="s">AND</span> <span class="err">$</span><span class="s">my_project_WITH_PROF</span><span class="p">)</span>
+    <span class="nb">set_target_properties</span><span class="p">(</span><span class="s">my_prog</span>
+        <span class="s">PROPERTIES</span> <span class="s">COMPILE_FLAGS</span> <span class="s">“</span><span class="o">${</span><span class="nv">CMAKE_CXX_FLAGS</span><span class="o">}</span> <span class="s">-gp</span> <span class="s">-fprofile-coverage</span> <span class="s">-fprofile-args</span>
+                   <span class="s">LINK_FLAGS</span> <span class="s">“-fprofile-arcs”</span><span class="p">)</span>
+<span class="nb">endif</span><span class="p">()</span></code></pre></div></p>
 
 <p>That is all regarding compilation.
 What is left is to run the compiled program, capture the coverage data and generate a HTML report out
@@ -127,128 +126,66 @@ To capture coverage of files in other directories you need to adjust the calls t
 <p>For convenience, you might want to put your adjusted script in the root of your project and under
 revision control.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>generate_coverage.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/sh</span>
-</span><span class='line'><span class="nv">basepath</span><span class="o">=</span>&lt;code&gt;pwd&lt;/code&gt;&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;function print_help <span class="o">{</span>
-</span><span class='line'>  <span class="nb">echo</span> “#######################################################################”
-</span><span class='line'>  <span class="nb">echo</span> “###               Generation of Test Coverage Report                <span class="c">###”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “# First <span class="o">(</span>and only<span class="o">)</span> parameter must be the name of the build directory  <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “# Example:                                                            <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#   ./generate_coverage.sh build_gcc                                  <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
-</span><span class='line'>  <span class="nb">echo</span> “#######################################################################”
-</span><span class='line'>  <span class="k">return</span> 0
-</span><span class='line'><span class="o">}</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;if <span class="o">[[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]]</span>
-</span><span class='line'><span class="k">then</span>
-</span><span class='line'>  print_help
-</span><span class='line'>  <span class="nb">echo</span> “ERROR: Please name the build directory as the first parameter.”
-</span><span class='line'>  <span class="nb">exit</span> -1
-</span><span class='line'><span class="k">fi</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;builddir<span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
-</span><span class='line'><span class="nb">cd</span> <span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;rm -rf <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage
-</span><span class='line'>mkdir -p <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;for testdir in &lt;code&gt;find <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span> -type d <span class="p">|</span> grep -o <span class="s1">&#39;tests/.*/.*\dir&#39;</span>&lt;/code&gt;
-</span><span class='line'><span class="k">do</span>
-</span><span class='line'>  <span class="nv">testname</span><span class="o">=</span>&lt;code&gt;expr <span class="s2">&quot;$testdir&quot;</span> : <span class="s1">&#39;.*\(test_[a-zA-Z\-_]*\)\.dir&#39;</span>&lt;/code&gt;
-</span><span class='line'>  <span class="nb">echo</span> “Gathering Coverage <span class="k">for</span> <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>”
-</span><span class='line'>  <span class="nb">cd</span> <span class="nv">$testdir</span>
-</span><span class='line'>  lcov –zerocounters  –directory .
-</span><span class='line'>  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
-</span><span class='line'>  ctest -R <span class="nv">$testname</span>
-</span><span class='line'>  <span class="nb">cd</span> <span class="nv">$testdir</span>
-</span><span class='line'>  lcov –directory . –capture –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
-</span><span class='line'>  lcov –extract <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp “&lt;em&gt;<span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include/**/&lt;/em&gt;” <span class="se">\</span>
-</span><span class='line'>    –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info
-</span><span class='line'>  rm <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
-</span><span class='line'>  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">[[</span> -e all_tests.info <span class="o">]]</span>
-</span><span class='line'>  <span class="k">then</span>
-</span><span class='line'>    lcov –add-tracefile all_tests.info <span class="se">\</span>
-</span><span class='line'>      –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
-</span><span class='line'>      –output-file all_tests.info
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    lcov –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
-</span><span class='line'>      –output-file all_tests.info
-</span><span class='line'>  <span class="k">fi</span>
-</span><span class='line'><span class="k">done</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;cd <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>
-</span><span class='line'>genhtml –output-directory ./coverage <span class="se">\</span>
-</span><span class='line'>  –demangle-cpp –num-spaces <span class="m">2</span> –sort <span class="se">\</span>
-</span><span class='line'>  –title “My Program Test Coverage” –prefix <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include <span class="se">\</span>
-</span><span class='line'>  –function-coverage –branch-coverage –legend <span class="se">\</span>
-</span><span class='line'>  <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>/all_tests.info
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nv">basepath</span><span class="o">=</span>&lt;code&gt;pwd&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;function print_help <span class="o">{</span>
+  <span class="nb">echo</span> “#######################################################################”
+  <span class="nb">echo</span> “###               Generation of Test Coverage Report                <span class="c">###”</span>
+  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
+  <span class="nb">echo</span> “# First <span class="o">(</span>and only<span class="o">)</span> parameter must be the name of the build directory  <span class="c">#”</span>
+  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
+  <span class="nb">echo</span> “# Example:                                                            <span class="c">#”</span>
+  <span class="nb">echo</span> “#   ./generate_coverage.sh build_gcc                                  <span class="c">#”</span>
+  <span class="nb">echo</span> “#                                                                     <span class="c">#”</span>
+  <span class="nb">echo</span> “#######################################################################”
+  <span class="k">return</span> 0
+<span class="o">}</span>&lt;/p&gt;
+
+&lt;p&gt;if <span class="o">[[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]]</span>
+<span class="k">then</span>
+  print_help
+  <span class="nb">echo</span> “ERROR: Please name the build directory as the first parameter.”
+  <span class="nb">exit</span> -1
+<span class="k">fi</span>&lt;/p&gt;
+
+&lt;p&gt;builddir<span class="o">=</span><span class="k">${</span><span class="nv">1</span><span class="k">}</span>
+<span class="nb">cd</span> <span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>&lt;/p&gt;
+
+&lt;p&gt;rm -rf <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage
+mkdir -p <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/coverage&lt;/p&gt;
+
+&lt;p&gt;for testdir in &lt;code&gt;find <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span> -type d <span class="p">|</span> grep -o <span class="s1">&#39;tests/.*/.*\dir&#39;</span>&lt;/code&gt;
+<span class="k">do</span>
+  <span class="nv">testname</span><span class="o">=</span>&lt;code&gt;expr <span class="s2">&quot;$testdir&quot;</span> : <span class="s1">&#39;.*\(test_[a-zA-Z\-_]*\)\.dir&#39;</span>&lt;/code&gt;
+  <span class="nb">echo</span> “Gathering Coverage <span class="k">for</span> <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>”
+  <span class="nb">cd</span> <span class="nv">$testdir</span>
+  lcov –zerocounters  –directory .
+  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
+  ctest -R <span class="nv">$testname</span>
+  <span class="nb">cd</span> <span class="nv">$testdir</span>
+  lcov –directory . –capture –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
+  lcov –extract <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp “&lt;em&gt;<span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include/**/&lt;/em&gt;” <span class="se">\</span>
+    –output-file <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info
+  rm <span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info.tmp
+  <span class="nb">cd</span> <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>
+  <span class="k">if</span> <span class="o">[[</span> -e all_tests.info <span class="o">]]</span>
+  <span class="k">then</span>
+    lcov –add-tracefile all_tests.info <span class="se">\</span>
+      –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
+      –output-file all_tests.info
+  <span class="k">else</span>
+    lcov –add-tracefile <span class="k">${</span><span class="nv">testdir</span><span class="k">}</span>/<span class="k">${</span><span class="nv">testname</span><span class="k">}</span>.info <span class="se">\</span>
+      –output-file all_tests.info
+  <span class="k">fi</span>
+<span class="k">done</span>&lt;/p&gt;
+
+&lt;p&gt;cd <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>
+genhtml –output-directory ./coverage <span class="se">\</span>
+  –demangle-cpp –num-spaces <span class="m">2</span> –sort <span class="se">\</span>
+  –title “My Program Test Coverage” –prefix <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/include <span class="se">\</span>
+  –function-coverage –branch-coverage –legend <span class="se">\</span>
+  <span class="k">${</span><span class="nv">basepath</span><span class="k">}</span>/<span class="k">${</span><span class="nv">builddir</span><span class="k">}</span>/all_tests.info</code></pre></div></p>
 
 <h2 id="let-jenkins-publish-the-report">Let Jenkins Publish the Report</h2>
 
